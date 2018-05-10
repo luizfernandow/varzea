@@ -47,7 +47,12 @@ class RaceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'date' => 'required',
+            'hour' => 'required',            
+            'laps' => 'required',
+        ]);
     }
 
     /**
