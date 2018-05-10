@@ -2,9 +2,16 @@
 
 @section('content')
 <div class="container">
+    @auth
+        <div class="row mb-2">
+            <div class="col">
+                {!!Form::anchor(__('races.link.create'))->info()->route('races.create')!!}            
+            </div>
+        </div>
+    @endauth
     <div class="row justify-content-center">
-        <div class="col-md-12">
-            <table class="table table-dark">
+        <div class="col-12">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">Name</th>

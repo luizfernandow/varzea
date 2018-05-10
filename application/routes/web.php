@@ -19,6 +19,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('races', 'RaceController')->names([
-    'index' => 'races.index'
-]);
+Route::resource('races', 'RaceController');

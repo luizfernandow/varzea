@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5bca48e56bbf3a25645858fcab9c285",
+    "content-hash": "981994d00aa7cc416ee8b73e72c3052a",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -869,6 +869,58 @@
                 "time"
             ],
             "time": "2018-03-19T15:50:49+00:00"
+        },
+        {
+            "name": "netojose/laravel-bootstrap-4-forms",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/netojose/laravel-bootstrap-4-forms.git",
+                "reference": "59b2837115738c8a8b63db8716ad4046b2d2e84c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/netojose/laravel-bootstrap-4-forms/zipball/59b2837115738c8a8b63db8716ad4046b2d2e84c",
+                "reference": "59b2837115738c8a8b63db8716ad4046b2d2e84c",
+                "shasum": ""
+            },
+            "type": "package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "NetoJose\\Bootstrap4Forms\\Bootstrap4FormsServiceProvider"
+                    ],
+                    "aliases": {
+                        "Form": "NetoJose\\Bootstrap4Forms\\Bootstrap4FormsFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "NetoJose\\Bootstrap4Forms\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "José Sousa",
+                    "email": "sputinykster@gmail.com"
+                }
+            ],
+            "description": "Bootstrap 4 form builder for Laravel 5",
+            "keywords": [
+                "Forms",
+                "bootstrap",
+                "composer",
+                "form-builder",
+                "laravel",
+                "package",
+                "php"
+            ],
+            "time": "2018-02-13T12:46:08+00:00"
         },
         {
             "name": "nikic/php-parser",
