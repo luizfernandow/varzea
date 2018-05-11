@@ -47,12 +47,21 @@ class RaceController extends Controller
      */
     public function store(Request $request)
     {
-         $validatedData = $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'date' => 'required',
-            'hour' => 'required',            
-            'laps' => 'required',
+            'date_start' => 'required|date_format:d/m/Y',
+            'time_start' => 'required|date_format:H:i',            
+            'laps' => 'required|integer',
         ]);
+
+        $data = $request->all();
+        $data['date_start'] = \Carbon\Carbon::createFromFormat('d/m/Y',$data['date_start'])->format('Y-m-d');
+        $data['type'] = Race::TYPE_LAPS;
+        $data['hours'] = 0;
+
+        Race::create($data);
+
+        return redirect()->route('races.index');
     }
 
     /**
@@ -74,7 +83,9 @@ class RaceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $race = Race::find($id);
+
+        return view('race.edit', ['race' => $race]);
     }
 
     /**
@@ -86,7 +97,22 @@ class RaceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'date_start' => 'required|date_format:d/m/Y',
+            'time_start' => 'required|date_format:H:i',            
+            'laps' => 'required|integer',
+        ]);
+
+        $data = $request->all();
+        $data['date_start'] = \Carbon\Carbon::createFromFormat('d/m/Y',$data['date_start'])->format('Y-m-d');
+        $data['type'] = Race::TYPE_LAPS;
+        $data['hours'] = 0;
+
+        $race = Race::find($id);
+        $race->fill($data)->save();
+
+        return redirect()->route('races.index');
     }
 
     /**
@@ -97,6 +123,8 @@ class RaceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Race::destroy($id);
+
+        return redirect()->route('races.index');
     }
 }

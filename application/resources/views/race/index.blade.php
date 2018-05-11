@@ -18,6 +18,10 @@
                         <th scope="col">Date</th>
                         <th scope="col">Hour</th>
                         <th scope="col">Laps</th>
+                        @auth
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        @endauth
                     </tr>
                 </thead>
                 <tbody>
@@ -27,6 +31,16 @@
                             <td>{{ \Carbon\Carbon::parse($race->date_start)->format('d/m/Y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($race->time_start)->format('H:i') }}</td>
                             <td>{{ $race->laps }}</td>
+                            @auth
+                                <td scope="col">
+                                    {!!Form::anchor(__('races.link.edit'))->secondary()->route('races.edit', [$race->id])!!} 
+                                </td> 
+                                <td scope="col">
+                                    {!!Form::open()->delete()->url("races/$race->id")!!}
+                                        {!!Form::submit(__('races.link.delete'))->danger()!!}
+                                    {!!Form::close()!!}
+                                </td>
+                            @endauth
                         </tr>
                     @endforeach
               </tbody>
