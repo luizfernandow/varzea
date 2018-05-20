@@ -37,6 +37,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('races.index') }}">Races</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('racers.index') }}">Racers</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
