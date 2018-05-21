@@ -18,4 +18,9 @@ class Racer extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    public function laps()
+    {
+        return $this->hasMany('App\Lap');
+    }
 }

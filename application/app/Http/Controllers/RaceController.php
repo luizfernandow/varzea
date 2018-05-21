@@ -14,7 +14,7 @@ class RaceController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except('index');
+        $this->middleware('auth')->except(['index', 'show']);
     }
 
     /**
@@ -72,7 +72,9 @@ class RaceController extends Controller
      */
     public function show($id)
     {
-        //
+        $race = Race::find($id);
+
+        return view('race.show', ['race' => $race]);
     }
 
     /**

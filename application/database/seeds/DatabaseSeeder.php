@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
 	        UsersTableSeeder::class,
 	        RacesTableSeeder::class,
             RacersTableSeeder::class,
+            LapsTableSeeder::class,
 	    ]);
     }
 }

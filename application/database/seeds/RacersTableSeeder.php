@@ -28,6 +28,10 @@ class RacersTableSeeder extends Seeder
         ]);
 
         DB::table('racers')->insert([
+            'name' => 'Elias',
+        ]);
+
+        DB::table('racers')->insert([
             'name' => 'Lucas Cadeirudo',
         ]);
 

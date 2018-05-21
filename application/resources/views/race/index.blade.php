@@ -14,10 +14,10 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Hour</th>
-                        <th scope="col">Laps</th>
+                        <th scope="col">@lang('races.index.name')</th>
+                        <th scope="col">@lang('races.index.date')</th>
+                        <th scope="col">@lang('races.index.hour')</th>
+                        <th scope="col">@lang('races.index.laps')</th>
                         @auth
                             <th scope="col"></th>
                             <th scope="col"></th>
@@ -27,9 +27,11 @@
                 <tbody>
                     @foreach($races as $race)
                         <tr>
-                            <td>{{ $race->name }}</td>
-                            <td>{{ \Carbon\Carbon::parse($race->date_start)->format('d/m/Y') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($race->time_start)->format('H:i') }}</td>
+                            <td>
+                                <a href="{!! route('races.show', [$race->id]) !!}"> {!! $race->name !!} </a>
+                            </td>
+                            <td>{{ $race->date_start }}</td>
+                            <td>{{ $race->time_start }}</td>
                             <td>{{ $race->laps }}</td>
                             @auth
                                 <td scope="col">
