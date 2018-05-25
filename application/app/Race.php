@@ -44,8 +44,8 @@ class Race extends Model
                 ->select('racer_id', DB::raw('SUM(time) as time'), DB::raw('count(racer_id) as laps'))
                 ->where('race_id', $this->id)
                 ->groupBy('racer_id')
-                ->orderBy('time', 'asc')
                 ->orderBy('laps', 'desc')
+                ->orderBy('time', 'asc')
                 ->get();
     }
 }

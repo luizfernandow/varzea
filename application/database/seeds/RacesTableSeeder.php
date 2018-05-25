@@ -19,13 +19,31 @@ class RacesTableSeeder extends Seeder
             'date_start' => '2018-02-11',
             'time_start' => '10:00'
         ]);
+
     	DB::table('races')->insert([
-            'name' => 'Rachão 2',
+            'name' => 'Rachão 2 - Sub 70',
             'type' => 'laps',
             'laps' => 5,
-            'date_start' => '2018-03-11',
+            'date_start' => '2018-03-31',
             'time_start' => '10:00'
         ]);
+
+        DB::table('races')->insert([
+            'name' => 'Rachão 2 - 70 - 85',
+            'type' => 'laps',
+            'laps' => 5,
+            'date_start' => '2018-03-31',
+            'time_start' => '10:00'
+        ]);
+
+        DB::table('races')->insert([
+            'name' => 'Rachão 2 - 85+',
+            'type' => 'laps',
+            'laps' => 5,
+            'date_start' => '2018-03-31',
+            'time_start' => '10:00'
+        ]);
+
     	DB::table('races')->insert([
             'name' => 'Rachão 3',
             'type' => 'laps',

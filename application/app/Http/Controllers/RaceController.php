@@ -55,7 +55,7 @@ class RaceController extends Controller
         ]);
 
         $data = $request->all();
-        $data['date_start'] = \Carbon\Carbon::createFromFormat('d/m/Y',$data['date_start'])->format('Y-m-d');
+        $data['date_start'] = \Carbon\Carbon::createFromFormat('d/m/Y', $data['date_start'])->format('Y-m-d');
         $data['type'] = Race::TYPE_LAPS;
         $data['hours'] = 0;
 
