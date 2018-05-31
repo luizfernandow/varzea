@@ -16,6 +16,7 @@
                         <th scope="col">#</th>
                         <th scope="col">@lang('races.show.name')</th>
                         <th scope="col">@lang('races.show.time')</th>
+                        <th scope="col">@lang('races.show.point')</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,7 +24,12 @@
                         <tr>
                             <th scope="row">{{ ($index + 1) }}</th>
                             <td>{{ $laps->racer->name }}</td>
-                            <td>{{ ($laps->laps == 5) ? $laps->time : '-' }}</td>
+                            <td>{{ ($laps->laps == $race->laps) ? $laps->time : '-' }}</td>
+                            <td>
+                                @if ($laps->laps == $race->laps)
+                                    @base_point($index)
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
               </tbody>

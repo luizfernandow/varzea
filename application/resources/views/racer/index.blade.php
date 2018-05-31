@@ -14,7 +14,9 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th scope="col">#</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Points</th>
                         @auth
                             <th scope="col"></th>
                             <th scope="col"></th>
@@ -22,9 +24,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($racers as $racer)
+                    @foreach($racers as $index => $racer)
                         <tr>
+                            <th scope="row">{{ ($index + 1) }}</th>
                             <td>{{ $racer->name }}</td>
+                            <td>{{ $racer->points }}</td>
                             @auth
                                 <td scope="col">
                                     {!!Form::anchor(__('racers.link.edit'))->secondary()->route('racers.edit', [$racer->id])!!} 

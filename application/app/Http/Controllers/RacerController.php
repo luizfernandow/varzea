@@ -24,7 +24,7 @@ class RacerController extends Controller
      */
     public function index()
     {
-        $racers = Racer::all();
+        $racers = Racer::getRank();
 
         return view('racer.index', ['racers' => $racers]);
     }

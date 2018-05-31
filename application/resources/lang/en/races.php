@@ -11,6 +11,7 @@ return [
 	'show' => [
 		'name' => 'Name',
 		'time' => 'Time',
+		'point' => 'Point',
 	],
 	'link' => [
 		'create' => 'Create new Race',

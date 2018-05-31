@@ -23,6 +23,8 @@ class Race extends Model
      */
     protected $dates = ['deleted_at'];
 
+    private static $positionPoint = [];
+
     public function laps()
     {
         return $this->hasMany('App\Lap');
@@ -42,10 +44,20 @@ class Race extends Model
     {
         return $this->laps()
                 ->select('racer_id', DB::raw('SUM(time) as time'), DB::raw('count(racer_id) as laps'))
-                ->where('race_id', $this->id)
+                ->join('racers', 'laps.racer_id', '=', 'racers.id')
+                ->whereRaw('racers.deleted_at is null')
                 ->groupBy('racer_id')
                 ->orderBy('laps', 'desc')
                 ->orderBy('time', 'asc')
                 ->get();
+    }
+
+    public static function getBasePoint($positionIndex)
+    {
+        if (empty(self::$positionPoint)) {
+            self::$positionPoint = DB::table('base_points')->get(); 
+        }
+
+        return isset(self::$positionPoint[$positionIndex]) ? self::$positionPoint[$positionIndex]->point : 1;
     }
 }
