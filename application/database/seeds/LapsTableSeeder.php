@@ -34,7 +34,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:15:00')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 5,
+	            'race_id' => 3,
 	            'racer_id' => 1,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -70,7 +70,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:13:39')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 3,
+	            'race_id' => 2,
 	            'racer_id' => 3,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -97,7 +97,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:18:00')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 5,
+	            'race_id' => 3,
 	            'racer_id' => 2,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -115,7 +115,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:23:41')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 3,
+	            'race_id' => 2,
 	            'racer_id' => 7,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -133,7 +133,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:25:43')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 4,
+	            'race_id' => 2,
 	            'racer_id' => 5,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -142,7 +142,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:19:00')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 5,
+	            'race_id' => 3,
 	            'racer_id' => 5,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -160,7 +160,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:20:00')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 5,
+	            'race_id' => 3,
 	            'racer_id' => 8,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -196,7 +196,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:21:00')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 5,
+	            'race_id' => 3,
 	            'racer_id' => 10,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -241,7 +241,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:48:13')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 4,
+	            'race_id' => 2,
 	            'racer_id' => 9,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -250,7 +250,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:23:00')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 5,
+	            'race_id' => 3,
 	            'racer_id' => 9,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -268,7 +268,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:35:32')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 4,
+	            'race_id' => 2,
 	            'racer_id' => 13,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -284,7 +284,7 @@ class LapsTableSeeder extends Seeder
         }
 
         DB::table('laps')->insert([
-            'race_id' => 4,
+            'race_id' => 2,
             'racer_id' => 24,
             'time' => '12:00:00'
         ]);
@@ -324,7 +324,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:20:08')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 3,
+	            'race_id' => 2,
 	            'racer_id' => 6,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -333,7 +333,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:16:00')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 5,
+	            'race_id' => 3,
 	            'racer_id' => 6,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -353,7 +353,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:34:11')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 4,
+	            'race_id' => 2,
 	            'racer_id' => 18,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -363,7 +363,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:39:00')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 4,
+	            'race_id' => 2,
 	            'racer_id' => 21,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -373,7 +373,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:44:02')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 4,
+	            'race_id' => 2,
 	            'racer_id' => 23,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -383,7 +383,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:17:00')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 5,
+	            'race_id' => 3,
 	            'racer_id' => 12,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
@@ -393,7 +393,7 @@ class LapsTableSeeder extends Seeder
         $seconds = Carbon::createFromFormat('H:i:s', '01:22:00')->secondsSinceMidnight();
         for ($i=0; $i < 5 ; $i++) { 
 	        DB::table('laps')->insert([
-	            'race_id' => 5,
+	            'race_id' => 3,
 	            'racer_id' => 16,
 	            'time' => gmdate("H:i:s", $seconds/5)
 	        ]);
