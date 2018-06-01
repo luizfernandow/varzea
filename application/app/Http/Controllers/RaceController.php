@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Race;
 use App\Racer;
+use Illuminate\Support\Facades\DB;
 
 class RaceController extends Controller
 {
@@ -144,5 +145,23 @@ class RaceController extends Controller
         $racers = Racer::orderBy('name')->find($request->racers)->pluck('name', 'id')->toArray();
         
         return view('race.start-race', ['race' => $race, 'racers' => $racers, 'id' => $id]);
+    }
+
+    public function saveLaps(Request $request, $id)
+    {
+        $race = Race::find($id);
+        foreach ($request->except('_token') as $racerId => $lapsJson) {
+            foreach (json_decode($lapsJson, true) as $lapTime) {
+                DB::table('laps')->insert([
+                    'race_id' => $id,
+                    'racer_id' => $racerId,
+                    'time' => gmdate("H:i:s", $lapTime)
+                ]);
+            }
+        }
+        $race->locked = true;
+        $race->save();
+
+        return redirect()->route('races.index');
     }
 }

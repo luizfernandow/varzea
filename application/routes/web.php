@@ -24,3 +24,4 @@ Route::resource('racers', 'RacerController');
 
 Route::get('/races/select-racers/{id}', 'RaceController@selectRacers')->name('selectRacers');
 Route::post('/races/start-race/{id}', 'RaceController@startRace')->name('startRace');
+Route::post('/races/save-laps/{id}', 'RaceController@saveLaps')->name('saveLaps');
