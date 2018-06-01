@@ -21,6 +21,7 @@ class CreateRacesTable extends Migration
             $table->smallInteger('hours')->nullable();
             $table->date('date_start');
             $table->time('time_start');
+            $table->boolean('locked')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

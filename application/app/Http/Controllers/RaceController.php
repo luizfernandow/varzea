@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Race;
+use App\Racer;
 
 class RaceController extends Controller
 {
@@ -128,5 +129,20 @@ class RaceController extends Controller
         Race::destroy($id);
 
         return redirect()->route('races.index');
+    }
+
+    public function selectRacers($id)
+    {
+        $racers = Racer::orderBy('name')->pluck('name', 'id')->toArray();
+
+        return view('race.select-racers', ['racers' => $racers, 'id' => $id]);
+    }
+
+    public function startRace(Request $request, $id)
+    {
+        $race = Race::find($id);
+        $racers = Racer::orderBy('name')->find($request->racers)->pluck('name', 'id')->toArray();
+        
+        return view('race.start-race', ['race' => $race, 'racers' => $racers, 'id' => $id]);
     }
 }

@@ -16,7 +16,8 @@ return [
 	'link' => [
 		'create' => 'Create new Race',
 		'delete' => 'Delete',
-		'edit' => 'Edit'
+		'edit' => 'Edit',
+		'selectRacers' => 'Start a race'
 	],
     'form' => [
     	'name' => 'Name',
@@ -27,4 +28,8 @@ return [
     	'save' => 'Save'
     ],
 
+    'selectRacers' => [
+    	'header' => 'Select racers',
+    	'submit' => 'Go to race!'
+    ],
 ];

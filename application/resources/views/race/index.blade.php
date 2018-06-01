@@ -22,6 +22,7 @@
                             @auth
                                 <th scope="col"></th>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                             @endauth
                         </tr>
                     </thead>
@@ -35,6 +36,9 @@
                                 <td>{{ $race->time_start }}</td>
                                 <td>{{ $race->laps }}</td>
                                 @auth
+                                    <td scope="col">
+                                        {!!Form::anchor(__('races.link.selectRacers'))->primary()->route('selectRacers', [$race->id])!!} 
+                                    </td> 
                                     <td scope="col">
                                         {!!Form::anchor(__('races.link.edit'))->secondary()->route('races.edit', [$race->id])!!} 
                                     </td> 

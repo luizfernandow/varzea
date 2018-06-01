@@ -17,7 +17,8 @@ class RacesTableSeeder extends Seeder
             'type' => 'laps',
             'laps' => 5,
             'date_start' => '2018-02-11',
-            'time_start' => '10:00'
+            'time_start' => '10:00',
+            'locked' => true
         ]);
 
     	DB::table('races')->insert([
@@ -25,7 +26,8 @@ class RacesTableSeeder extends Seeder
             'type' => 'laps',
             'laps' => 5,
             'date_start' => '2018-03-31',
-            'time_start' => '10:00'
+            'time_start' => '10:00',
+            'locked' => true
         ]);
 
     	DB::table('races')->insert([
@@ -33,7 +35,8 @@ class RacesTableSeeder extends Seeder
             'type' => 'laps',
             'laps' => 5,
             'date_start' => '2018-05-6',
-            'time_start' => '10:00'
+            'time_start' => '10:00',
+            'locked' => true
         ]);
     }
 }

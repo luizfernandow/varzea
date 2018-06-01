@@ -13867,7 +13867,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
-module.exports = __webpack_require__(43);
+module.exports = __webpack_require__(45);
 
 
 /***/ }),
@@ -13883,7 +13883,7 @@ module.exports = __webpack_require__(43);
 
 __webpack_require__(13);
 
-window.Vue = __webpack_require__(36);
+window.Vue = __webpack_require__(38);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -13891,7 +13891,7 @@ window.Vue = __webpack_require__(36);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', __webpack_require__(39));
+Vue.component('example-component', __webpack_require__(41));
 
 var app = new Vue({
   el: '#app'
@@ -13957,6 +13957,8 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+window.Timer = __webpack_require__(36);
 
 /***/ }),
 /* 14 */
@@ -35924,6 +35926,895 @@ module.exports = function spread(callback) {
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * easytimer.js
+ * Generated: 2018-03-26
+ * Version: 2.2.1
+ */
+
+(function (global, factory) {
+   true ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global.Timer = factory());
+}(this, (function () { 'use strict';
+
+  function leftPadding(string, padLength, character) {
+    var i = void 0;
+    var characters = '';
+
+    if (string.length > padLength) {
+      return string;
+    }
+
+    for (i = 0; i < padLength; i = i + 1) {
+      characters += String(character);
+    }
+
+    return (characters + string).slice(-characters.length);
+  }
+
+  function TimeCounter() {
+    this.secondTenths = 0;
+    this.seconds = 0;
+    this.minutes = 0;
+    this.hours = 0;
+    this.days = 0;
+
+    /**
+     * [toString convert the counted values on a string]
+     * @param  {[array]} units           [array with the units to display]
+     * @param  {[string]} separator       [separator of the units]
+     * @param  {[integer]} leftZeroPadding [number of zero padding]
+     * @return {[string]}                 [result string]
+     */
+    this.toString = function (units, separator, leftZeroPadding) {
+      units = units || ['hours', 'minutes', 'seconds'];
+      separator = separator || ':';
+      leftZeroPadding = leftZeroPadding || 2;
+
+      var stringTime = void 0;
+      var arrayTime = [];
+      var i = void 0;
+
+      for (i = 0; i < units.length; i = i + 1) {
+        if (this[units[i]] !== undefined) {
+          if (units[i] === 'secondTenths') {
+            arrayTime.push(this[units[i]]);
+          } else {
+            arrayTime.push(leftPadding(this[units[i]], leftZeroPadding, '0'));
+          }
+        }
+      }
+      stringTime = arrayTime.join(separator);
+
+      return stringTime;
+    };
+  }
+
+  /*
+  * Polyfill por IE9, IE10 and IE11
+  */
+  var CustomEvent$1 = typeof window !== 'undefined' ? window.CustomEvent : undefined;
+
+  if (typeof window !== 'undefined' && typeof CustomEvent$1 !== 'function') {
+    CustomEvent$1 = function CustomEvent(event, params) {
+      params = params || { bubbles: false, cancelable: false, detail: undefined };
+      var evt = document.createEvent('CustomEvent');
+      evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+      return evt;
+    };
+
+    CustomEvent$1.prototype = window.Event.prototype;
+
+    window.CustomEvent = CustomEvent$1;
+  }
+
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+  /*
+   * General functions, variables and constants
+   */
+  var SECOND_TENTHS_PER_SECOND = 10;
+  var SECONDS_PER_MINUTE = 60;
+  var MINUTES_PER_HOUR = 60;
+  var HOURS_PER_DAY = 24;
+
+  var SECOND_TENTHS_POSITION = 0;
+  var SECONDS_POSITION = 1;
+  var MINUTES_POSITION = 2;
+  var HOURS_POSITION = 3;
+  var DAYS_POSITION = 4;
+
+  var SECOND_TENTHS = 'secondTenths';
+  var SECONDS = 'seconds';
+  var MINUTES = 'minutes';
+  var HOURS = 'hours';
+  var DAYS = 'days';
+
+  var unitsInMilliseconds = {
+    secondTenths: 100,
+    seconds: 1000,
+    minutes: 60000,
+    hours: 3600000,
+    days: 86400000
+  };
+
+  var groupedUnits = {
+    secondTenths: SECOND_TENTHS_PER_SECOND,
+    seconds: SECONDS_PER_MINUTE,
+    minutes: MINUTES_PER_HOUR,
+    hours: HOURS_PER_DAY
+  };
+
+  var events = typeof module !== 'undefined' && module.exports && "function" === 'function' ? __webpack_require__(37) : undefined;
+
+  function hasDOM() {
+    return typeof document !== 'undefined';
+  }
+
+  function hasEventEmitter() {
+    return events;
+  }
+
+  function mod(number, module) {
+    return (number % module + module) % module;
+  }
+
+  /**
+   * [Timer Timer/Chronometer/Countdown compatible with AMD and NodeJS.
+   * Can update time values with different time intervals: tenth of seconds,
+   * seconds, minutes and hours.]
+   */
+  function Timer() {
+    /*
+    * PRIVATE variables and Functions
+    */
+    var counters = new TimeCounter();
+    var totalCounters = new TimeCounter();
+
+    var intervalId = void 0;
+    var eventEmitter = hasDOM() ? document.createElement('span') : hasEventEmitter() ? new events.EventEmitter() : undefined;
+    var running = false;
+    var paused = false;
+    var precision = void 0;
+    var timerTypeFactor = void 0;
+    var customCallback = void 0;
+    var timerConfig = {};
+    var currentParams = void 0;
+    var targetValues = void 0;
+    var startValues = void 0;
+    var countdown = void 0;
+    var startingDate = void 0;
+    var targetDate = void 0;
+    var eventData = {
+      detail: {
+        timer: this
+      }
+    };
+
+    function updateCounters(precision, roundedValue) {
+      totalCounters[precision] = roundedValue;
+
+      if (precision === DAYS) {
+        counters[precision] = roundedValue;
+      } else if (roundedValue >= 0) {
+        counters[precision] = mod(roundedValue, groupedUnits[precision]);
+      } else {
+        counters[precision] = groupedUnits[precision] - mod(roundedValue, groupedUnits[precision]);
+      }
+    }
+
+    function updateDays(value) {
+      return updateUnitByPrecision(value, DAYS);
+    }
+
+    function updateHours(value) {
+      return updateUnitByPrecision(value, HOURS);
+    }
+
+    function updateMinutes(value) {
+      return updateUnitByPrecision(value, MINUTES);
+    }
+
+    function updateSeconds(value) {
+      return updateUnitByPrecision(value, SECONDS);
+    }
+
+    function updateSecondTenths(value) {
+      return updateUnitByPrecision(value, SECOND_TENTHS);
+    }
+
+    function updateUnitByPrecision(value, precision) {
+      var previousValue = totalCounters[precision];
+      updateCounters(precision, calculateIntegerUnitQuotient(value, unitsInMilliseconds[precision]));
+
+      return totalCounters[precision] !== previousValue;
+    }
+
+    function stopTimerAndResetCounters() {
+      stopTimer();
+      resetCounters();
+    }
+
+    function stopTimer() {
+      clearInterval(intervalId);
+      intervalId = undefined;
+      running = false;
+      paused = false;
+    }
+
+    function setParamsAndStartTimer(params) {
+      if (!isPaused()) {
+        setParams(params);
+      } else {
+        startingDate = calculateStartingDate();
+        targetValues = setTarget(currentParams.target);
+      }
+
+      startTimer();
+    }
+
+    function startTimer() {
+      var interval = unitsInMilliseconds[precision];
+
+      if (isTargetAchieved(roundTimestamp(Date.now()))) {
+        return;
+      }
+
+      intervalId = setInterval(updateTimerAndDispatchEvents, interval);
+
+      running = true;
+      paused = false;
+    }
+
+    function calculateStartingDate() {
+      return roundTimestamp(Date.now()) - totalCounters.secondTenths * unitsInMilliseconds[SECOND_TENTHS] * timerTypeFactor;
+    }
+
+    function updateTimerAndDispatchEvents() {
+      var currentTime = roundTimestamp(Date.now());
+      var valuesUpdated = updateTimer();
+
+      dispatchEvents(valuesUpdated);
+
+      customCallback(eventData.detail.timer);
+      if (isTargetAchieved(currentTime)) {
+        stop();
+        dispatchEvent('targetAchieved', eventData);
+      }
+    }
+
+    function updateTimer() {
+      var currentTime = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : roundTimestamp(Date.now());
+
+      var ellapsedTime = timerTypeFactor > 0 ? currentTime - startingDate : startingDate - currentTime;
+      var valuesUpdated = {};
+
+      valuesUpdated[SECOND_TENTHS] = updateSecondTenths(ellapsedTime);
+      valuesUpdated[SECONDS] = updateSeconds(ellapsedTime);
+      valuesUpdated[MINUTES] = updateMinutes(ellapsedTime);
+      valuesUpdated[HOURS] = updateHours(ellapsedTime);
+      valuesUpdated[DAYS] = updateDays(ellapsedTime);
+
+      return valuesUpdated;
+    }
+
+    function roundTimestamp(timestamp) {
+      return Math.floor(timestamp / unitsInMilliseconds[precision]) * unitsInMilliseconds[precision];
+    }
+
+    function dispatchEvents(valuesUpdated) {
+      if (valuesUpdated[SECOND_TENTHS]) {
+        dispatchEvent('secondTenthsUpdated', eventData);
+      }
+      if (valuesUpdated[SECONDS]) {
+        dispatchEvent('secondsUpdated', eventData);
+      }
+      if (valuesUpdated[MINUTES]) {
+        dispatchEvent('minutesUpdated', eventData);
+      }
+      if (valuesUpdated[HOURS]) {
+        dispatchEvent('hoursUpdated', eventData);
+      }
+      if (valuesUpdated[DAYS]) {
+        dispatchEvent('daysUpdated', eventData);
+      }
+    }
+
+    function isTargetAchieved(currentDate) {
+      return targetValues instanceof Array && currentDate >= targetDate;
+    }
+
+    function resetCounters() {
+      for (var counter in counters) {
+        if (counters.hasOwnProperty(counter) && typeof counters[counter] === 'number') {
+          counters[counter] = 0;
+        }
+      }
+
+      for (var _counter in totalCounters) {
+        if (totalCounters.hasOwnProperty(_counter) && typeof totalCounters[_counter] === 'number') {
+          totalCounters[_counter] = 0;
+        }
+      }
+    }
+
+    function setParams(params) {
+      params = params || {};
+
+      precision = typeof params.precision === 'string' ? params.precision : SECONDS;
+
+      customCallback = typeof params.callback === 'function' ? params.callback : function () {};
+
+      countdown = params.countdown === true;
+
+      timerTypeFactor = countdown === true ? -1 : 1;
+
+      if (_typeof(params.startValues) === 'object') {
+        setStartValues(params.startValues);
+      }
+      startingDate = calculateStartingDate();
+
+      updateTimer();
+
+      if (_typeof(params.target) === 'object') {
+        targetValues = setTarget(params.target);
+      } else if (countdown) {
+        params.target = { seconds: 0 };
+        targetValues = setTarget(params.target);
+      }
+
+      timerConfig = {
+        precision: precision,
+        callback: customCallback,
+        countdown: (typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object' && params.countdown === true,
+        target: targetValues,
+        startValues: startValues
+      };
+
+      currentParams = params;
+    }
+
+    function configInputValues(inputValues) {
+      var secondTenths = void 0,
+          seconds = void 0,
+          minutes = void 0,
+          hours = void 0,
+          days = void 0,
+          values = void 0;
+      if ((typeof inputValues === 'undefined' ? 'undefined' : _typeof(inputValues)) === 'object') {
+        if (inputValues instanceof Array) {
+          if (inputValues.length !== 5) {
+            throw new Error('Array size not valid');
+          }
+          values = inputValues;
+        } else {
+          values = [inputValues.secondTenths || 0, inputValues.seconds || 0, inputValues.minutes || 0, inputValues.hours || 0, inputValues.days || 0];
+        }
+      }
+
+      secondTenths = values[SECOND_TENTHS_POSITION];
+      seconds = values[SECONDS_POSITION] + calculateIntegerUnitQuotient(secondTenths, SECOND_TENTHS_PER_SECOND);
+      minutes = values[MINUTES_POSITION] + calculateIntegerUnitQuotient(seconds, SECONDS_PER_MINUTE);
+      hours = values[HOURS_POSITION] + calculateIntegerUnitQuotient(minutes, MINUTES_PER_HOUR);
+      days = values[DAYS_POSITION] + calculateIntegerUnitQuotient(hours, HOURS_PER_DAY);
+
+      values[SECOND_TENTHS_POSITION] = secondTenths % SECOND_TENTHS_PER_SECOND;
+      values[SECONDS_POSITION] = seconds % SECONDS_PER_MINUTE;
+      values[MINUTES_POSITION] = minutes % MINUTES_PER_HOUR;
+      values[HOURS_POSITION] = hours % HOURS_PER_DAY;
+      values[DAYS_POSITION] = days;
+
+      return values;
+    }
+
+    function calculateIntegerUnitQuotient(unit, divisor) {
+      var quotient = unit / divisor;
+
+      return quotient < 0 ? Math.ceil(quotient) : Math.floor(quotient);
+    }
+
+    function setTarget(inputTarget) {
+      if (!inputTarget) {
+        return;
+      }
+
+      targetValues = configInputValues(inputTarget);
+      var targetCounter = calculateTotalCounterFromFalues(targetValues);
+      targetDate = startingDate + targetCounter.secondTenths * unitsInMilliseconds[SECOND_TENTHS] * timerTypeFactor;
+
+      return targetValues;
+    }
+
+    function setStartValues(inputStartValues) {
+      startValues = configInputValues(inputStartValues);
+      counters.secondTenths = startValues[SECOND_TENTHS_POSITION];
+      counters.seconds = startValues[SECONDS_POSITION];
+      counters.minutes = startValues[MINUTES_POSITION];
+      counters.hours = startValues[HOURS_POSITION];
+      counters.days = startValues[DAYS_POSITION];
+
+      totalCounters = calculateTotalCounterFromFalues(startValues, totalCounters);
+    }
+
+    function calculateTotalCounterFromFalues(values, outputCounter) {
+      var total = outputCounter || {};
+
+      total.days = values[DAYS_POSITION];
+      total.hours = total.days * HOURS_PER_DAY + values[HOURS_POSITION];
+      total.minutes = total.hours * MINUTES_PER_HOUR + values[MINUTES_POSITION];
+      total.seconds = total.minutes * SECONDS_PER_MINUTE + values[SECONDS_POSITION];
+      total.secondTenths = total.seconds * SECOND_TENTHS_PER_SECOND + values[[SECOND_TENTHS_POSITION]];
+
+      return total;
+    }
+
+    /*
+     * PUBLIC functions
+     */
+
+    /**
+     * [stop stops the timer and resets the counters. Dispatch stopped event]
+     */
+    function stop() {
+      stopTimerAndResetCounters();
+      dispatchEvent('stopped', eventData);
+    }
+
+    /**
+     * [stop stops and starts the timer. Dispatch stopped event]
+     */
+    function reset() {
+      stopTimerAndResetCounters();
+      setParamsAndStartTimer(currentParams);
+      dispatchEvent('reset', eventData);
+    }
+
+    /**
+     * [start starts the timer configured by the params object. Dispatch started event]
+     * @param  {[object]} params [Configuration parameters]
+     */
+    function start(params) {
+      if (isRunning()) {
+        return;
+      }
+
+      setParamsAndStartTimer(params);
+      dispatchEvent('started', eventData);
+    }
+
+    /**
+     * [pause stops the timer without resetting the counters. The timer it can be restarted with start function.
+     * Dispatch paused event]
+     * @return {[type]} [description]
+     */
+    function pause() {
+      stopTimer();
+      paused = true;
+      dispatchEvent('paused', eventData);
+    }
+
+    /**
+     * [addEventListener Adds event listener to the timer]
+     * @param {[string]} event      [event to listen]
+     * @param {[function]} listener   [the event listener function]
+     */
+    function addEventListener(event, listener) {
+      if (hasDOM()) {
+        eventEmitter.addEventListener(event, listener);
+      } else if (hasEventEmitter()) {
+        eventEmitter.on(event, listener);
+      }
+    }
+
+    /**
+     * [removeEventListener Removes event listener to the timer]
+     * @param  {[string]} event    [event to remove listener]
+     * @param  {[function]} listener [listener to remove]
+     */
+    function removeEventListener(event, listener) {
+      if (hasDOM()) {
+        eventEmitter.removeEventListener(event, listener);
+      } else if (hasEventEmitter()) {
+        eventEmitter.removeListener(event, listener);
+      }
+    }
+
+    /**
+     * [dispatchEvent dispatchs an event]
+     * @param  {string} event [event to dispatch]
+     */
+    function dispatchEvent(event, data) {
+      if (hasDOM()) {
+        eventEmitter.dispatchEvent(new CustomEvent(event, data));
+      } else if (hasEventEmitter()) {
+        eventEmitter.emit(event, data);
+      }
+    }
+
+    /**
+     * [isRunning return true if the timer is running]
+     * @return {Boolean}
+     */
+    function isRunning() {
+      return running;
+    }
+
+    /**
+     * [isPaused returns true if the timer is paused]
+     * @return {Boolean}
+     */
+    function isPaused() {
+      return paused;
+    }
+
+    /**
+     * [getTimeValues returns the counter with the current timer values]
+     * @return {[TimeCounter]}
+     */
+    function getTimeValues() {
+      return counters;
+    }
+    /**
+     * [getTotalTimeValues returns the counter with the current timer total values]
+     * @return {[TimeCounter]}
+     */
+    function getTotalTimeValues() {
+      return totalCounters;
+    }
+    /**
+     * [getConfig returns the configuration paramameters]
+     * @return {[type]}
+     */
+    function getConfig() {
+      return timerConfig;
+    }
+    /**
+     * Public API
+     * Definition of Timer instance public functions
+     */
+    if (typeof this !== 'undefined') {
+      this.start = start;
+
+      this.pause = pause;
+
+      this.stop = stop;
+
+      this.reset = reset;
+
+      this.isRunning = isRunning;
+
+      this.isPaused = isPaused;
+
+      this.getTimeValues = getTimeValues;
+
+      this.getTotalTimeValues = getTotalTimeValues;
+
+      this.getConfig = getConfig;
+
+      this.addEventListener = addEventListener;
+
+      this.removeEventListener = removeEventListener;
+    }
+  }
+
+  return Timer;
+
+})));
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports) {
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+function EventEmitter() {
+  this._events = this._events || {};
+  this._maxListeners = this._maxListeners || undefined;
+}
+module.exports = EventEmitter;
+
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
+
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._maxListeners = undefined;
+
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+EventEmitter.defaultMaxListeners = 10;
+
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function(n) {
+  if (!isNumber(n) || n < 0 || isNaN(n))
+    throw TypeError('n must be a positive number');
+  this._maxListeners = n;
+  return this;
+};
+
+EventEmitter.prototype.emit = function(type) {
+  var er, handler, len, args, i, listeners;
+
+  if (!this._events)
+    this._events = {};
+
+  // If there is no 'error' event listener then throw.
+  if (type === 'error') {
+    if (!this._events.error ||
+        (isObject(this._events.error) && !this._events.error.length)) {
+      er = arguments[1];
+      if (er instanceof Error) {
+        throw er; // Unhandled 'error' event
+      } else {
+        // At least give some kind of context to the user
+        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
+        err.context = er;
+        throw err;
+      }
+    }
+  }
+
+  handler = this._events[type];
+
+  if (isUndefined(handler))
+    return false;
+
+  if (isFunction(handler)) {
+    switch (arguments.length) {
+      // fast cases
+      case 1:
+        handler.call(this);
+        break;
+      case 2:
+        handler.call(this, arguments[1]);
+        break;
+      case 3:
+        handler.call(this, arguments[1], arguments[2]);
+        break;
+      // slower
+      default:
+        args = Array.prototype.slice.call(arguments, 1);
+        handler.apply(this, args);
+    }
+  } else if (isObject(handler)) {
+    args = Array.prototype.slice.call(arguments, 1);
+    listeners = handler.slice();
+    len = listeners.length;
+    for (i = 0; i < len; i++)
+      listeners[i].apply(this, args);
+  }
+
+  return true;
+};
+
+EventEmitter.prototype.addListener = function(type, listener) {
+  var m;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events)
+    this._events = {};
+
+  // To avoid recursion in the case that type === "newListener"! Before
+  // adding it to the listeners, first emit "newListener".
+  if (this._events.newListener)
+    this.emit('newListener', type,
+              isFunction(listener.listener) ?
+              listener.listener : listener);
+
+  if (!this._events[type])
+    // Optimize the case of one listener. Don't need the extra array object.
+    this._events[type] = listener;
+  else if (isObject(this._events[type]))
+    // If we've already got an array, just append.
+    this._events[type].push(listener);
+  else
+    // Adding the second element, need to change to array.
+    this._events[type] = [this._events[type], listener];
+
+  // Check for listener leak
+  if (isObject(this._events[type]) && !this._events[type].warned) {
+    if (!isUndefined(this._maxListeners)) {
+      m = this._maxListeners;
+    } else {
+      m = EventEmitter.defaultMaxListeners;
+    }
+
+    if (m && m > 0 && this._events[type].length > m) {
+      this._events[type].warned = true;
+      console.error('(node) warning: possible EventEmitter memory ' +
+                    'leak detected. %d listeners added. ' +
+                    'Use emitter.setMaxListeners() to increase limit.',
+                    this._events[type].length);
+      if (typeof console.trace === 'function') {
+        // not supported in IE 10
+        console.trace();
+      }
+    }
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.once = function(type, listener) {
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  var fired = false;
+
+  function g() {
+    this.removeListener(type, g);
+
+    if (!fired) {
+      fired = true;
+      listener.apply(this, arguments);
+    }
+  }
+
+  g.listener = listener;
+  this.on(type, g);
+
+  return this;
+};
+
+// emits a 'removeListener' event iff the listener was removed
+EventEmitter.prototype.removeListener = function(type, listener) {
+  var list, position, length, i;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events || !this._events[type])
+    return this;
+
+  list = this._events[type];
+  length = list.length;
+  position = -1;
+
+  if (list === listener ||
+      (isFunction(list.listener) && list.listener === listener)) {
+    delete this._events[type];
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+
+  } else if (isObject(list)) {
+    for (i = length; i-- > 0;) {
+      if (list[i] === listener ||
+          (list[i].listener && list[i].listener === listener)) {
+        position = i;
+        break;
+      }
+    }
+
+    if (position < 0)
+      return this;
+
+    if (list.length === 1) {
+      list.length = 0;
+      delete this._events[type];
+    } else {
+      list.splice(position, 1);
+    }
+
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.removeAllListeners = function(type) {
+  var key, listeners;
+
+  if (!this._events)
+    return this;
+
+  // not listening for removeListener, no need to emit
+  if (!this._events.removeListener) {
+    if (arguments.length === 0)
+      this._events = {};
+    else if (this._events[type])
+      delete this._events[type];
+    return this;
+  }
+
+  // emit removeListener for all listeners on all events
+  if (arguments.length === 0) {
+    for (key in this._events) {
+      if (key === 'removeListener') continue;
+      this.removeAllListeners(key);
+    }
+    this.removeAllListeners('removeListener');
+    this._events = {};
+    return this;
+  }
+
+  listeners = this._events[type];
+
+  if (isFunction(listeners)) {
+    this.removeListener(type, listeners);
+  } else if (listeners) {
+    // LIFO order
+    while (listeners.length)
+      this.removeListener(type, listeners[listeners.length - 1]);
+  }
+  delete this._events[type];
+
+  return this;
+};
+
+EventEmitter.prototype.listeners = function(type) {
+  var ret;
+  if (!this._events || !this._events[type])
+    ret = [];
+  else if (isFunction(this._events[type]))
+    ret = [this._events[type]];
+  else
+    ret = this._events[type].slice();
+  return ret;
+};
+
+EventEmitter.prototype.listenerCount = function(type) {
+  if (this._events) {
+    var evlistener = this._events[type];
+
+    if (isFunction(evlistener))
+      return 1;
+    else if (evlistener)
+      return evlistener.length;
+  }
+  return 0;
+};
+
+EventEmitter.listenerCount = function(emitter, type) {
+  return emitter.listenerCount(type);
+};
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global, setImmediate) {/*!
  * Vue.js v2.5.16
@@ -46884,10 +47775,10 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(37).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(39).setImmediate))
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -46943,7 +47834,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(38);
+__webpack_require__(40);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -46957,7 +47848,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -47150,15 +48041,15 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(6)))
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(40)
+var normalizeComponent = __webpack_require__(42)
 /* script */
-var __vue_script__ = __webpack_require__(41)
+var __vue_script__ = __webpack_require__(43)
 /* template */
-var __vue_template__ = __webpack_require__(42)
+var __vue_template__ = __webpack_require__(44)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47197,7 +48088,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -47306,7 +48197,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47335,7 +48226,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -47378,7 +48269,7 @@ if (false) {
 }
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

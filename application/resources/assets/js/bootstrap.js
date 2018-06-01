@@ -12,6 +12,7 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
+
 } catch (e) {}
 
 /**
@@ -54,3 +55,5 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+window.Timer = require('easytimer.js');
