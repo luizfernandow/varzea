@@ -24,8 +24,8 @@
                         <div class="col-6 text-truncate">
                             {{$racer}}
                         </div>
-                        <div class="col-6">
-                            <b>Current:</b> <span class="current-time"></span>
+                        <div class="col-6 current-time">
+                            
                         </div>
                     </div>     
                     <div class="laps">
