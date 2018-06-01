@@ -10,30 +10,32 @@
     </div>
      <div class="row justify-content-center">
         <div class="col-12">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">@lang('races.show.name')</th>
-                        <th scope="col">@lang('races.show.time')</th>
-                        <th scope="col">@lang('races.show.point')</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($race->getRank() as $index => $laps)
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <th scope="row">{{ ($index + 1) }}</th>
-                            <td>{{ $laps->racer->name }}</td>
-                            <td>{{ ($laps->laps == $race->laps) ? $laps->time : '-' }}</td>
-                            <td>
-                                @if ($laps->laps == $race->laps)
-                                    @base_point($index)
-                                @endif
-                            </td>
+                            <th scope="col">#</th>
+                            <th scope="col">@lang('races.show.name')</th>
+                            <th scope="col">@lang('races.show.time')</th>
+                            <th scope="col">@lang('races.show.point')</th>
                         </tr>
-                    @endforeach
-              </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach($race->getRank() as $index => $laps)
+                            <tr>
+                                <th scope="row">{{ ($index + 1) }}</th>
+                                <td>{{ $laps->racer->name }}</td>
+                                <td>{{ ($laps->laps == $race->laps) ? $laps->time : '-' }}</td>
+                                <td>
+                                    @if ($laps->laps == $race->laps)
+                                        @base_point($index)
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                  </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

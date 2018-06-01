@@ -1,7 +1,10 @@
 <?php
 
 return [
-
+	'index' => [
+		'name' => 'Name',
+		'points' => 'Points'
+	],
 	'link' => [
 		'create' => 'Create new Racer',
 		'delete' => 'Delete',
@@ -12,5 +15,4 @@ return [
     	'submit' => 'Create',
     	'save' => 'Save'
     ],
-
 ];
