@@ -103,6 +103,9 @@ $(function() {
     });
 
     $('#saveLaps').click(function(e){
+        if ($('.racer.disabled').length == $('.racer').length) {
+            window.onbeforeunload = null;
+        }
         $('.racer').each(function( index ) {
             $('#saveLapsForm').append('<input type="hidden" name="' + $(this).data('id') + '" value="' + JSON.stringify($(this).data('laps')) +'">');
         });
@@ -134,7 +137,7 @@ $(function() {
             }
             laps.push(lapTime);
             lap++;
-            obj.find('.laps').append('<span> ' + lap + ' - ' + time + '</span><br>'); 
+            obj.find('.laps').append('<span class="badge badge-success"> ' + lap + ' - ' + time + '</span><br>'); 
             obj.data('lap', lap);
             obj.data('laps', laps);
             obj.data('total-seconds', totalSeconds);
@@ -146,7 +149,6 @@ $(function() {
                 timer.stop();
                 $('#saveLaps').attr('disabled', false);
                 $('#stopTimer').attr('disabled', true);
-                window.onbeforeunload = null;
             }
 
             var sortedElements = sortElements( $('.racer') );

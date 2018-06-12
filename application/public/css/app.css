@@ -10421,3 +10421,13 @@ a.text-dark:focus {
   font-size: 4em;
 }
 
+#racers-list {
+  counter-reset: position-race-counter;
+}
+
+#racers-list a:before {
+  content: counter(position-race-counter);
+  counter-increment: position-race-counter;
+  font-weight: bold;
+}
+
