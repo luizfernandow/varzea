@@ -1,12 +1,12 @@
 # varzea
 
+docker run -it --rm \
+-v docker_varzea_certs:/etc/letsencrypt \
+-v docker_varzea_certs-data:/data/letsencrypt \
+certbot/certbot \
+certonly --webroot \
+--email admin@asfl.com.br --agree-tos --no-eff-email \
+--webroot-path=/data/letsencrypt \
+-d varzea.asfl.com.br 
 
- docker run -it --rm \
-      -v certs:/etc/letsencrypt \
-      -v certs-data:/data/letsencrypt \
-      deliverous/certbot \
-      certonly \
-      --webroot --webroot-path=/data/letsencrypt \
-      -d varzea.asfl.com.br 
-
- 0 0 */15 * * docker run -t --rm -v docker_varzea_certs:/etc/letsencrypt -v docker_varzea_certs-data:/data/letsencrypt -v /var/log/letsencrypt:/var/log/letsencrypt deliverous/certbot renew --webroot --webroot-path=/data/letsencrypt && docker kill -s HUP web >/dev/null 2>&1
+0 23 * * * docker run --rm -it --name certbot -v docker_varzea_certs:/etc/letsencrypt  -v "docker_varzea_certs-data:/data/letsencrypt  certbot/certbot renew --quiet
