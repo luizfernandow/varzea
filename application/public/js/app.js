@@ -13960,6 +13960,16 @@ if (token) {
 
 window.Timer = __webpack_require__(36);
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').then(function (registration) {
+      console.log('SW registered: ', registration);
+    }).catch(function (registrationError) {
+      console.log('SW registration failed: ', registrationError);
+    });
+  });
+}
+
 /***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
