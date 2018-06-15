@@ -11,7 +11,7 @@
         </div>  
     @endauth
     <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--12-col">
+        <div class="mdl-cell mdl-cell--12-col table-responsive">
             <table class="mdl-data-table mdl-js-data-table">
                 <thead>
                     <tr>
@@ -26,9 +26,9 @@
                 <tbody>
                     @foreach($racers as $index => $racer)
                     <tr>
-                        <td scope="row">{{ ($index + 1) }}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{ $racer->name }}</td>
-                        <td>{{ $racer->points }}</td>
+                        <td data-label="#" scope="row">{{ ($index + 1) }}</td>
+                        <td data-label="@lang('racers.index.name')" class="mdl-data-table__cell--non-numeric">{{ $racer->name }}</td>
+                        <td data-label="@lang('racers.index.points')" >{{ $racer->points }}</td>
                         @auth
                             <td scope="col">
                                 <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="racer-action-{{ ($index + 1) }}">

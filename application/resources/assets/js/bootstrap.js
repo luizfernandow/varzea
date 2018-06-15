@@ -12,6 +12,7 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('material-design-lite');
+    // require('bootstrap');
 
 } catch (e) {}
 

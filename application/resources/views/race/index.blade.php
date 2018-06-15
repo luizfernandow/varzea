@@ -11,7 +11,7 @@
         </div>  
     @endauth
     <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--12-col">
+        <div class="mdl-cell mdl-cell--12-col table-responsive">
             <table class="mdl-data-table mdl-js-data-table">
                 <thead>
                     <tr>
@@ -27,12 +27,12 @@
                 <tbody>
                         @foreach($races as $race)
                             <tr>
-                                <td class="mdl-data-table__cell--non-numeric">
+                                <td data-label="@lang('races.index.name')" class="mdl-data-table__cell--non-numeric">
                                     <a href="{!! route('races.show', [$race->id]) !!}"> {!! $race->name !!} </a>
                                 </td>
-                                <td class="mdl-data-table__cell--non-numeric">{{ $race->date_start }}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{ $race->time_start }}</td>
-                                <td>{{ $race->laps }}</td>
+                                <td data-label="@lang('races.index.date')" class="mdl-data-table__cell--non-numeric">{{ $race->date_start }}</td>
+                                <td data-label="@lang('races.index.hour')" class="mdl-data-table__cell--non-numeric">{{ $race->time_start }}</td>
+                                <td data-label="@lang('races.index.laps')" >{{ $race->laps }}</td>
                                 @auth
                                     <td scope="col">
                                         @if(!$race->locked)
