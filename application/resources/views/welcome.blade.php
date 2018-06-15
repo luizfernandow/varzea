@@ -1,19 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    @lang('welcome.header')
-                </div>
-
-                <div class="card-body">
-                    Welcome
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+    @lang('welcome.header')
 </div>
 @endsection

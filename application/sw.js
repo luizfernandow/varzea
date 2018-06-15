@@ -3,5 +3,5 @@ workbox.clientsClaim();
 
 workbox.routing.registerRoute(
   '/',
-  workbox.strategies.staleWhileRevalidate()
+  workbox.strategies.networkFirst()
 );

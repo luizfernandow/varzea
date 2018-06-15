@@ -1,51 +1,59 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
     @auth
-        <div class="row mb-2">
-            <div class="col">
-                {!!Form::anchor(__('racers.link.create'))->info()->route('racers.create')!!}            
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col">
+                <a href="{{ route('racers.create') }}" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    @lang('racers.link.create')
+                </a>              
             </div>
-        </div>
+        </div>  
     @endauth
-    <div class="row justify-content-center">
-        <div class="col-12">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">@lang('racers.index.name')</th>
-                            <th scope="col">@lang('racers.index.points')</th>
-                            @auth
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                            @endauth
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($racers as $index => $racer)
-                            <tr>
-                                <th scope="row">{{ ($index + 1) }}</th>
-                                <td>{{ $racer->name }}</td>
-                                <td>{{ $racer->points }}</td>
-                                @auth
-                                    <td scope="col">
-                                        {!!Form::anchor(__('racers.link.edit'))->secondary()->route('racers.edit', [$racer->id])!!} 
-                                    </td> 
-                                    <td scope="col">
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <table class="mdl-data-table mdl-js-data-table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="mdl-data-table__cell--non-numeric">#</th>
+                        <th scope="col" class="mdl-data-table__cell--non-numeric">@lang('racers.index.name')</th>
+                        <th scope="col">@lang('racers.index.points')</th>
+                        @auth
+                            <th></th>
+                        @endauth
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($racers as $index => $racer)
+                    <tr>
+                        <td scope="row">{{ ($index + 1) }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ $racer->name }}</td>
+                        <td>{{ $racer->points }}</td>
+                        @auth
+                            <td scope="col">
+                                <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="racer-action-{{ ($index + 1) }}">
+                                    <i class="material-icons">more_vert</i>
+                                </button>
+                                <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="racer-action-{{ ($index + 1) }}">
+                                    <li class="mdl-menu__item">
+                                        <a class="mdl-navigation__link" href="{{ route('racers.edit', [$racer->id]) }}">
+                                            @lang('racers.link.edit')
+                                        </a>
+                                    </li>
+                                    <li class="mdl-menu__item">
                                         {!!Form::open()->delete()->url("racers/$racer->id")!!}
-                                            {!!Form::submit(__('racers.link.delete'))->danger()!!}
+                                            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                                                @lang('racers.link.delete')
+                                            </button>
                                         {!!Form::close()!!}
-                                    </td>
-                                @endauth
-                            </tr>
-                        @endforeach
-                  </tbody>
-                </table>
-            </div>
+                                    </li>
+                                </ul>                            
+                            </td>
+                        @endauth
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-    </div>
-</div>
+    </div> 
 @endsection

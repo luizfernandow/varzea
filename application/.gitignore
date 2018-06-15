@@ -13,3 +13,5 @@ yarn-error.log
 .env
 /public/precache*
 /public/sw.js
+/public/css/
+/public/js/
