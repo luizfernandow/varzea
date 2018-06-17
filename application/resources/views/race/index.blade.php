@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('races.title'))
+
 @section('content')
      @auth
         <div class="mdl-grid">
@@ -10,45 +12,49 @@
             </div>
         </div>  
     @endauth
-    <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--12-col table-responsive">
-            <table class="mdl-data-table mdl-js-data-table">
-                <thead>
-                    <tr>
-                        <th scope="col" class="mdl-data-table__cell--non-numeric">@lang('races.index.name')</th>
-                        <th scope="col" class="mdl-data-table__cell--non-numeric">@lang('races.index.date')</th>
-                        <th scope="col" class="mdl-data-table__cell--non-numeric">@lang('races.index.hour')</th>
-                        <th scope="col">@lang('races.index.laps')</th>
-                        @auth
-                            <th></th>
-                        @endauth
-                    </tr>
-                </thead>
-                <tbody>
-                        @foreach($races as $race)
-                            <tr>
-                                <td data-label="@lang('races.index.name')" class="mdl-data-table__cell--non-numeric">
-                                    <a href="{!! route('races.show', [$race->id]) !!}"> {!! $race->name !!} </a>
-                                </td>
-                                <td data-label="@lang('races.index.date')" class="mdl-data-table__cell--non-numeric">{{ $race->date_start }}</td>
-                                <td data-label="@lang('races.index.hour')" class="mdl-data-table__cell--non-numeric">{{ $race->time_start }}</td>
-                                <td data-label="@lang('races.index.laps')" >{{ $race->laps }}</td>
-                                @auth
-                                    <td scope="col">
-                                        @if(!$race->locked)
-                                            {!!Form::anchor(__('races.link.selectRacers'))->primary()->route('selectRacers', [$race->id])!!} 
-                                        @endif 
-                                        {!!Form::anchor(__('races.link.edit'))->secondary()->route('races.edit', [$race->id])!!} 
-                                    
-                                        {!!Form::open()->delete()->url("races/$race->id")!!}
-                                            {!!Form::submit(__('races.link.delete'))->danger()!!}
-                                        {!!Form::close()!!}
-                                    </td>
-                                @endauth
-                            </tr>
-                        @endforeach
-                  </tbody>
-            </table>
-        </div>
+
+    <div class="mdl-list">
+        @foreach($races as $race)
+            <div class="mdl-list__item mdl-list__item--three-line">
+                <span class="mdl-list__item-primary-content">
+                    <span><a href="{!! route('races.show', [$race->id]) !!}"> {!! $race->name !!} </a></span>
+                    <span class="mdl-list__item-text-body">
+                        {{ $race->date_start }} - {{ $race->time_start }}
+                        <br>
+                        {{ $race->laps }} @lang('races.index.laps')
+                    </span>
+                </span>
+                @auth
+                    <span class="mdl-list__item-secondary-content">
+                        <div class="mdl-list__item-secondary-action">
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="race-action-{{ $race->id }}">
+                                <i class="material-icons">more_vert</i>
+                            </button>
+                            <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="race-action-{{ $race->id }}">
+                                @if(!$race->locked)
+                                    <li class="mdl-menu__item">
+                                        <a class="mdl-navigation__link" href="{{ route('selectRacers', [$race->id]) }}">
+                                            @lang('races.link.selectRacers')
+                                        </a>
+                                    </li>
+                                @endif 
+                                <li class="mdl-menu__item">
+                                    <a class="mdl-navigation__link" href="{{ route('races.edit', [$race->id]) }}">
+                                        @lang('races.link.edit')
+                                    </a>
+                                </li>
+                                <li class="mdl-menu__item">
+                                    {!!Form::open()->delete()->url("races/$race->id")!!}
+                                        <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                                            @lang('races.link.delete')
+                                        </button>
+                                    {!!Form::close()!!}
+                                </li>
+                            </ul>
+                        </div>
+                    </span>
+                @endauth
+            </div>
+        @endforeach
     </div>
 @endsection

@@ -1,6 +1,7 @@
 <?php
 
 return [
+	'title' => 'Racers',
 	'index' => [
 		'name' => 'Name',
 		'points' => 'Points'

@@ -55,7 +55,6 @@ html, body {
       -ms-flex-pack: end;
           justify-content: flex-end;
   padding: 16px;
-  height: 151px;
 }
 .demo-avatar-dropdown {
   display: -webkit-flex;
@@ -103,52 +102,6 @@ html, body {
   max-width: 1080px;
 }
 
-.demo-charts {
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-.demo-chart:nth-child(1) {
-  color: #ACEC00;
-}
-.demo-chart:nth-child(2) {
-  color: #00BBD6;
-}
-.demo-chart:nth-child(3) {
-  color: #BA65C9;
-}
-.demo-chart:nth-child(4) {
-  color: #EF3C79;
-}
-.demo-graphs {
-  padding: 16px 32px;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-align-items: stretch;
-      -ms-flex-align: stretch;
-          align-items: stretch;
-}
-/* TODO: Find a proper solution to have the graphs
- * not float around outside their container in IE10/11.
- * Using a browserhacks.com solution for now.
- */
-_:-ms-input-placeholder, :root .demo-graphs {
-  min-height: 664px;
-}
-_:-ms-input-placeholder, :root .demo-graph {
-  max-height: 300px;
-}
-/* TODO end */
-.demo-graph:nth-child(1) {
-  color: #00b9d8;
-}
-.demo-graph:nth-child(2) {
-  color: #d9006e;
-}
 
 .demo-cards {
   -webkit-align-items: flex-start;
@@ -209,50 +162,9 @@ _:-ms-input-placeholder, :root .demo-graph {
           align-items: center;
 }
 
-@media only screen and (max-width: 480px) {
-
-  table, thead, tbody, th, td, tr {
-      display: block;
-  }
-
-  thead {
-    display: none;
-  }
-
-  // mdl specifics
-
-  .mdl-data-table tbody tr {
-    height: auto;
-  }
-  
-  .mdl-data-table tbody tr:nth-child(even) {
-    background-color: #eee;
-  }
-
-  .mdl-data-table td,
-  .mdl-data-table td:first-of-type {
-    padding-left: 50%;
-  }
-
-  .mdl-data-table td:before {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    width: 45%;
-    padding: 6px 18px 0;
-    white-space: nowrap;
-    content: attr(data-label);
-    text-align: left;
-    color: rgba(0, 0, 0, 0.541176);
-    font-weight: bold;
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 12px;
-  }
-  
-  .mdl-data-table td:last-of-type {
-    padding-right: 18px;
-  }
-  
+.login-card-wide,
+.race-card-wide {
+  width: 100%;
 }
 
 #timer {

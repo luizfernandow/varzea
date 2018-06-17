@@ -3,7 +3,7 @@
 @section('content')
 <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col">
-        <div class="mdl-card mdl-shadow--4dp">
+        <div class="login-card-wide mdl-card mdl-shadow--4dp">
             <div class="mdl-card__supporting-text">
                 {{ __('Login') }}
             </div>

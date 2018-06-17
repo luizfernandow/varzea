@@ -12,6 +12,7 @@ const {InjectManifest} = require('workbox-webpack-plugin');
  | file for the application as well as bundling up all the JS files.
  |
  */
+
 mix.webpackConfig(webpack => {
     return {
         plugins: [
@@ -19,10 +20,14 @@ mix.webpackConfig(webpack => {
                 swSrc: './sw.js',
                 swDest: path.join(`${__dirname}/public`, 'sw.js')
             })
-        ]
+        ],
+        output: {
+            publicPath: ''
+        }
     };
 }).js('resources/assets/js/app.js', 'public/js')
-  .sass('resources/assets/sass/app.scss', 'public/css');
+  .sass('resources/assets/sass/app.scss', 'public/css')
+  .copyDirectory('resources/assets/images', 'public/images');
 
 if (mix.inProduction()) {
     mix.version();

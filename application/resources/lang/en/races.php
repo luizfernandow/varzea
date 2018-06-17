@@ -2,6 +2,8 @@
 
 return [
 
+	'title' => 'Races',
+
 	'index' => [
 		'name' => 'Name',
 		'date' => 'Date',
@@ -9,9 +11,8 @@ return [
 		'laps' => 'Laps'
 	],
 	'show' => [
-		'name' => 'Name',
-		'time' => 'Time',
-		'point' => 'Point',
+		'title' => 'Race',
+		'points' => 'Points',
 	],
 	'link' => [
 		'create' => 'Create new Race',

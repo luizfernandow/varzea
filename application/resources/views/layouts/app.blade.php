@@ -42,7 +42,7 @@
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
         <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
             <div class="mdl-layout__header-row">
-                <span class="mdl-layout-title">{{ config('app.name', 'Laravel') }}</span>
+                <span class="mdl-layout-title">@yield('title')</span>
                 <div class="mdl-layout-spacer"></div>  
                 @guest
                     <a class="mdl-button mdl-js-button mdl-button--raised  mdl-js-ripple-effect mdl-button--colored" href="{{ route('login') }}"> 
