@@ -27,6 +27,10 @@ mix.webpackConfig(webpack => {
     };
 }).js('resources/assets/js/app.js', 'public/js')
   .sass('resources/assets/sass/app.scss', 'public/css')
+  .styles([
+            'public/css/app.css',
+            'node_modules/dialog-polyfill/dialog-polyfill.css',
+    ], 'public/css/app.css')
   .copyDirectory('resources/assets/images', 'public/images');
 
 if (mix.inProduction()) {

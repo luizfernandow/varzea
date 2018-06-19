@@ -12,6 +12,7 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('material-design-lite');
+    window.dialogPolyfill = require('dialog-polyfill');
     // require('bootstrap');
 
 } catch (e) {}

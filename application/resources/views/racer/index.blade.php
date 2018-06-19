@@ -12,7 +12,7 @@
             </div>
         </div>  
     @endauth
-    <div class='mdl-list'>
+    <div class='mdl-list list-resource'>
         @foreach($racers as $index => $racer)
             <div class="mdl-list__item mdl-list__item--two-line">
                 <span class="mdl-list__item-primary-content">
@@ -28,15 +28,18 @@
                     <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="racer-action-{{ ($index + 1) }}">
                         <li class="mdl-menu__item">
                             <a class="mdl-navigation__link" href="{{ route('racers.edit', [$racer->id]) }}">
+                                <i class="material-icons">edit</i>
                                 @lang('racers.link.edit')
                             </a>
                         </li>
                         <li class="mdl-menu__item">
-                            {!!Form::open()->delete()->url("racers/$racer->id")!!}
-                                <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                            {!! Form::open(array('class' => 'inline-block', 'id' => 'delete_'.$racer->id, 'method' => 'DELETE', 'route' => array('racers.destroy', $racer->id))) !!}
+                                {{ method_field('DELETE') }}
+                                <a href="#" class="dialog-button dialiog-trigger-delete dialiog-trigger{{$racer->id}} mdl-navigation__link" data-racerid="{{$racer->id}}">
+                                    <i class="material-icons">delete_forever</i>
                                     @lang('racers.link.delete')
-                                </button>
-                            {!!Form::close()!!}
+                                </a>
+                            {!! Form::close() !!}
                         </li>
                     </ul>   
                 </div>
@@ -44,4 +47,41 @@
             </div>
         @endforeach
     </div>
+    <dialog class="mdl-dialog">
+        <h4 class="mdl-dialog__title">Are you sure?</h4>
+        <div class="mdl-dialog__content">
+            <p>
+            Deleting the racer all the ranking will be modified.
+            </p>
+        </div>
+        <div class="mdl-dialog__actions">
+            <button type="button" class="mdl-button delete">Delete</button>
+            <button type="button" class="mdl-button close">Cancel</button>
+        </div>
+    </dialog>
+@endsection
+
+@section('javascript')
+<script>
+    var dialog = document.querySelector('dialog');
+    if (!dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+
+    let racerIdDelete;
+    $('.dialiog-trigger-delete').on('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        racerIdDelete = $(this).data('racerid');
+        dialog.showModal();
+    });
+
+    dialog.querySelector('.delete').addEventListener('click', function() {
+        $('#delete_' + racerIdDelete).submit();
+    });
+
+    dialog.querySelector('.close').addEventListener('click', function() {
+        dialog.close();
+    });
+</script>
 @endsection
