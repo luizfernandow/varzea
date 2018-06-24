@@ -26,7 +26,7 @@ class RaceController extends Controller
      */
     public function index()
     {
-        $races = Race::all();
+        $races = Race::orderBy('date_start')->get();
 
         return view('race.index', ['races' => $races]);
     }

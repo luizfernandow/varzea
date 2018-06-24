@@ -1,44 +1,54 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container">  
-    <div class="card mb-2">
-      <div class="card-body">
-        <h5 class="card-title">{!! $race->name !!}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">{!! $race->date_start !!} {!! $race->time_start !!}</h6>
-        <button id="startTimer" type="button" class="btn btn-primary btn-lg">Start</button>
-        <button id="stopTimer" type="button" class="btn btn-danger btn-lg" disabled >Stop</button>
-        <button id="saveLaps" type="button" class="btn btn-success btn-lg float-right" disabled>Save</button>
-        <div id="timer" class="alert alert-info mt-2 text-center" role="alert">
-          -
-        </div>
-      </div>
-    </div>
+@section('title', __('races.startRace.header'))
 
-    <div class="card">
-        <div id="racers-list" class="card-body">                  
-            @foreach ($racers as $racerId => $racer)
-                <a href="#" class="racer btn btn-primary btn-lg btn-block mb-2 text-left" role="button"
-                    data-id="{{$racerId}}"
-                    data-lap=0
-                    data-total-seconds=86400
-                >
-                    <div class="row">
-                        <div class="col-6 text-truncate">
-                            {{$racer}}
-                        </div>
-                        <div class="col-6 current-time">
-                            
-                        </div>
-                    </div>     
-                    <div class="laps">
-                        
-                    </div>               
-                </a>
-            @endforeach                    
+@section('content')
+
+<div class="race-card-wide mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">{!! $race->name !!}</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+        {!! $race->date_start !!} - {!! $race->time_start !!}
+        <div class="mdl-grid ">
+            <div class="mdl-cell  mdl-cell--12-col">
+                <button id="startTimer" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Start</button>
+                <button id="stopTimer" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" disabled >Stop</button>
+                <button id="saveLaps" type="button" class="float-right mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--success" disabled>Save</button>
+            </div>
+        </div>
+        <div class="mdl-grid">
+            <div id="timer" class="mdl-cell  mdl-cell--12-col text-center" role="alert">
+              -
+            </div>
         </div>
     </div>
 </div>
+
+<div class="mdl-grid">
+    <div id="racers-list" class="mdl-cell  mdl-cell--12-col">                  
+        @foreach ($racers as $racerId => $racer)
+            <button type="button" class="racer mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored text-left" role="button"
+                data-id="{{$racerId}}"
+                data-lap=0
+                data-total-seconds=86400
+            >
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--2-col-tablet mdl-cell--2-col-phone text-truncate">
+                        {{$racer}}
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--2-col-tablet mdl-cell--2-col-phone current-time">
+                        
+                    </div>
+                </div>     
+                <div class="laps">
+                    
+                </div>               
+            </button>
+        @endforeach                    
+    </div>
+</div>
+
 <form method="POST" action="{{ route('saveLaps', $id) }}" id="saveLapsForm">
     @csrf
 </form>
@@ -142,7 +152,7 @@ $(function() {
             obj.data('laps', laps);
             obj.data('total-seconds', totalSeconds);
             if (lap == {{$race->laps}}) {
-                obj.removeClass('btn-primary').addClass('btn-success disabled');
+                obj.removeClass('mdl-button--colored').addClass('mdl-button--success disabled').attr('disabled', true);
             }
 
             if ($('.racer.disabled').length == $('.racer').length) {

@@ -175,15 +175,64 @@ html, body {
   width: 100%;
 }
 
+.float-right {
+  float: right;
+}
+
+.mdl-button.mdl-button--success {
+    color: #4caf50;
+}
+
+.mdl-button--raised.mdl-button--success {
+    background: #4caf50;
+    color: rgb(255,255,255);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
 #timer {
 	font-size: 4em;
 }
 
+.badge {
+    display: inline-block;
+    padding: .25em .4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .125rem;
+}
+
+.badge-success {
+    color: #fff;
+    background-color: #4caf50;
+}
+
 #racers-list {
 	counter-reset: position-race-counter;
-	a:before {
+	button:before {
 		content: counter(position-race-counter);
 		counter-increment: position-race-counter;
 		font-weight: bold;
+        position: absolute;
+        top: 16px;
 	}
+    .racer {
+        width: calc(100% - 32px);
+        margin-bottom: 15px;
+        height: auto;
+    }
+    .mdl-button--raised[disabled][disabled].mdl-button--success {
+        background: #4caf50;
+        color: white;
+    }
 }

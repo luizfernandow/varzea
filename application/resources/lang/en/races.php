@@ -33,4 +33,8 @@ return [
     	'header' => 'Select racers',
     	'submit' => 'Go to race!'
     ],
+
+    'startRace' => [
+    	'header' => 'Race control',
+    ]
 ];
