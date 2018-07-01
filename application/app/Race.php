@@ -25,7 +25,7 @@ class Race extends Model
 
     private static $positionPoint = [];
 
-    public function laps()
+    public function lap()
     {
         return $this->hasMany('App\Lap');
     }
@@ -42,7 +42,7 @@ class Race extends Model
 
     public function getRank()
     {
-        return $this->laps()
+        return $this->lap()
                 ->select('racer_id', DB::raw('SUM(time) as time'), DB::raw('count(racer_id) as laps'))
                 ->join('racers', 'laps.racer_id', '=', 'racers.id')
                 ->whereRaw('racers.deleted_at is null')

@@ -26,7 +26,35 @@
                     @endif
                 </span>
             </span>
+            <a data-id="{{ $laps->racer->id  }}" class="times-show mdl-list__item-secondary-action mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="#">
+                <i class="material-icons">expand_more</i>
+            </a>
+        </div>
+        <div id="times-{{ $laps->racer->id  }}" class="mdl-list__item hide times-details">
+            <span class="mdl-list__item-primary-content">
+                <ol>
+                    @foreach($timeLaps[$laps->racer->id] as $timeIndex => $time)
+                        <li>{{ $time }}</li>
+                    @endforeach
+                </ol> 
+            </span>
         </div>
     @endforeach
 </div>
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+    $(function(){
+        $('.times-show').click(function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var obj = $(this);
+            $('#times-' + obj.data('id')).slideToggle('fast', function(){
+                var icon = obj.find('i.material-icons');
+                (icon.html() == 'expand_more') ? icon.html('expand_less') : icon.html('expand_more');
+            });
+        });
+    });
+</script>
 @endsection

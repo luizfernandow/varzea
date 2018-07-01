@@ -75,8 +75,10 @@ class RaceController extends Controller
     public function show($id)
     {
         $race = Race::find($id);
-
-        return view('race.show', ['race' => $race]);
+        $timeLaps = $race->lap->mapToGroups(function ($item, $key) {
+            return [$item['racer_id'] => $item['time']];
+        })->toArray();
+        return view('race.show', ['race' => $race, 'timeLaps' => $timeLaps]);
     }
 
     /**

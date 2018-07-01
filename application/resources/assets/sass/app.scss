@@ -196,6 +196,16 @@ html, body {
     text-align: left;
 }
 
+.hide {
+    display: none;
+}
+
+.times-details {
+    ol {
+        margin: 0;
+    }
+}
+
 #timer {
 	font-size: 4em;
 }
