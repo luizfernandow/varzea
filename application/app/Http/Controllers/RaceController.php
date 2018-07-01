@@ -78,7 +78,10 @@ class RaceController extends Controller
         $timeLaps = $race->lap->mapToGroups(function ($item, $key) {
             return [$item['racer_id'] => $item['time']];
         })->toArray();
-        return view('race.show', ['race' => $race, 'timeLaps' => $timeLaps]);
+
+        $bestLap = $race->lap->sortBy('time')->first();
+    
+        return view('race.show', ['race' => $race, 'timeLaps' => $timeLaps, 'bestLap' => $bestLap]);
     }
 
     /**

@@ -13,6 +13,7 @@ return [
 	'show' => [
 		'title' => 'Race',
 		'points' => 'Points',
+		'bestLap' => 'Best lap',
 	],
 	'link' => [
 		'create' => 'Create new Race',

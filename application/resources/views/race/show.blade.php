@@ -9,6 +9,12 @@
     </div>
     <div class="mdl-card__supporting-text">
         {!! $race->date_start !!} - {!! $race->time_start !!}
+        @if ($bestLap)
+            <div class="card-best-lap">
+                <h6>@lang('races.show.bestLap') <i class="fa fa-medal"></i> </h6>  
+                <span>{{ $bestLap->Racer->name }} - {{ $bestLap->time }}</span>    
+            </div>
+        @endif
     </div>
 </div>
 <div class='mdl-list'>
@@ -34,7 +40,12 @@
             <span class="mdl-list__item-primary-content">
                 <ol>
                     @foreach($timeLaps[$laps->racer->id] as $timeIndex => $time)
-                        <li>{{ $time }}</li>
+                        <li class="{{ ($time == $bestLap->time) ? 'best-lap' : '' }}" >
+                            {{ $time }}
+                            @if( $time == $bestLap->time) 
+                                <i class="fa fa-medal"></i> 
+                            @endif
+                        </li>
                     @endforeach
                 </ol> 
             </span>

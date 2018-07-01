@@ -5,6 +5,12 @@
 // Variables
 @import "variables";
 
+
+@import '~@fortawesome/fontawesome-free/scss/fa-brands';
+@import '~@fortawesome/fontawesome-free/scss/fa-regular';
+@import '~@fortawesome/fontawesome-free/scss/fa-solid';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+
 // Bootstrap
 // @import '~bootstrap/scss/bootstrap';
 @import '~material-design-lite/src/material-design-lite';
@@ -204,6 +210,10 @@ html, body {
     ol {
         margin: 0;
     }
+}
+
+.card-best-lap {
+    margin-top: 15px;
 }
 
 #timer {
