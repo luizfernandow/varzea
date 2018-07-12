@@ -239,7 +239,7 @@ html, body {
 
 #racers-list {
 	counter-reset: position-race-counter;
-	button:before {
+	.racer:before {
 		content: counter(position-race-counter);
 		counter-increment: position-race-counter;
 		font-weight: bold;
@@ -247,7 +247,19 @@ html, body {
         top: 16px;
 	}
     .racer {
-        width: calc(100% - 32px);
+        width: calc(70% - 32px);
+        margin-bottom: 15px;
+        height: auto;
+        .laps {
+          .badge {
+            float: left;
+            clear: both;
+            margin-bottom: 10px;
+          } 
+        }
+    }
+    .revert {
+        width: calc(30% - 32px);
         margin-bottom: 15px;
         height: auto;
     }
