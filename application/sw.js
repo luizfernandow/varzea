@@ -6,6 +6,19 @@ workbox.core.setCacheNameDetails({
   suffix: 'v1'
 });
 
+self.__precacheManifest = self.__precacheManifest.concat([
+  {
+      "url": "/offline"
+  },
+  {
+      "url": "/manifest.json"
+  },
+]);
+
+workbox.precaching.precacheAndRoute(self.__precacheManifest || []);
+
+const FALLBACK_OFFLINE = '/offline';
+
 workbox.routing.registerRoute(
   new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
   workbox.strategies.staleWhileRevalidate({
@@ -32,8 +45,28 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  '/',
-  workbox.strategies.networkFirst()
+  /\.(?:js|css)$/,
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'static-resources',
+  })
 );
 
-workbox.precaching.precacheAndRoute(self.__precacheManifest || []);
+const homeHandler = workbox.strategies.networkFirst({
+  networkTimeoutSeconds: 10,
+});
+
+workbox.routing.registerRoute('/', ({event}) => {
+  return homeHandler.handle({event})
+    .catch(() => caches.match(FALLBACK_OFFLINE));
+});
+
+workbox.routing.registerRoute('/races', ({event}) => {
+  return homeHandler.handle({event})
+    .catch(() => caches.match(FALLBACK_OFFLINE));
+});
+
+workbox.routing.registerRoute('/racers', ({event}) => {
+  return homeHandler.handle({event})
+    .catch(() => caches.match(FALLBACK_OFFLINE));
+});
+
