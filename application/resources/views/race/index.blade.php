@@ -21,7 +21,12 @@
                     <span class="mdl-list__item-text-body">
                         {{ $race->date_start }} - {{ $race->time_start }}
                         <br>
-                        {{ $race->laps }} @lang('races.index.laps')
+                        @if($race->isTypeHours())
+                            {{ $race->hours }}  @lang('races.index.hours'),
+                            {{ $race->group }}  @lang('races.index.group')
+                        @else
+                            {{ $race->laps }} @lang('races.index.laps')
+                        @endif
                     </span>
                 </span>
                 @auth
@@ -32,12 +37,21 @@
                             </button>
                             <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="race-action-{{ $race->id }}">
                                 @if(!$race->locked)
-                                    <li class="mdl-menu__item">
-                                        <a class="mdl-navigation__link" href="{{ route('selectRacers', [$race->id]) }}">
-                                            <i class="material-icons">flag</i>
-                                            @lang('races.link.selectRacers')
-                                        </a>
-                                    </li>
+                                    @if($race->isTypeHours())
+                                        <li class="mdl-menu__item">
+                                            <a class="mdl-navigation__link" href="{{ route('selectGroups', [$race->id]) }}">
+                                                <i class="material-icons">flag</i>
+                                                @lang('races.link.selectGroups')
+                                            </a>
+                                        </li>
+                                    @else
+                                        <li class="mdl-menu__item">
+                                            <a class="mdl-navigation__link" href="{{ route('selectRacers', [$race->id]) }}">
+                                                <i class="material-icons">flag</i>
+                                                @lang('races.link.selectRacers')
+                                            </a>
+                                        </li>
+                                    @endif    
                                 @endif 
                                 <li class="mdl-menu__item">
                                     <a class="mdl-navigation__link" href="{{ route('races.edit', [$race->id]) }}">

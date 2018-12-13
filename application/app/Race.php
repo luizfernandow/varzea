@@ -14,7 +14,7 @@ class Race extends Model
 	const TYPE_LAPS = 'laps';
 	const TYPE_HOURS = 'hours';
 
-    protected $fillable = ['name', 'type', 'laps', 'hours', 'date_start', 'time_start', 'locked'];
+    protected $fillable = ['name', 'type', 'laps', 'hours', 'group', 'date_start', 'time_start', 'locked'];
 
      /**
      * The attributes that should be mutated to dates.
@@ -38,6 +38,11 @@ class Race extends Model
     public function getTimeStartAttribute($value)
     {
         return Carbon::parse($value)->format('H:i');
+    }
+
+    public function isTypeHours()
+    {
+        return $this->type == self::TYPE_HOURS;
     }
 
     public function getRank()

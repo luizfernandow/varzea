@@ -8,7 +8,9 @@ return [
 		'name' => 'Name',
 		'date' => 'Date',
 		'hour' => 'Hour',
-		'laps' => 'Laps'
+		'laps' => 'Laps',
+		'hours' => 'Hours',
+		'group' => 'participants',
 	],
 	'show' => [
 		'title' => 'Race',
@@ -25,7 +27,10 @@ return [
     	'name' => 'Name',
     	'date' => 'Date',
     	'hour' => 'Hour',
+    	'type' => 'Hours type',
     	'laps' => 'Laps',
+    	'hours' => 'Number of hours',
+    	'group' => 'Number of participants of a group',
     	'submit' => 'Create',
     	'save' => 'Save'
     ],

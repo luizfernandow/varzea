@@ -53,14 +53,16 @@ class RaceController extends Controller
             'name' => 'required|max:255',
             'date_start' => 'required|date_format:d/m/Y',
             'time_start' => 'required|date_format:H:i',            
-            'laps' => 'required|integer',
+            'laps' => 'required_without:type|integer|nullable',        
+            'hours' => 'required_with:type|integer|nullable',        
+            'group' => 'required_with:type|integer|nullable',
         ]);
 
         $data = $request->all();
+        
         $data['date_start'] = \Carbon\Carbon::createFromFormat('d/m/Y', $data['date_start'])->format('Y-m-d');
-        $data['type'] = Race::TYPE_LAPS;
-        $data['hours'] = 0;
-
+        $data['type'] = isset($data['type']) ? Race::TYPE_HOURS : Race::TYPE_LAPS;
+        
         Race::create($data);
 
         return redirect()->route('races.index');
@@ -109,14 +111,15 @@ class RaceController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'date_start' => 'required|date_format:d/m/Y',
-            'time_start' => 'required|date_format:H:i',            
-            'laps' => 'required|integer',
+            'time_start' => 'required|date_format:H:i',              
+            'laps' => 'required_without:type|integer|nullable',        
+            'hours' => 'required_with:type|integer|nullable',        
+            'group' => 'required_with:type|integer|nullable',
         ]);
 
         $data = $request->all();
         $data['date_start'] = \Carbon\Carbon::createFromFormat('d/m/Y',$data['date_start'])->format('Y-m-d');
-        $data['type'] = Race::TYPE_LAPS;
-        $data['hours'] = 0;
+        $data['type'] = isset($data['type']) ? Race::TYPE_HOURS : Race::TYPE_LAPS;
 
         $race = Race::find($id);
         $race->fill($data)->save();
@@ -142,6 +145,18 @@ class RaceController extends Controller
         $racers = Racer::orderBy('name')->pluck('name', 'id')->toArray();
 
         return view('race.select-racers', ['racers' => $racers, 'id' => $id]);
+    }
+
+    public function selectGroups($id)
+    {
+        $racers = Racer::orderBy('name')->pluck('name', 'id')->toArray();
+
+        return view('race.select-groups', ['racers' => $racers, 'id' => $id]);
+    }
+
+    public function saveGroups(Request $request, $id)
+    {
+        dd($request->all());
     }
 
     public function startRace(Request $request, $id)
