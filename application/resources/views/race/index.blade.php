@@ -44,6 +44,12 @@
                                                 @lang('races.link.selectGroups')
                                             </a>
                                         </li>
+                                        <li class="mdl-menu__item">
+                                            <a class="mdl-navigation__link" href="{{ route('startRaceGroups', [$race->id]) }}">
+                                                <i class="material-icons">flag</i>
+                                                @lang('races.link.startRaceGroups')
+                                            </a>
+                                        </li>
                                     @else
                                         <li class="mdl-menu__item">
                                             <a class="mdl-navigation__link" href="{{ route('selectRacers', [$race->id]) }}">

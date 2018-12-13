@@ -23,4 +23,5 @@ Route::get('/races/select-racers/{id}', 'RaceController@selectRacers')->name('se
 Route::get('/races/select-groups/{id}', 'RaceController@selectGroups')->name('selectGroups');
 Route::post('/races/save-groups/{id}', 'RaceController@saveGroups')->name('saveGroups');
 Route::post('/races/start-race/{id}', 'RaceController@startRace')->name('startRace');
+Route::get('/races/start-race-groups/{id}', 'RaceController@startRaceGroups')->name('startRaceGroups');
 Route::post('/races/save-laps/{id}', 'RaceController@saveLaps')->name('saveLaps');

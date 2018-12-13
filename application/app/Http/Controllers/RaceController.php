@@ -179,6 +179,19 @@ class RaceController extends Controller
         return view('race.start-race', ['race' => $race, 'racers' => $racers, 'id' => $id]);
     }
 
+    public function startRaceGroups(Request $request, $id)
+    {
+        $race = Race::find($id);
+        $groups = RacersGroup::where('race_id', '=', $id)->get();
+        $racers = $groups->mapToGroups(function ($item) {
+            $item = $item->toArray();
+            $item['racer'] = Racer::where('id', '=', $item['racer_id'])->get()->first()->toArray();  
+            return [$item['group'] => $item];
+        })->toArray();
+        
+        return view('race.start-race-groups', ['race' => $race, 'racers' => $racers, 'id' => $id]);
+    }
+
     public function saveLaps(Request $request, $id)
     {
         $race = Race::find($id);
