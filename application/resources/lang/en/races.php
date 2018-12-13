@@ -21,7 +21,8 @@ return [
 		'create' => 'Create new Race',
 		'delete' => 'Delete',
 		'edit' => 'Edit',
-		'selectRacers' => 'Start a race'
+		'selectRacers' => 'Start a race',
+		'selectGroups' => 'Select groups',
 	],
     'form' => [
     	'name' => 'Name',
@@ -38,6 +39,13 @@ return [
     'selectRacers' => [
     	'header' => 'Select racers',
     	'submit' => 'Go to race!'
+    ],
+
+    'selectGroups' => [
+    	'header' => 'Select groups',
+    	'group' => 'Group',
+    	'number' => 'Number',
+    	'submit' => 'Save groups'
     ],
 
     'startRace' => [

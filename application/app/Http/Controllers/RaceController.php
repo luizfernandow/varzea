@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Race;
 use App\Racer;
+use App\RacersGroup;
 use Illuminate\Support\Facades\DB;
 
 class RaceController extends Controller
@@ -150,13 +151,24 @@ class RaceController extends Controller
     public function selectGroups($id)
     {
         $racers = Racer::orderBy('name')->pluck('name', 'id')->toArray();
+        $groups = RacersGroup::where('race_id', '=', $id)->get();
+        $groups = $groups->mapWithKeys(function ($item) {
+            return [$item['racer_id'] => $item];
+        })->toArray();
 
-        return view('race.select-groups', ['racers' => $racers, 'id' => $id]);
+        return view('race.select-groups', ['racers' => $racers, 'id' => $id, 'groups' => $groups]);
     }
 
     public function saveGroups(Request $request, $id)
     {
-        dd($request->all());
+        $racers = $request->racers; 
+        $group = $request->group;
+        $number = $request->number;
+        foreach ($racers as $racerId) {
+            RacersGroup::updateOrCreate(['race_id' => $id, 'racer_id' => $racerId], 
+                                        ['group' => $group[$racerId], 'number' => $number[$racerId]]);
+        }
+        return redirect()->route('races.index');
     }
 
     public function startRace(Request $request, $id)

@@ -39,7 +39,7 @@
 
 <div class="mdl-cell mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
     <label for="type" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-          <input type="checkbox" id="type" class="mdl-switch__input" name="type" {{ ($race && $race->isTypeHours()) || (old('type') && old('type') == 'on') ? 'checked' : '' }}>
+          <input type="checkbox" id="type" class="mdl-switch__input" name="type" {{ (isset($race) && $race->isTypeHours()) || (old('type') && old('type') == 'on') ? 'checked' : '' }}>
           <span class="mdl-switch__label">@lang('races.form.type')</span>
     </label>
 </div>
