@@ -23,6 +23,7 @@ return [
 		'edit' => 'Edit',
 		'selectRacers' => 'Start a race',
 		'selectGroups' => 'Select groups',
+		'startRaceGroups' => 'Start a race',
 	],
     'form' => [
     	'name' => 'Name',

@@ -25,3 +25,4 @@ Route::post('/races/save-groups/{id}', 'RaceController@saveGroups')->name('saveG
 Route::post('/races/start-race/{id}', 'RaceController@startRace')->name('startRace');
 Route::get('/races/start-race-groups/{id}', 'RaceController@startRaceGroups')->name('startRaceGroups');
 Route::post('/races/save-laps/{id}', 'RaceController@saveLaps')->name('saveLaps');
+Route::post('/races/save-laps-groups/{id}', 'RaceController@saveLapsGroups')->name('saveLapsGroups');

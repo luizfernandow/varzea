@@ -83,8 +83,14 @@ class RaceController extends Controller
         })->toArray();
 
         $bestLap = $race->lap->sortBy('time')->first();
+
+        $groups = RacersGroup::where('race_id', '=', $id)->get();
+        $racers = $groups->mapToGroups(function ($item) {
+            $name = Racer::where('id', '=', $item['racer_id'])->get()->first()->name;  
+            return [$item['group'] => $name];
+        })->toArray();
     
-        return view('race.show', ['race' => $race, 'timeLaps' => $timeLaps, 'bestLap' => $bestLap]);
+        return view('race.show', ['race' => $race, 'timeLaps' => $timeLaps, 'bestLap' => $bestLap, 'racers' => $racers]);
     }
 
     /**
@@ -200,6 +206,31 @@ class RaceController extends Controller
                 DB::table('laps')->insert([
                     'race_id' => $id,
                     'racer_id' => $racerId,
+                    'time' => gmdate("H:i:s", $lapTime)
+                ]);
+            }
+        }
+        $race->locked = true;
+        $race->save();
+
+        return redirect()->route('races.index');
+    }
+
+    public function saveLapsGroups(Request $request, $id)
+    {
+        $race = Race::find($id);
+        foreach ($request->except('_token') as $groupId => $lapsJson) {
+            $data = json_decode($lapsJson, true);
+            $times = $data[0];
+            $numberRacer = $data[1];
+            foreach ($times as $key => $lapTime) {
+                $rg = RacersGroup::where('race_id', '=', $id)
+                                 ->where('group', '=', $groupId)
+                                 ->where('number', '=', $numberRacer[$key])->get()->first();
+
+                DB::table('laps')->insert([
+                    'race_id' => $id,
+                    'racer_id' => $rg->racer_id,
                     'time' => gmdate("H:i:s", $lapTime)
                 ]);
             }

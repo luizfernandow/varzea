@@ -57,6 +57,20 @@ class Race extends Model
                 ->get();
     }
 
+    public function getRankGroup()
+    {
+        return $this->lap()
+                ->select('group', DB::raw('SUM(time) as time'), DB::raw('count("group") as laps'))
+                ->join('racers', 'laps.racer_id', '=', 'racers.id')
+                ->join('racers_groups', 'laps.racer_id', '=', 'racers_groups.racer_id')
+                ->whereRaw('racers.deleted_at is null')
+                ->where('racers_groups.race_id', '=', $this->id)
+                ->groupBy('group')
+                ->orderBy('laps', 'desc')
+                ->orderBy('time', 'asc')
+                ->get();
+    }
+
     public static function getBasePoint($positionIndex)
     {
         if (empty(self::$positionPoint)) {

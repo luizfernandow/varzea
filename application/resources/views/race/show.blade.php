@@ -17,6 +17,27 @@
         @endif
     </div>
 </div>
+@if($race->isTypeHours())
+    <div class='mdl-list'>
+        @foreach($race->getRankGroup() as $index => $laps)
+            <div class="mdl-list__item mdl-list__item--two-line">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons  mdl-badge mdl-badge--overlap mdl-list__item-avatar" data-badge="{{ ($index + 1) }}">
+                    person
+                    </i>
+                    <span>{{ $laps->group  }} | {{ implode(', ', $racers[$laps->group]) }}</span>
+                    <span class="mdl-list__item-sub-title">
+                        {{ $laps->time  }}
+                    </span>
+                </span>
+            </div>
+        @endforeach
+    </div>
+    <div class="mdl-grid">
+        <h2 class="mdl-card__title-text">@lang('Individual time')</h2>  
+    </div>     
+@endif
+
 <div class='mdl-list'>
     @foreach($race->getRank() as $index => $laps)
         <div class="mdl-list__item mdl-list__item--two-line">
@@ -26,7 +47,7 @@
                 </i>
                 <span>{{ $laps->racer->name  }}</span>
                 <span class="mdl-list__item-sub-title">
-                    {{ ($laps->laps == $race->laps) ? $laps->time : '-' }}
+                    {{ ($laps->laps == $race->laps || $race->isTypeHours()) ? $laps->time : '-' }}
                     @if ($laps->laps == $race->laps)
                        / @base_point($index) @lang('races.show.points')
                     @endif

@@ -28,15 +28,9 @@
 <div class="mdl-grid">
     <div  class="mdl-cell  mdl-cell--12-col"> 
         <div class="lap-group mdl-cell mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {{ $errors->has('laps') ? 'is-invalid' :'' }}">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 {!! Form::number('laps', NULL, array('id' => 'racer-lap', 'class' => 'mdl-textfield__input')) !!}
-                {!! Form::label('laps', __('races.form.laps'), array('class' => 'mdl-textfield__label')); !!}
-                
-                @if ($errors->has('laps'))
-                    <span class="mdl-textfield__error">
-                        <strong>{{ $errors->first('laps') }}</strong>
-                    </span>
-                @endif
+                {!! Form::label('laps', __('Racer number'), array('class' => 'mdl-textfield__label')); !!}                
             </div>
             <button id="lapTimer" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" >LAP</button>
         </div>
@@ -60,7 +54,7 @@
                     <div class="mdl-grid">
                         <div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--2-col-tablet mdl-cell--2-col-phone text-truncate">
                             @foreach($racer as $r)
-                                {{ $r['racer']['name'] }} ({{ $r['number'] }})  <br>
+                                <span class="number-name-{{ $r['number'] }}">{{ $r['racer']['name'] }}</span> ({{ $r['number'] }})  <br>
                             @endforeach
                         </div>
                         <div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--2-col-tablet mdl-cell--2-col-phone current-time">
@@ -80,7 +74,7 @@
     </div>
 </div>
 
-<form method="POST" action="{{ route('saveLaps', $id) }}" id="saveLapsForm">
+<form method="POST" action="{{ route('saveLapsGroups', $id) }}" id="saveLapsForm">
     @csrf
 </form>
 @endsection
@@ -151,7 +145,8 @@ $(function() {
         $('.racer').each(function( index ) {
             var obj = $(this);
             var wrapper = obj.parent();
-            $('#saveLapsForm').append('<input type="hidden" name="' + wrapper.data('id') + '" value="' + JSON.stringify(wrapper.data('laps')) +'">');
+            var data = [wrapper.data('laps'), wrapper.data('lapsNumber')];
+            $('#saveLapsForm').append('<input type="hidden" name="' + wrapper.data('id') + '" value="' + JSON.stringify(data) +'">');
         });
         $('#saveLapsForm').submit();
     });
@@ -161,20 +156,22 @@ $(function() {
         e.stopPropagation();
         var racerLap = $('#racer-lap');
         var numberRacer = racerLap.val();
-        if (timer.isRunning() && numberRacer) {
-
-            var obj = $('.racer-info-' + numberRacer);
+        var obj = $('.racer-info-' + numberRacer);
+        if (timer.isRunning() && numberRacer && obj.length) {
+            racerLap.val('');
             var wrapper = obj.parent();
             var currentTime = timer.getTimeValues().toString();
             var totalSeconds = timer.getTotalTimeValues().seconds;            
             obj.find('.current-time').html(currentTime); 
             var lap = wrapper.data('lap'); 
             var laps = wrapper.data('laps'); 
+            var lapsNumber = wrapper.data('lapsNumber'); 
             var lapTime = 0;
             var time = '';
             if (!lap) {
                 time = currentTime;  
                 laps = [];
+                lapsNumber = [];
                 lapTime = totalSeconds;
             } else {
                 lapTime = totalSeconds;
@@ -184,20 +181,14 @@ $(function() {
                 time = lapTime.toString().toHHMMSS();
             }
             laps.push(lapTime);
+            lapsNumber.push(parseInt(numberRacer));
             lap++;
-            obj.find('.laps').append('<span class="badge badge-success"> ' + lap + ' - ' + time + '</span>'); 
+            var name = $('.number-name-' + numberRacer).text();
+            obj.find('.laps').append('<span class="badge badge-success"> ' + lap + ' - ' + time + ' ' + name + '</span>'); 
             wrapper.data('lap', lap);
             wrapper.data('laps', laps);
+            wrapper.data('lapsNumber', lapsNumber);
             wrapper.data('total-seconds', totalSeconds);
-            if (lap == {{ $race->laps ?: 1000 }}) {
-                obj.removeClass('mdl-button--colored').addClass('mdl-button--success disabled').attr('disabled', true);
-            }
-
-            if ($('.racer.disabled').length == $('.racer').length) {
-                timer.pause();
-                $('#saveLaps').attr('disabled', false);
-                $('#stopTimer').attr('disabled', true);
-            }
 
             sortRacers();
         }
@@ -213,16 +204,15 @@ $(function() {
         if (lap) {
             var racer = wrapper.find('.racer');
             var totalSeconds = wrapper.data('totalSeconds'); 
-            var laps = wrapper.data('laps'); 
+            var laps = wrapper.data('laps');             
+            var lapsNumber = wrapper.data('lapsNumber');
             var timeLap = laps.pop();
+            lapsNumber.pop();
             lap--;
             wrapper.data('lap', lap);
             wrapper.data('laps', laps);
+            wrapper.data('lapsNumber', lapsNumber);
             wrapper.data('total-seconds', totalSeconds - timeLap);
-
-            if (racer.hasClass('disabled')) {
-                racer.removeClass('mdl-button--success disabled').addClass('mdl-button--colored').attr('disabled', false);
-            }
 
             racer.find('.current-time').html( (totalSeconds - timeLap).toString().toHHMMSS() ); 
             racer.find('.laps .badge-success').last().remove();
@@ -243,14 +233,14 @@ $(function() {
         }
     }
 
-    // window.onbeforeunload = function (e) {
-    //   if (raceStarted) {
-    //     var message = "Are you sure you want leave?";
-    //     e.returnValue = message;
-    //     return message;
-    //   }
-    //   return;
-    // };
+    window.onbeforeunload = function (e) {
+        if (raceStarted) {
+            var message = "Are you sure you want leave?";
+            e.returnValue = message;
+            return message;
+        }
+        return;
+    };
 });
 </script>
 @endsection
