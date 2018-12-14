@@ -110,9 +110,9 @@ function sortLaps( a, b ) {
     var aLap = parseInt( $(a).data('lap'), 10 );
     var bLap = parseInt( $(b).data('lap'), 10 );
     if (aLap == bLap) {
-        return aTotal > bTotal;         
+        return aTotal - bTotal;        
     }
-    return aLap < bLap;
+    return bLap - aLap;
 }
 
 $(function() {
@@ -233,14 +233,14 @@ $(function() {
         }
     }
 
-    window.onbeforeunload = function (e) {
-        if (raceStarted) {
-            var message = "Are you sure you want leave?";
-            e.returnValue = message;
-            return message;
-        }
-        return;
-    };
+    // window.onbeforeunload = function (e) {
+    //     if (raceStarted) {
+    //         var message = "Are you sure you want leave?";
+    //         e.returnValue = message;
+    //         return message;
+    //     }
+    //     return;
+    // };
 });
 </script>
 @endsection
