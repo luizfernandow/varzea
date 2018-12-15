@@ -170,6 +170,7 @@ class RaceController extends Controller
         $racers = $request->racers; 
         $group = $request->group;
         $number = $request->number;
+        RacersGroup::where('race_id', '=', $id)->delete();
         foreach ($racers as $racerId) {
             RacersGroup::updateOrCreate(['race_id' => $id, 'racer_id' => $racerId], 
                                         ['group' => $group[$racerId], 'number' => $number[$racerId]]);
