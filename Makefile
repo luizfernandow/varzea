@@ -31,6 +31,7 @@ php-artisan:
 
 certbot:
 	@cd docker_varzea && docker-compose -f docker-compose.yml -f docker-compose.certbot.yml up -d
+	@docker run -it --rm -v docker_varzea_certs:/etc/letsencrypt -v docker_varzea_certs-data:/data/letsencrypt certbot/certbot certonly --webroot --email admin@asfl.com.br --agree-tos --no-eff-email --webroot-path=/data/letsencrypt -d varzea.asfl.com.br 
 
 production:
 	@cd docker_varzea && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
