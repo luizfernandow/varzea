@@ -12,6 +12,27 @@
             </div>
         </div>  
     @endauth
+    <div class="mdl-grid ">
+        <div class="mdl-cell mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
+           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
+                <input type="text" value="" class="mdl-textfield__input" id="selected-year" readonly>
+                <input type="hidden" value="" name="selected-year">
+                <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+                <label for="selected-year" class="mdl-textfield__label">@lang('racers.select_year')</label>
+                <ul for="selected-year" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+                    @foreach($years as $year)   
+                        <li class="mdl-menu__item" data-val="{{ $year }}"
+                            @if($currentYear == $year)
+                                data-selected="true"
+                            @endif
+                        >
+                            {{ $year }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    </div>
     <div class='mdl-list list-resource'>
         @foreach($racers as $index => $racer)
             <div class="mdl-list__item mdl-list__item--two-line">
@@ -83,5 +104,13 @@
     dialog.querySelector('.close').addEventListener('click', function() {
         dialog.close();
     });
+
+    $('#selected-year').on('change', function(){
+        var value = this.value;
+        if (value != {{ $currentYear }}) {
+            window.location = '{{  url()->current() }}?year=' + value;
+        }
+    });
+
 </script>
 @endsection

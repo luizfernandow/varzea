@@ -22,11 +22,13 @@ class RacerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $racers = Racer::getRank();
+        $currentYear = $request->input('year', date('Y'));
+        $racers = Racer::getRank($currentYear);
+        $years = range(2018, date('Y'));
 
-        return view('racer.index', ['racers' => $racers]);
+        return view('racer.index', ['racers' => $racers, 'years' => $years, 'currentYear' => $currentYear]);
     }
 
     /**
