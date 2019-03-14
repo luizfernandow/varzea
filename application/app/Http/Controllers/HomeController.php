@@ -30,4 +30,9 @@ class HomeController extends Controller
     {
         return view('offline');
     }
+
+    public function worldChampionships()
+    {
+        return view('worldChampionships');
+    }
 }

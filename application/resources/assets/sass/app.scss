@@ -98,10 +98,19 @@ html, body {
   background-color: #00BCD4;
   color: #37474F;
 }
-.demo-navigation .mdl-navigation__link .material-icons {
+.demo-navigation .mdl-navigation__link .material-icons,
+.demo-navigation .mdl-navigation__link .fas {
   font-size: 24px;
   color: rgba(255, 255, 255, 0.56);
   margin-right: 32px;
+}
+
+.img-word-champ {
+  width: 100%;
+}
+
+.padding-10 {
+  padding: 10px;
 }
 
 .demo-content {

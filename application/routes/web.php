@@ -16,6 +16,9 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/offline', 'HomeController@offline')->name('offline');
 
+
+Route::get('/world-championships', 'HomeController@worldChampionships')->name('worldChampionships');
+
 Route::resource('races', 'RaceController');
 Route::resource('racers', 'RacerController');
 

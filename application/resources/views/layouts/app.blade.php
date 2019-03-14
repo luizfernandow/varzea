@@ -45,9 +45,11 @@
                 <span class="mdl-layout-title">@yield('title')</span>
                 <div class="mdl-layout-spacer"></div>  
                 @guest
-                    <a class="mdl-button mdl-js-button mdl-button--raised  mdl-js-ripple-effect mdl-button--colored" href="{{ route('login') }}"> 
-                        {{ __('Login') }}
-                    </a>                
+                    @if (!\Request::is('login')) 
+                        <a class="mdl-button mdl-js-button mdl-button--raised  mdl-js-ripple-effect mdl-button--colored" href="{{ route('login') }}"> 
+                            {{ __('Login') }}
+                        </a>
+                    @endif                
                 @endguest 
             </div>
         </header>
@@ -88,6 +90,11 @@
                 <a class="mdl-navigation__link" href="{{ route('racers.index') }}">
                     <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>
                     Racers
+                </a>
+
+                <a class="mdl-navigation__link" href="{{ route('worldChampionships') }}">
+                    <i class="mdl-color-text--blue-grey-400 fas fa-trophy"></i>
+                    Campeonato Mundial
                 </a>
 
                 <div class="mdl-layout-spacer"></div>
