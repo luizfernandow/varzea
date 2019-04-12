@@ -29,3 +29,8 @@ Route::post('/races/start-race/{id}', 'RaceController@startRace')->name('startRa
 Route::get('/races/start-race-groups/{id}', 'RaceController@startRaceGroups')->name('startRaceGroups');
 Route::post('/races/save-laps/{id}', 'RaceController@saveLaps')->name('saveLaps');
 Route::post('/races/save-laps-groups/{id}', 'RaceController@saveLapsGroups')->name('saveLapsGroups');
+
+//store a push subscriber.
+Route::post('/push','PushController@store');
+//make a push notification.
+Route::get('/push','PushController@push')->name('push');
