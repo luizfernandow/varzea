@@ -1,4 +1,4 @@
-FROM php:7.1-fpm-jessie
+FROM php:7.3-fpm-stretch
 
 WORKDIR /var/www/html
 
@@ -7,10 +7,9 @@ ENV TZ=America/Sao_Paulo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
-    && apt install -y vim postgresql-client postgresql-contrib libmcrypt-dev zlib1g-dev libpq-dev libpng-dev libxml2-dev libgmp-dev \
-    && apt-get clean \
-    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install gmp pdo_pgsql pgsql mcrypt zip json pcntl \
+    && apt install -y vim libmcrypt-dev zlib1g-dev libpq-dev libpng-dev libxml2-dev libgmp-dev libzip-dev libssl-dev \
+    && apt-get clean
+RUN docker-php-ext-install gmp pdo_pgsql zip json pcntl \
     && pecl install -o -f redis \
     && pecl install -o -f crypto \
     && rm -rf /tmp/pear \

@@ -23,6 +23,9 @@ help:
 build:
 	@cd $(DIR) && docker-compose build
 
+rebuild:
+	@cd $(DIR) && docker-compose build --no-cache
+
 start:
 	@cd $(DIR) && docker-compose up -d
 
