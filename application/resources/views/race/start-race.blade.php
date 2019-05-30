@@ -97,9 +97,64 @@ function sortLaps( a, b ) {
     return bLap - aLap;
 }
 
+let racersTime = {};
+let timeStartedRace = null;
+
 $(function() {
     var timer = new Timer;
     var raceStarted = false;
+
+    let timeStartedRaceStorage = window.localStorage.getItem('timeStartedRace');
+    if (timeStartedRaceStorage) {
+        timeStartedRace = JSON.parse(timeStartedRaceStorage);
+        var startTime = new Date(timeStartedRace);
+        var endTime = new Date();
+        var timeDiff = endTime - startTime; //in ms
+        // strip the ms
+        timeDiff /= 1000;
+
+        // get seconds 
+        var seconds = Math.round(timeDiff);
+        timer.start({precision: 'seconds', startValues: {seconds: seconds}});
+        $('#timer').html(timer.getTimeValues().toString());
+    }
+
+    let racersTimeStorage = window.localStorage.getItem('racersTime');
+    if (racersTimeStorage) {
+        racersTime = JSON.parse(racersTimeStorage);
+        raceStarted = true;
+        $('#startTimer').attr('disabled', true);
+        $('#stopTimer').attr('disabled', false);
+        $('#saveLaps').attr('disabled', true);
+    }
+
+    let totalSecondsElapsed = 0;
+
+    for (let [key, value] of Object.entries(racersTime)) {
+        var obj = $('.racer-wrappper[data-id="' + key + '"]');
+        obj.find('.current-time').html(value.totalSeconds.toString().toHHMMSS());
+        for (let [lap, time] of Object.entries(value.laps)) {
+            obj.find('.laps').append('<span class="badge badge-success"> ' + (parseInt(lap) + 1) + ' - ' + time.toString().toHHMMSS() + '</span>'); 
+        }
+        obj.data('lap', value.lap);
+        obj.data('laps', value.laps);
+        obj.data('total-seconds', value.totalSeconds);
+        if (value.lap == {{$race->laps}}) {
+            obj.find('.racer').removeClass('mdl-button--colored').addClass('mdl-button--success disabled').attr('disabled', true);
+        }
+
+        if ($('.racer.disabled').length == $('.racer').length) {
+            timer.pause();
+            $('#saveLaps').attr('disabled', false);
+            $('#stopTimer').attr('disabled', true);
+            if (totalSecondsElapsed < value.totalSeconds) {
+                totalSecondsElapsed = value.totalSeconds;
+            }
+            $('#timer').html(totalSecondsElapsed.toString().toHHMMSS());
+        }
+
+    }
+    sortRacers();
 
     timer.addEventListener('secondsUpdated', function (e) {
         $('#timer').html(timer.getTimeValues().toString());
@@ -111,6 +166,10 @@ $(function() {
         raceStarted = true;
         $('#stopTimer').attr('disabled', false);
         $('#saveLaps').attr('disabled', true);
+        if (!timeStartedRace) {
+            timeStartedRace = new Date();
+            window.localStorage.setItem('timeStartedRace', JSON.stringify(timeStartedRace));
+        }
     });
 
     $('#stopTimer').click(function(e) {
@@ -140,7 +199,8 @@ $(function() {
             var wrapper = obj.parent();
             var currentTime = timer.getTimeValues().toString();
             var totalSeconds = timer.getTotalTimeValues().seconds;            
-            obj.find('.current-time').html(currentTime); 
+            obj.find('.current-time').html(currentTime);
+            var racerId = wrapper.data('id');  
             var lap = wrapper.data('lap'); 
             var laps = wrapper.data('laps'); 
             var lapTime = 0;
@@ -162,6 +222,12 @@ $(function() {
             wrapper.data('lap', lap);
             wrapper.data('laps', laps);
             wrapper.data('total-seconds', totalSeconds);
+            racersTime[racerId] = {
+                lap: lap,
+                laps: laps,
+                totalSeconds: totalSeconds
+            };
+            window.localStorage.setItem('racersTime', JSON.stringify(racersTime));
             if (lap == {{$race->laps}}) {
                 obj.removeClass('mdl-button--colored').addClass('mdl-button--success disabled').attr('disabled', true);
             }
@@ -183,6 +249,7 @@ $(function() {
         var obj = $(this);
         var wrapper = obj.parent();
         var lap = wrapper.data('lap'); 
+        var racerId = wrapper.data('id');  
         if (lap) {
             var racer = wrapper.find('.racer');
             var totalSeconds = wrapper.data('totalSeconds'); 
@@ -192,7 +259,12 @@ $(function() {
             wrapper.data('lap', lap);
             wrapper.data('laps', laps);
             wrapper.data('total-seconds', totalSeconds - timeLap);
-
+            racersTime[racerId] = {
+                lap: lap,
+                laps: laps,
+                totalSeconds: totalSeconds
+            };
+            window.localStorage.setItem('racersTime', JSON.stringify(racersTime));
             if (racer.hasClass('disabled')) {
                 racer.removeClass('mdl-button--success disabled').addClass('mdl-button--colored').attr('disabled', false);
             }
