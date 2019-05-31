@@ -35,4 +35,9 @@ class HomeController extends Controller
     {
         return view('worldChampionships');
     }
+
+    public function calendar()
+    {
+        return view('calendar');
+    }
 }

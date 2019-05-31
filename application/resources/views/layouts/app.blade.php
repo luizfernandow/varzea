@@ -97,6 +97,11 @@
                     Campeonato Mundial
                 </a>
 
+                <a class="mdl-navigation__link" href="{{ route('calendar') }}">
+                    <i class="mdl-color-text--blue-grey-400 fas fa-calendar-alt"></i>
+                    Calendar
+                </a>
+
                 <div class="mdl-layout-spacer"></div>
                 <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
             </nav>

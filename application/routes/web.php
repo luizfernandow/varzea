@@ -18,6 +18,7 @@ Route::get('/offline', 'HomeController@offline')->name('offline');
 
 
 Route::get('/world-championships', 'HomeController@worldChampionships')->name('worldChampionships');
+Route::get('/calendar', 'HomeController@calendar')->name('calendar');
 
 Route::resource('races', 'RaceController');
 Route::resource('racers', 'RacerController');
