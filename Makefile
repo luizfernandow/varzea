@@ -43,10 +43,10 @@ php-artisan:
 
 certbot:
 	@cd $(DIR) && docker-compose -f docker-compose.yml -f docker-compose.certbot.yml up -d
-	@docker run -it --rm -v $(DIR)_certs:/etc/letsencrypt -v $(DIR)_certs-data:/data/letsencrypt certbot/certbot certonly --webroot --email admin@asfl.com.br --agree-tos --no-eff-email --webroot-path=/data/letsencrypt -d $(NGINX_HOST) 
+	@docker run -it --rm -v $(DIR)_certs:/etc/letsencrypt -v $(DIR)_certs-data:/data/letsencrypt certbot/certbot certonly --webroot --email admin@asfl.com.br --agree-tos --no-eff-email --webroot-path=/data/letsencrypt -d $(NGINX_HOST) -d www.$(NGINX_HOST) 
 
 certbot-renew:
-	@docker run -it --rm -v $(DIR)_certs:/etc/letsencrypt -v $(DIR)_certs-data:/data/letsencrypt certbot/certbot certonly --webroot --email admin@asfl.com.br --agree-tos --no-eff-email --webroot-path=/data/letsencrypt -d $(NGINX_HOST) 
+	@docker run -it --rm -v $(DIR)_certs:/etc/letsencrypt -v $(DIR)_certs-data:/data/letsencrypt certbot/certbot certonly --webroot --email admin@asfl.com.br --agree-tos --no-eff-email --webroot-path=/data/letsencrypt -d $(NGINX_HOST) -d www.$(NGINX_HOST)
 
 production:
 	@cd $(DIR) && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
