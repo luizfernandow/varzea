@@ -40,7 +40,7 @@ if (!dialog.showModal) {
     dialogPolyfill.registerDialog(dialog);
 }
 
-let racersTimeStorage = window.localStorage.getItem('racersTime');
+let racersTimeStorage = window.localStorage.getItem('racersTime{{ $id }}');
 if (racersTimeStorage) {
     $('#selectRacers').hide();
     dialog.showModal();
