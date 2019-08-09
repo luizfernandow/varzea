@@ -104,7 +104,7 @@ $(function() {
     var timer = new Timer;
     var raceStarted = false;
 
-    let timeStartedRaceStorage = window.localStorage.getItem('timeStartedRace');
+    let timeStartedRaceStorage = window.localStorage.getItem('timeStartedRace{{ $id }}');
     if (timeStartedRaceStorage) {
         timeStartedRace = JSON.parse(timeStartedRaceStorage);
         var startTime = new Date(timeStartedRace);
@@ -119,7 +119,7 @@ $(function() {
         $('#timer').html(timer.getTimeValues().toString());
     }
 
-    let racersTimeStorage = window.localStorage.getItem('racersTime');
+    let racersTimeStorage = window.localStorage.getItem('racersTime{{ $id }}');
     if (racersTimeStorage) {
         racersTime = JSON.parse(racersTimeStorage);
         raceStarted = true;
@@ -168,7 +168,7 @@ $(function() {
         $('#saveLaps').attr('disabled', true);
         if (!timeStartedRace) {
             timeStartedRace = new Date();
-            window.localStorage.setItem('timeStartedRace', JSON.stringify(timeStartedRace));
+            window.localStorage.setItem('timeStartedRace{{ $id }}', JSON.stringify(timeStartedRace));
         }
     });
 
@@ -227,7 +227,7 @@ $(function() {
                 laps: laps,
                 totalSeconds: totalSeconds
             };
-            window.localStorage.setItem('racersTime', JSON.stringify(racersTime));
+            window.localStorage.setItem('racersTime{{ $id }}', JSON.stringify(racersTime));
             if (lap == {{$race->laps}}) {
                 obj.removeClass('mdl-button--colored').addClass('mdl-button--success disabled').attr('disabled', true);
             }
@@ -264,7 +264,7 @@ $(function() {
                 laps: laps,
                 totalSeconds: totalSeconds
             };
-            window.localStorage.setItem('racersTime', JSON.stringify(racersTime));
+            window.localStorage.setItem('racersTime{{ $id }}', JSON.stringify(racersTime));
             if (racer.hasClass('disabled')) {
                 racer.removeClass('mdl-button--success disabled').addClass('mdl-button--colored').attr('disabled', false);
             }

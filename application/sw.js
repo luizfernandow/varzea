@@ -1,5 +1,5 @@
-workbox.skipWaiting();
-workbox.clientsClaim();
+workbox.core.skipWaiting();
+workbox.core.clientsClaim();
 
 workbox.core.setCacheNameDetails({
   prefix: 'varzea',
@@ -68,20 +68,4 @@ workbox.routing.registerRoute('/races', ({event}) => {
 workbox.routing.registerRoute('/racers', ({event}) => {
   return homeHandler.handle({event})
     .catch(() => caches.match(FALLBACK_OFFLINE));
-});
-
-self.addEventListener('push', function (e) {
-    if (!(self.Notification && self.Notification.permission === 'granted')) {
-        //notifications aren't supported or permission not granted!
-        return;
-    }
-    if (e.data) {
-        var msg = e.data.json();
-        console.log(msg)
-        e.waitUntil(self.registration.showNotification(msg.title, {
-            body: msg.body,
-            icon: msg.icon,
-            image: msg.icon
-        }));
-    }
 });
