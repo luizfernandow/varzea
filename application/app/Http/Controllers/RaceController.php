@@ -203,12 +203,15 @@ class RaceController extends Controller
     {
         $race = Race::find($id);
         foreach ($request->except('_token') as $racerId => $lapsJson) {
-            foreach (json_decode($lapsJson, true) as $lapTime) {
-                DB::table('laps')->insert([
-                    'race_id' => $id,
-                    'racer_id' => $racerId,
-                    'time' => gmdate("H:i:s", $lapTime)
-                ]);
+            $laps = json_decode($lapsJson, true);
+            if (is_array($laps)) {
+                foreach (json_decode($lapsJson, true) as $lapTime) {
+                    DB::table('laps')->insert([
+                        'race_id' => $id,
+                        'racer_id' => $racerId,
+                        'time' => gmdate("H:i:s", $lapTime)
+                    ]);
+                }                
             }
         }
         $race->locked = true;
