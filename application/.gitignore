@@ -17,3 +17,4 @@ yarn-error.log
 /public/js/
 /public/images/
 /public/fonts/
+/public/_nuxt/

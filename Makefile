@@ -33,14 +33,17 @@ stop:
 	@cd $(DIR) && docker-compose down -v
 
 nuxt-start:
-	@cd $(DIR) && docker-compose -f docker-compose.front.dev.yml up -d
+	@cd $(DIR) && docker-compose -p nuxt-varzea -f docker-compose.front.dev.yml up -d
 
 nuxt-stop:
-	@cd $(DIR) && docker-compose -f docker-compose.front.dev.yml down -v
+	@cd $(DIR) && docker-compose -p nuxt-varzea -f docker-compose.front.dev.yml down -v
 
 nuxt-logs:
 	docker logs -f nuxt-varzea
-	
+
+nuxt-build:
+	docker run --rm -v $(shell pwd)/application:/app -w="/app" -it node:12 bash -c "cd nuxt && npm install && npm run build"
+
 logs:
 	@cd $(DIR) && docker-compose logs -f
 
