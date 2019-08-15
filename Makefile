@@ -1,6 +1,6 @@
 #!make
 # Makefile for Docker
-DIR = docker_varzea
+DIR = docker
 envfile := $(DIR)/.env 
 include $(envfile)
 export $(shell sed 's/=.*//' $(envfile))
@@ -32,6 +32,15 @@ start:
 stop:
 	@cd $(DIR) && docker-compose down -v
 
+nuxt-start:
+	@cd $(DIR) && docker-compose -f docker-compose.front.dev.yml up -d
+
+nuxt-stop:
+	@cd $(DIR) && docker-compose -f docker-compose.front.dev.yml down -v
+
+nuxt-logs:
+	docker logs -f nuxt-varzea
+	
 logs:
 	@cd $(DIR) && docker-compose logs -f
 

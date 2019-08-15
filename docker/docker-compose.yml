@@ -16,6 +16,8 @@ services:
         depends_on:
             - php
             - postgresqldb
+        networks:
+            - varzea
     php:
         build: ./php
         image: docker_varzea/php
@@ -23,6 +25,8 @@ services:
         volumes:
             - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
             - "../application:/var/www/html"
+        networks:
+            - varzea
     postgresqldb:
         image: postgres:10
         container_name: db-varzea
@@ -35,8 +39,14 @@ services:
         command: -c timezone=America/Sao_Paulo
         volumes:
             - "./data/db:/var/lib/postgresql/data"
+        networks:
+            - varzea
     redis:
         image: redis:3.2
         container_name: redis-varzea
         volumes:
-          - ./data/redis:/data
+            - ./data/redis:/data
+        networks:
+            - varzea
+networks:
+    varzea:

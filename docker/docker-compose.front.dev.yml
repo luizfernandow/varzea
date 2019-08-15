@@ -1,0 +1,19 @@
+version: "3"
+services:
+    front:
+        image: node:12-slim
+        container_name: nuxt-varzea
+        working_dir: "/var/www/app"
+        environment:
+            - HOST=0.0.0.0
+        ports:
+            - "8000:3000"
+        volumes:
+            - "../application/nuxt:/var/www/app"
+        command: bash -c "npm install && npm run dev"
+        networks:
+            - varzea
+networks:
+  varzea:
+    external:
+      name: docker_varzea
