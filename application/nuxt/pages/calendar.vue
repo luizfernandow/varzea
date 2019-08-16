@@ -13,6 +13,16 @@
   </v-layout>
 </template>
 
+<script>
+export default {
+  head() {
+    return {
+      title: this.$t('head.calendar.title')
+    }
+  }
+}
+</script>
+
 <style scoped>
 .map-iframe {
   height: calc(100vh - 125px);

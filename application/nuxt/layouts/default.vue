@@ -44,12 +44,12 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: this.$t('menu.welcome'),
           to: '/'
         },
         {
           icon: 'mdi-calendar',
-          title: 'Calendar',
+          title: this.$t('menu.calendar'),
           to: '/calendar'
         }
       ],
