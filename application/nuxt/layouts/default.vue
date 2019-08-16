@@ -48,6 +48,11 @@ export default {
           to: '/'
         },
         {
+          icon: 'mdi-flag',
+          title: this.$t('menu.races'),
+          to: '/races'
+        },
+        {
           icon: 'mdi-calendar',
           title: this.$t('menu.calendar'),
           to: '/calendar'

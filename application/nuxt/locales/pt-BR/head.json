@@ -1,4 +1,7 @@
 {
+	"races": {
+		"title": "Corridas"
+	},
 	"calendar": {
 		"title": "Calendario"
 	},
