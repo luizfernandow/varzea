@@ -3,8 +3,9 @@
 const requireLang = require.context('.', true, /\.json$/)
 
 const messages = {}
+let file
 
-for (const file of requireLang.keys()) {
+for (file of requireLang.keys()) {
   if (file === './index.js') continue
 
   const path = file.replace(/(\.\/|\.json$)/g, '').split('/')

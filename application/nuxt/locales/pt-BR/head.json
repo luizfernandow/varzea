@@ -2,6 +2,9 @@
 	"races": {
 		"title": "Corridas"
 	},
+	"race": {
+		"title": "Corrida"
+	},
 	"calendar": {
 		"title": "Calendario"
 	},
