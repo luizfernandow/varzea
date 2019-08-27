@@ -22,6 +22,7 @@ Route::get('/calendar', 'HomeController@calendar')->name('calendar');
 
 Route::resource('races', 'RaceController');
 Route::resource('racers', 'RacerController');
+Route::resource('championships', 'ChampionshipController');
 
 Route::get('/races/select-racers/{id}', 'RaceController@selectRacers')->name('selectRacers');
 Route::get('/races/select-groups/{id}', 'RaceController@selectGroups')->name('selectGroups');
