@@ -62,3 +62,8 @@ certbot-renew:
 
 production:
 	@cd $(DIR) && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+
+
+
+#cat dump.sql | docker exec -i db-varzea psql -h localhost -U varzea_user varzea
