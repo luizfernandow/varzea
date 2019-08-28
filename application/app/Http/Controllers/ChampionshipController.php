@@ -24,7 +24,7 @@ class ChampionshipController extends Controller
      */
     public function index(Request $request)
     {
-        $championships = Championship::orderBy('name', 'desc')->get();
+        $championships = Championship::orderBy('id', 'desc')->get();
 
         return view('championship.index', ['championships' => $championships]);
     }

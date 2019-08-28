@@ -52,6 +52,7 @@ class RaceController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
+            'championship_id' => 'required',
             'date_start' => 'required|date_format:d/m/Y',
             'time_start' => 'required|date_format:H:i',            
             'laps' => 'required_without:type|integer|nullable',        
@@ -117,6 +118,7 @@ class RaceController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
+            'championship_id' => 'required',
             'date_start' => 'required|date_format:d/m/Y',
             'time_start' => 'required|date_format:H:i',              
             'laps' => 'required_without:type|integer|nullable',        

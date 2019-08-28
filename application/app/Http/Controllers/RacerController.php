@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Racer;
+use App\Championship;
 
 class RacerController extends Controller
 {
@@ -24,11 +25,11 @@ class RacerController extends Controller
      */
     public function index(Request $request)
     {
-        $currentYear = $request->input('year', date('Y'));
-        $racers = Racer::getRank($currentYear);
-        $years = range(2018, date('Y'));
+        $championships = Championship::orderBy('id', 'desc')->get();
+        $currentChampionship = $request->input('championship_id', $championships->first()->id);
+        $racers = Racer::getRankChampionship($currentChampionship);
 
-        return view('racer.index', ['racers' => $racers, 'years' => $years, 'currentYear' => $currentYear]);
+        return view('racer.index', ['racers' => $racers, 'championships' => $championships, 'currentChampionship' => $currentChampionship]);
     }
 
     /**

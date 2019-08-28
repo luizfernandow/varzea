@@ -15,18 +15,18 @@
     <div class="mdl-grid ">
         <div class="mdl-cell mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
-                <input type="text" value="" class="mdl-textfield__input" id="selected-year" readonly>
-                <input type="hidden" value="" name="selected-year">
+                <input type="text" value="" class="mdl-textfield__input" id="selected-championship_id" readonly>
+                <input type="hidden" value="" name="selected-championship_id">
                 <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
-                <label for="selected-year" class="mdl-textfield__label">@lang('racers.select_year')</label>
-                <ul for="selected-year" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
-                    @foreach($years as $year)   
-                        <li class="mdl-menu__item" data-val="{{ $year }}"
-                            @if($currentYear == $year)
+                <label for="selected-championship_id" class="mdl-textfield__label">@lang('racers.select_championship_id')</label>
+                <ul for="selected-championship_id" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+                    @foreach($championships as $championship)   
+                        <li class="mdl-menu__item" data-val="{{ $championship->id }}"
+                            @if($currentChampionship == $championship->id)
                                 data-selected="true"
                             @endif
                         >
-                            {{ $year }}
+                            {{ $championship->name }}
                         </li>
                     @endforeach
                 </ul>
@@ -105,10 +105,10 @@
         dialog.close();
     });
 
-    $('#selected-year').on('change', function(){
-        var value = this.value;
-        if (value != {{ $currentYear }}) {
-            window.location = '{{  url()->current() }}?year=' + value;
+    $('#selected-championship_id').on('change', function(){
+        var value = $(this).next().val();
+        if (value != {{ $currentChampionship }}) {
+            window.location = '{{  url()->current() }}?championship_id=' + value;
         }
     });
 

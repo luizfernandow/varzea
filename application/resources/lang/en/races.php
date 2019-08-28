@@ -27,6 +27,7 @@ return [
 	],
     'form' => [
     	'name' => 'Name',
+        'championship_id' => 'Championship',
     	'date' => 'Date',
     	'hour' => 'Hour',
     	'type' => 'Hours type',

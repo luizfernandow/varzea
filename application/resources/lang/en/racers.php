@@ -2,7 +2,7 @@
 
 return [
 	'title' => 'Racers',
-	'select_year' => 'Year',
+	'select_championship_id' => 'Championship',
 	'index' => [
 		'name' => 'Name',
 		'points' => 'Points'

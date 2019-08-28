@@ -92,6 +92,11 @@
                     Racers
                 </a>
 
+                <a class="mdl-navigation__link" href="{{ route('championships.index') }}">
+                    <i class="mdl-color-text--blue-grey-400 fas fa-medal"></i>
+                    Campeonatos
+                </a>
+
                 <a class="mdl-navigation__link" href="{{ route('worldChampionships') }}">
                     <i class="mdl-color-text--blue-grey-400 fas fa-trophy"></i>
                     Campeonato Mundial

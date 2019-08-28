@@ -12,6 +12,19 @@
 </div>
 
 <div class="mdl-cell mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {{ $errors->has('championship_id') ? 'is-invalid' :'' }}">
+        {!! Form::select('championship_id', \App\Championship::all()->pluck('name', 'id') , NULL, array('id' => 'races-championship_id', 'class' => 'mdl-textfield__input')) !!}
+        {!! Form::label('championship_id', __('races.form.championship_id'), array('class' => 'mdl-textfield__label')); !!}
+        
+        @if ($errors->has('championship_id'))
+            <span class="mdl-textfield__error">
+                <strong>{{ $errors->first('championship_id') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
+<div class="mdl-cell mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {{ $errors->has('date_start') ? 'is-invalid' :'' }}">
         {!! Form::text('date_start', NULL, array('id' => 'races-date_start', 'class' => 'mdl-textfield__input')) !!}
         {!! Form::label('date_start', __('races.form.date'), array('class' => 'mdl-textfield__label')); !!}

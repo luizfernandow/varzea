@@ -44,5 +44,25 @@ class Racer extends Model
                 ->orderBy('points', 'desc')
                 ->get();
     }
+
+    public static function getRankChampionship($championship_id)
+    {
+        $obj = new self();
+        return $obj->select('racers.id', 'racers.name', DB::raw('SUM(CASE 
+                WHEN base_points.point is not null  
+                    THEN base_points.point
+                WHEN position_races.id is not null 
+                    THEN 1
+                ELSE 0
+            END) as points'))
+                ->leftJoin('position_races', 'racers.id', '=', 'position_races.id')
+                ->leftJoin('races', 'races.id', '=', 'position_races.race_id')
+                ->leftJoin('base_points', 'base_points.position', '=', 'position_races.position')
+                ->where('races.championship_id', '=', $championship_id)
+                ->groupBy('racers.id')
+                ->groupBy('racers.name')
+                ->orderBy('points', 'desc')
+                ->get();
+    }
 }
  

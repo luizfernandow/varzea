@@ -14,7 +14,7 @@ class Race extends Model
 	const TYPE_LAPS = 'laps';
 	const TYPE_HOURS = 'hours';
 
-    protected $fillable = ['name', 'type', 'laps', 'hours', 'group', 'date_start', 'time_start', 'locked'];
+    protected $fillable = ['name', 'type', 'laps', 'hours', 'group', 'date_start', 'time_start', 'locked', 'championship_id'];
 
      /**
      * The attributes that should be mutated to dates.
