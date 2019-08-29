@@ -22,7 +22,7 @@
 <h2>Percurso e n&uacute;mero de voltas</h2>
 <p>O percurso da pista de XCO da Várzea foi palco dos Jogos Regionais e Abertos de 2018 e de lá pra cá sofreu muitas alterações deixando-a muito melhor.</p>
 <p>Além disso atualmente ela pode ser usada nos dois sentidos, mas para essa prova o sentido será o original. O mesmo utilizado nos jogos</p>
-<p>A pista tem aproximadamente 4 km e ser&atilde;o 7 voltas.</p>
+<p>A pista tem aproximadamente 4 km e ser&atilde;o 7 voltas para os homens e 5 para as mulheres.</p>
 <p>Faça uma volta: <a href="https://youtu.be/V8SVghMry3I">https://youtu.be/V8SVghMry3I	</a></p>
 <p>A dura&ccedil;&atilde;o <b>prevista</b> de prova &eacute; de 1h40.</p>
 <h2>Cronometragem e resultados</h2>
