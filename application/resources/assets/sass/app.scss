@@ -113,6 +113,10 @@ html, body {
   padding: 10px;
 }
 
+.padding-top-20 {
+  padding-top: 20px;
+}
+
 .demo-content {
   max-width: 1080px;
 }
@@ -212,7 +216,7 @@ html, body {
     text-align: left;
 }
 
-.hide {
+.hide, .hide-search {
     display: none;
 }
 

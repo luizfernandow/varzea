@@ -40,7 +40,11 @@ return [
 
     'selectRacers' => [
     	'header' => 'Select racers',
-    	'submit' => 'Go to race!'
+    	'submit' => 'Go to race!',
+        'number' => 'Number',
+        'filter' => 'Filter selecteds',
+        'remove_filter' => 'Show all',
+        'racer_filter' => 'Search',
     ],
 
     'selectGroups' => [
