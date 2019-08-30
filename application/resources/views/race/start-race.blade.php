@@ -26,6 +26,16 @@
 </div>
 
 <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col-phone">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input"  type="number" id="numberLap">
+            <label for="numberLap" class="mdl-textfield__label">@lang('races.startRace.number_lap')</label>
+        </div>
+        <button id="numberLapDo" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--success" disabled>LAP</button>
+    </div>  
+</div>
+
+<div class="mdl-grid">
     <div id="racers-list" class="mdl-cell  mdl-cell--12-col">                  
         @foreach ($racers as $racerId => $racer)
             <div class="mdl-grid racer-wrappper"
@@ -33,11 +43,19 @@
                 data-lap=0
                 data-total-seconds=86400
             >
-                <button type="button" class="mdl-cell racer mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored text-left" role="button"                    
+                <button type="button" class="mdl-cell racer mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored text-left 
+                    @if(isset($numbers[$racerId]))
+                        do-lap-{{ $numbers[$racerId] }}
+                    @endif
+
+                " role="button"                    
                 >
                     <div class="mdl-grid">
                         <div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--2-col-tablet mdl-cell--2-col-phone text-truncate">
-                            {{$racer}}
+                            {{ $racer }}
+                            @if(isset($numbers[$racerId]))
+                                ({{ $numbers[$racerId] }})
+                            @endif
                         </div>
                         <div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--2-col-tablet mdl-cell--2-col-phone current-time">
                             
@@ -101,6 +119,32 @@ let racersTime = {};
 let timeStartedRace = null;
 
 $(function() {
+
+    var lapDo = $('#numberLapDo');
+    var numberLap = $('#numberLap');
+    numberLap.on('keyup', function(){
+        var number = this.value;
+        lapDo.attr('disabled', true);
+        var racer = $('.do-lap-' + number);
+        if (racer.length == 1 && !racer.prop('disabled')) {
+            lapDo.attr('disabled', false);
+        }
+    });
+
+    lapDo.on('click',function(){
+        var number = numberLap.val();
+        var racer = $('.do-lap-' + number);
+        if (racer.length == 1) {
+            if (!racer.prop('disabled')) {
+                racer.click();
+            }
+            numberLap.val('');
+            numberLap.keyup();
+        }
+    });
+
+
+
     var timer = new Timer;
     var raceStarted = false;
 
@@ -139,7 +183,7 @@ $(function() {
         obj.data('lap', value.lap);
         obj.data('laps', value.laps);
         obj.data('total-seconds', value.totalSeconds);
-        if (value.lap == {{$race->laps}}) {
+        if (value.lap >= {{$race->laps}}) {
             obj.find('.racer').removeClass('mdl-button--colored').addClass('mdl-button--success disabled').attr('disabled', true);
         }
 
@@ -196,6 +240,9 @@ $(function() {
         e.stopPropagation();
         if (timer.isRunning()) {
             var obj = $(this);
+            if (obj.prop('disabled')) {
+                return;
+            }
             var wrapper = obj.parent();
             var currentTime = timer.getTimeValues().toString();
             var totalSeconds = timer.getTotalTimeValues().seconds;            
@@ -228,7 +275,7 @@ $(function() {
                 totalSeconds: totalSeconds
             };
             window.localStorage.setItem('racersTime{{ $id }}', JSON.stringify(racersTime));
-            if (lap == {{$race->laps}}) {
+            if (lap >= {{$race->laps}}) {
                 obj.removeClass('mdl-button--colored').addClass('mdl-button--success disabled').attr('disabled', true);
             }
 

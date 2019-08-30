@@ -17,7 +17,7 @@
 <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col-phone">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input racers-number"  type="text" id="racerFilter">
+            <input class="mdl-textfield__input"  type="text" id="racerFilter">
             <label for="racerFilter" class="mdl-textfield__label">@lang('races.selectRacers.racer_filter')</label>
         </div>
     </div>  
@@ -35,7 +35,7 @@
                 </div>
                 <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--6-col-desktop">
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input racers-number" data-racer="{{$racerId}}" name="numbers[]" type="number" id="number{{$racerId}}">
+                        <input class="mdl-textfield__input racers-number" data-racer="{{$racerId}}" name="numbers[{{$racerId}}]" type="number" id="number{{$racerId}}">
                         <label for="number{{$racerId}}" class="mdl-textfield__label">@lang('races.selectRacers.number')</label>
                     </div>
                 </div>                

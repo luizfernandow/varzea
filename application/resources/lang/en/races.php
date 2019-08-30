@@ -56,5 +56,6 @@ return [
 
     'startRace' => [
     	'header' => 'Race control',
+        'number_lap' => 'Lap with number'
     ]
 ];

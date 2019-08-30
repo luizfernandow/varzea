@@ -181,11 +181,15 @@ class RaceController extends Controller
     }
 
     public function startRace(Request $request, $id)
-    {
+    {        
+        $numbers = collect($request->numbers)->filter(function($value) {
+            return null !== $value;
+        })->toArray();
+
         $race = Race::find($id);
         $racers = Racer::orderBy('name')->find($request->racers)->pluck('name', 'id')->toArray();
         
-        return view('race.start-race', ['race' => $race, 'racers' => $racers, 'id' => $id]);
+        return view('race.start-race', ['race' => $race, 'racers' => $racers, 'id' => $id, 'numbers' => $numbers]);
     }
 
     public function startRaceGroups(Request $request, $id)
