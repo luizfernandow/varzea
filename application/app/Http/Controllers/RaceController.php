@@ -208,6 +208,10 @@ class RaceController extends Controller
     public function saveLaps(Request $request, $id)
     {
         $race = Race::find($id);
+        if ($race->locked) {
+            return redirect()->route('races.index');
+        }
+
         foreach ($request->except('_token') as $racerId => $lapsJson) {
             $laps = json_decode($lapsJson, true);
             if (is_array($laps)) {
