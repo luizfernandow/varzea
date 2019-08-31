@@ -91,10 +91,6 @@ if (racersNumberStorage) {
 }
 
 dialog.querySelector('.resume-race').addEventListener('click', function() {
-    let racersTime = JSON.parse(racersTimeStorage);
-    for (let [key, value] of Object.entries(racersTime)) {
-        $('#switch' + key).parent().click();
-    }
     $('#selectRacers input[type="submit"]').click();
 });
 
