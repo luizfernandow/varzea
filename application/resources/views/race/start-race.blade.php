@@ -77,11 +77,29 @@
 <form method="POST" action="{{ route('saveLaps', $id) }}" id="saveLapsForm">
     @csrf
 </form>
+
+<dialog class="mdl-dialog">
+        <h4 class="mdl-dialog__title">Are you sure?</h4>
+        <div class="mdl-dialog__content">
+            <p>
+            Canceling the lap will result to a new time of a next lap
+            </p>
+        </div>
+        <div class="mdl-dialog__actions">
+            <button type="button" class="mdl-button delete">Cancel lap</button>
+            <button type="button" class="mdl-button close">Cancel</button>
+        </div>
+    </dialog>
 @endsection
 
 @section('javascript')
     @parent('javascript')
 <script type="text/javascript">
+    var dialog = document.querySelector('dialog');
+    if (!dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+
 String.prototype.toHHMMSS = function () {
     var sec_num = parseInt(this, 10); // don't forget the second param
     var hours   = Math.floor(sec_num / 3600);
@@ -289,12 +307,22 @@ $(function() {
         }
     });
 
+
+    dialog.querySelector('.close').addEventListener('click', function() {
+        dialog.close();
+    });
+
+    var wrapper = null;
     $('.revert').click(function(e) {
         e.preventDefault();
         e.stopPropagation();
-        
+
         var obj = $(this);
-        var wrapper = obj.parent();
+        wrapper = obj.parent();
+        dialog.showModal();
+    }); 
+
+    dialog.querySelector('.delete').addEventListener('click', function() { 
         var lap = wrapper.data('lap'); 
         var racerId = wrapper.data('id');  
         if (lap) {
@@ -324,7 +352,8 @@ $(function() {
                 $('#saveLaps').attr('disabled', true);
                 $('#stopTimer').attr('disabled', false);
             }
-        }        
+        }
+        dialog.close();        
     });
 
     function sortRacers() {
