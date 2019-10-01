@@ -39,7 +39,11 @@
 @endif
 
 <div class='mdl-list'>
-    @foreach($race->getRank() as $index => $laps)
+    @php
+        $rank = $race->getRank();
+        $bestTime = $rank[0]->time; 
+    @endphp
+    @foreach($rank as $index => $laps)
         <div class="mdl-list__item mdl-list__item--two-line">
             <span class="mdl-list__item-primary-content">
                 <i class="material-icons  mdl-badge mdl-badge--overlap mdl-list__item-avatar" data-badge="{{ ($index + 1) }}">
@@ -47,7 +51,7 @@
                 </i>
                 <span>{{ $laps->racer->name  }}</span>
                 <span class="mdl-list__item-sub-title">
-                    {{ ($laps->laps == $race->laps || $race->isTypeHours()) ? $laps->time : '-' }}
+                    {{ ($laps->laps == $race->laps || $race->isTypeHours() || $laps->time > $bestTime) ? $laps->time : '-' }}
                     @if ($laps->laps == $race->laps)
                        / @base_point($index) @lang('races.show.points')
                     @endif
