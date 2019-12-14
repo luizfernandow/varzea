@@ -41,7 +41,7 @@
 <div class='mdl-list'>
     @php
         $rank = $race->getRank();
-        $bestTime = $rank[0]->time; 
+        $bestTime = isset($rank[0]) ? $rank[0]->time : 0; 
     @endphp
     @foreach($rank as $index => $laps)
         <div class="mdl-list__item mdl-list__item--two-line">

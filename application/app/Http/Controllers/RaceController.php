@@ -237,16 +237,18 @@ class RaceController extends Controller
             $data = json_decode($lapsJson, true);
             $times = $data[0];
             $numberRacer = $data[1];
-            foreach ($times as $key => $lapTime) {
-                $rg = RacersGroup::where('race_id', '=', $id)
-                                 ->where('group', '=', $groupId)
-                                 ->where('number', '=', $numberRacer[$key])->get()->first();
+            if (is_array($times)) {
+                foreach ($times as $key => $lapTime) {
+                    $rg = RacersGroup::where('race_id', '=', $id)
+                                     ->where('group', '=', $groupId)
+                                     ->where('number', '=', $numberRacer[$key])->get()->first();
 
-                DB::table('laps')->insert([
-                    'race_id' => $id,
-                    'racer_id' => $rg->racer_id,
-                    'time' => gmdate("H:i:s", $lapTime)
-                ]);
+                    DB::table('laps')->insert([
+                        'race_id' => $id,
+                        'racer_id' => $rg->racer_id,
+                        'time' => gmdate("H:i:s", $lapTime)
+                    ]);
+                }                
             }
         }
         $race->locked = true;
