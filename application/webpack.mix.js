@@ -1,6 +1,4 @@
-let mix = require('laravel-mix');
-
-const {InjectManifest} = require('workbox-webpack-plugin');
+const mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -13,27 +11,5 @@ const {InjectManifest} = require('workbox-webpack-plugin');
  |
  */
 
-mix.webpackConfig(webpack => {
-    return {
-        plugins: [
-            new InjectManifest({
-                swSrc: './sw.js',
-                swDest: path.join(`${__dirname}/public`, 'sw.js')
-            })
-        ],
-        output: {
-            publicPath: ''
-        }
-    };
-}).js('resources/assets/js/app.js', 'public/js')
-  .sass('resources/assets/sass/app.scss', 'public/css')
-  .styles([
-            'public/css/app.css',
-            'node_modules/dialog-polyfill/dialog-polyfill.css',
-    ], 'public/css/app.css')
-  .copyDirectory('resources/assets/images', 'public/images');
-
-if (mix.inProduction()) {
-    mix.version();
-    mix.disableNotifications();
-}
+mix.js('resources/js/app.js', 'public/js')
+    .sass('resources/sass/app.scss', 'public/css');

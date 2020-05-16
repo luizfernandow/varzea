@@ -25,7 +25,6 @@ services:
         volumes:
             - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
             - "../application:/var/www/html"
-            - "../new_application:/var/www/new"
         networks:
             - varzea
     postgresqldb:

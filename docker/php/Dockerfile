@@ -7,7 +7,7 @@ ENV TZ=America/Sao_Paulo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
-    && apt install -y vim libmcrypt-dev zlib1g-dev libpq-dev libpng-dev libxml2-dev libgmp-dev libzip-dev libssl-dev \
+    && apt install -y vim unzip libmcrypt-dev zlib1g-dev libpq-dev libpng-dev libxml2-dev libgmp-dev libzip-dev libssl-dev \
     && apt-get clean
 RUN docker-php-ext-install gmp pdo_pgsql zip pcntl \
     && pecl install -o -f redis \
@@ -21,5 +21,3 @@ RUN docker-php-ext-install gmp pdo_pgsql zip pcntl \
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash \
     && apt-get install -y nodejs \
     && apt-get clean
-
-    # unzip
