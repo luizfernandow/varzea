@@ -1,7 +1,7 @@
 version: '3'
 services:
     web:
-        image: nginx:1.13
+        image: nginx:1.18
         container_name: nginx-varzea
         volumes:
             - "./etc/nginx/gzip.conf:/etc/nginx/conf.d/gzip.conf"
@@ -25,10 +25,11 @@ services:
         volumes:
             - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
             - "../application:/var/www/html"
+            - "../new_application:/var/www/new"
         networks:
             - varzea
     postgresqldb:
-        image: postgres:10
+        image: postgres:12
         container_name: db-varzea
         ports:
             - "5432:5432"
@@ -42,7 +43,7 @@ services:
         networks:
             - varzea
     redis:
-        image: redis:3.2
+        image: redis:6.0
         container_name: redis-varzea
         volumes:
             - ./data/redis:/data
