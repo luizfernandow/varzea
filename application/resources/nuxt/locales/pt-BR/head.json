@@ -1,0 +1,14 @@
+{
+	"races": {
+		"title": "Corridas"
+	},
+	"race": {
+		"title": "Corrida"
+	},
+	"calendar": {
+		"title": "Calendario"
+	},
+	"welcome": {
+		"title": "Bem vindo"
+	}
+}
