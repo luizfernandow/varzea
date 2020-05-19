@@ -9,7 +9,7 @@ services:
         ports:
             - "8000:3000"
         volumes:
-            - "../application/nuxt:/var/www/app"
+            - "../application:/var/www/app"
         command: bash -c "npm install && npm run dev"
         networks:
             - varzea

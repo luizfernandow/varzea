@@ -18,6 +18,6 @@ RUN docker-php-ext-install gmp pdo_pgsql zip pcntl \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # NODE
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash \
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash \
     && apt-get install -y nodejs \
     && apt-get clean
