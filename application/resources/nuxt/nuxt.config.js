@@ -1,5 +1,8 @@
 import colors from 'vuetify/es5/util/colors'
 
+const { join } = require('path')
+const { copySync, removeSync } = require('fs-extra')
+
 export default {
   mode: 'spa',
   buildDir: __dirname + '/.nuxt',
@@ -127,6 +130,27 @@ export default {
     ** You can extend webpack config here
     */
     extend (config, ctx) {
+    }
+  },
+  generate: {
+    dir: __dirname + '/dist',
+  },
+  hooks: {
+    generate: {
+      done (generator) {
+        if (generator.nuxt.options.dev === false && generator.nuxt.options.mode === 'spa') {
+            const publicDirNuxt = join(generator.nuxt.options.rootDir, 'public', '_nuxt')
+            const publicDir = join(generator.nuxt.options.rootDir, 'public')
+            const publicDirImages = join(publicDir, 'images')
+            removeSync(publicDirNuxt)
+            removeSync(publicDirImages)
+            removeSync(join(publicDir, 'sw.js'))
+            copySync(join(generator.nuxt.options.generate.dir, '_nuxt'), publicDirNuxt)
+            copySync(join(generator.nuxt.options.generate.dir, 'images'), publicDirImages)
+            copySync(join(generator.nuxt.options.generate.dir, '200.html'), join(publicDirNuxt, 'index.html'))
+            copySync(join(generator.nuxt.options.generate.dir, 'sw.js'), join(publicDir, 'sw.js'))
+        }
+      }
     }
   }
 }
