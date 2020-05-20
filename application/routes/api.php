@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::post('/login', function(Request $request) {
+    $email = $request->get('email');
+    $password = $request->get('password');    
+
+    if (Auth::attempt([
+        'email' => $email,
+        'password' => $password
+    ])) {
+        return response()->json('', 204 );
+    } else {
+        return response()->json([
+            'error' => 'invalid_credentials'
+        ], 403);
+    }
+});
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

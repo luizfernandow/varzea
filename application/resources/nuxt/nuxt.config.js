@@ -46,6 +46,8 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
+    '@nuxtjs/proxy',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
@@ -55,6 +57,46 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    credentials: true,
+    baseURL: process.env.apiUrl
+  },
+  proxy: {
+    '/api': {
+      target: 'http://web'
+    }
+  },
+  /*
+  ** Auth module configuration
+  ** See https://auth.nuxtjs.org/
+  */
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { 
+            url: '/api/login', 
+            method: 'post',
+            withCredentials: true, 
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'Content-Type': 'application/json'
+            } 
+          },
+          user: { 
+            url: '/api/user', 
+            method: 'get', 
+            propertyName: false,
+            withCredentials: true, 
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'Content-Type': 'application/json'
+            }
+          }
+        },
+        tokenRequired: false,
+        tokenType: false
+      }
+    }
   },
   /*
   ** vuetify module configuration
