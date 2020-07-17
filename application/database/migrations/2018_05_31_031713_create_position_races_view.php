@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreatePositionRacesView extends Migration
@@ -26,7 +24,7 @@ class CreatePositionRacesView extends Migration
                     group by r.id, race_id
                     order by race_id)
                     select p.* from positions as p 
-                    join races as r on r.id = p.race_id and r.laps = p.laps');        
+                    join races as r on r.id = p.race_id and r.laps = p.laps');
     }
 
     /**

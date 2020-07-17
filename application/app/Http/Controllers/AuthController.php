@@ -17,16 +17,23 @@ class AuthController extends Controller
         $this->middleware('auth:sanctum')->only('user');
     }
 
-    public function login(Request $request) 
+    public function login(Request $request)
     {
+        $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
         $email = $request->get('email');
-        $password = $request->get('password');    
+        $password = $request->get('password');
 
         if (Auth::attempt([
             'email' => $email,
             'password' => $password
         ])) {
-            return response()->json('', 205);
+            $request->session()->regenerate();
+
+            return response()->json('', 204);
         } else {
             return response()->json([
                 'error' => 'invalid_credentials'
@@ -34,14 +41,19 @@ class AuthController extends Controller
         }
     }
 
-    public function user(Request $request) 
+    public function user(Request $request)
     {
         return $request->user();
     }
 
-    public function logout(Request $request) 
+    public function logout(Request $request)
     {
         Auth::logout();
-        return response()->json('', 205);
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return response()->json('', 204);
     }
 }

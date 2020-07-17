@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddGroupToRacesTable extends Migration
 {
@@ -13,7 +13,7 @@ class AddGroupToRacesTable extends Migration
      */
     public function up()
     {
-        Schema::table('races', function (Blueprint $table) {            
+        Schema::table('races', function (Blueprint $table) {
             $table->smallInteger('group')->nullable();
         });
     }
