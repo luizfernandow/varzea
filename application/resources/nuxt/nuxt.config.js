@@ -4,7 +4,17 @@ const { join } = require('path')
 const { copySync, removeSync } = require('fs-extra')
 
 export default {
+  /*
+   ** Nuxt rendering mode
+   ** See https://nuxtjs.org/api/configuration-mode
+   */
   mode: 'spa',
+  /*
+   ** Nuxt target
+   ** See https://nuxtjs.org/api/configuration-target
+   */
+  target: 'static',
+
   buildDir: __dirname + '/.nuxt',
   srcDir: __dirname,
   /*
@@ -38,6 +48,11 @@ export default {
     '~/plugins/i18n.js',
   ],
   /*
+   ** Auto import components
+   ** See https://nuxtjs.org/api/configuration-components
+   */
+  components: true,
+  /*
   ** Nuxt.js dev-modules
   */
   buildModules: [
@@ -50,7 +65,6 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/auth',
-    '@nuxtjs/proxy',
     '@nuxtjs/pwa'
   ],
   /*
@@ -60,14 +74,6 @@ export default {
   axios: {
     credentials: true,
     baseURL: process.env.NUXT_API_URL
-  },
-  proxy: {
-    // '/api': {
-    //   target: 'http://web'
-    // },
-    // '/sanctum/csrf-cookie': {
-    //   target: 'http://web'
-    // }
   },
   /*
   ** Auth module configuration

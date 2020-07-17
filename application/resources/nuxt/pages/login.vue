@@ -52,7 +52,14 @@
             password: ''
         }
     },
-
+    beforeCreate() {
+      let self = this;
+      /* Make Sure We Only Load Login Page If Not Authenticated */
+      if (self.$auth.loggedIn) {
+          /* nextick make sure our modal wount be visible before redirect */
+          return self.$nextTick(() => self.$router.push({ path: "/" }));
+      }
+    },
     methods: {
         login(){
             this.$axios.get('/sanctum/csrf-cookie', {
