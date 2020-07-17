@@ -1,22 +1,52 @@
 <template>
-    <div>
-        <label class="block">Email</label>
-        <input type="text" class="border border-gray-900" v-model="email"/>
+    <v-row
+          align="center"
+          justify="center"
+        >
+          <v-col
+            cols="12"
+            sm="8"
+            md="4"
+          >
+            <v-card class="elevation-12">
+              <v-toolbar
+                color="primary"
+                dark
+                flat
+              >
+                <v-toolbar-title>Login form</v-toolbar-title>
+              </v-toolbar>
+              <v-card-text>
+                <v-form>
+                  <v-text-field
+                    label="Login"
+                    name="login"
+                    prepend-icon="mdi-account"
+                    type="text"
+                    v-model="email"
+                  ></v-text-field>
 
-        <br>
-
-        <label class="block">Password</label>
-        <input type="password" class="border border-gray-900" v-model="password"/>
-
-        <br>
-        <br>
-
-        <button v-on:click="login()" class="cursor border border-gray-900 p-2">Login</button>
-    </div>
+                  <v-text-field
+                    id="password"
+                    label="Password"
+                    name="password"
+                    prepend-icon="mdi-lock"
+                    type="password"
+                    v-model="password"
+                  ></v-text-field>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn v-on:click="login()" color="primary">Login</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
 </template>
 <script>
     export default {
-    data(){
+    data() {
         return {
             email: '',
             password: ''

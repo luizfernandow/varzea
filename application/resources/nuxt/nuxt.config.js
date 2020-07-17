@@ -41,7 +41,7 @@ export default {
   ** Nuxt.js dev-modules
   */
   buildModules: [
-    '@nuxtjs/vuetify',
+    '@nuxtjs/vuetify'
   ],
   /*
   ** Nuxt.js modules
@@ -51,9 +51,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/proxy',
-    '@nuxtjs/pwa',
-    // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv',
+    '@nuxtjs/pwa'
   ],
   /*
   ** Axios module configuration
@@ -61,12 +59,15 @@ export default {
   */
   axios: {
     credentials: true,
-    baseURL: process.env.apiUrl
+    baseURL: process.env.NUXT_API_URL
   },
   proxy: {
-    '/api': {
-      target: 'http://web'
-    }
+    // '/api': {
+    //   target: 'http://web'
+    // },
+    // '/sanctum/csrf-cookie': {
+    //   target: 'http://web'
+    // }
   },
   /*
   ** Auth module configuration
