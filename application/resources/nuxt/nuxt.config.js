@@ -84,7 +84,7 @@ export default {
       local: {
         endpoints: {
           login: { 
-            url: '/api/login', 
+            url: '/api/auth/login', 
             method: 'post',
             withCredentials: true, 
             headers: {
@@ -93,7 +93,7 @@ export default {
             } 
           },
           user: { 
-            url: '/api/user', 
+            url: '/api/auth/user', 
             method: 'get', 
             propertyName: false,
             withCredentials: true, 

@@ -33,9 +33,29 @@
         <v-icon>mdi-login</v-icon>
       </v-btn>
 
-      <v-btn icon v-else>
-        <v-icon>mdi-account</v-icon>
-      </v-btn>
+      <v-menu
+        left
+        bottom
+        v-else
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-account</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            @click="logout()"
+          >
+            <v-list-item-title>Sair <v-icon>mdi-logout</v-icon></v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
     </v-app-bar>
     <v-content>
@@ -44,7 +64,7 @@
       </v-container>
     </v-content>
     <v-footer
-      :fixed="fixed"
+      fixed
       app
     >
       <span>&copy; {{ new Date().getFullYear() }}</span>
@@ -56,9 +76,7 @@
 export default {
   data () {
     return {
-      clipped: false,
       drawer: false,
-      fixed: false,
       items: [
         {
           icon: 'mdi-apps',
@@ -71,10 +89,12 @@ export default {
           to: '/calendar'
         }
       ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
       title: 'Várzealand'
+    }
+  },
+  methods: {
+    logout() {
+      this.$auth.logout();
     }
   }
 }
