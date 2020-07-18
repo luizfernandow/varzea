@@ -6,17 +6,17 @@ const messages = {}
 let file
 
 for (file of requireLang.keys()) {
-  if (file === './index.js') continue
+    if (file === './index.js') continue
 
-  const path = file.replace(/(\.\/|\.json$)/g, '').split('/')
+    const path = file.replace(/(\.\/|\.json$)/g, '').split('/')
 
-  path.reduce((o, s, i) => {
-    if (o[s]) return o[s]
+    path.reduce((o, s, i) => {
+        if (o[s]) return o[s]
 
-    o[s] = i + 1 === path.length ? requireLang(file) : {}
+        o[s] = i + 1 === path.length ? requireLang(file) : {}
 
-    return o[s]
-  }, messages)
+        return o[s]
+    }, messages)
 }
 
 export default messages

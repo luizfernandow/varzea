@@ -8,20 +8,32 @@
     "dev": "nuxt -c resources/nuxt/nuxt.config.js",
     "build": "nuxt build -c resources/nuxt/nuxt.config.js",
     "start": "nuxt start -c resources/nuxt/nuxt.config.js",
-    "generate": "nuxt generate -c resources/nuxt/nuxt.config.js"
+    "generate": "nuxt generate -c resources/nuxt/nuxt.config.js",
+    "export": "nuxt export -c resources/nuxt/nuxt.config.js",
+    "lint:js": "eslint --ext .js,.vue --ignore-path resources/nuxt/.gitignore --fix  resources/nuxt",
+    "lint:style": "stylelint resources/nuxt/**/*.{vue,css} --ignore-path resources/nuxt/.gitignore",
+    "lint": "npm run lint:js && npm run lint:style"
   },
   "dependencies": {
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.12.0",
-    "@nuxtjs/proxy": "^2.0.0",
     "@nuxtjs/pwa": "^3.0.0-0",
     "nuxt": "^2.13.3",
     "vue-i18n": "^8.18.2"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.2",
+    "@nuxtjs/eslint-config": "^3.0.0",
+    "@nuxtjs/eslint-module": "^2.0.0",
+    "@nuxtjs/stylelint-module": "^4.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.4.0",
+    "eslint-plugin-nuxt": "^1.0.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "stylelint": "^13.6.1",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-standard": "^20.0.0"
   }
 }
