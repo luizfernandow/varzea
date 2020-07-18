@@ -40,17 +40,18 @@
                 <v-list>
                     <v-list-item @click="logout()">
                         <v-list-item-title
-                            >Sair <v-icon>mdi-logout</v-icon></v-list-item-title
+                            >{{ $t('auth.logout') }}
+                            <v-icon>mdi-logout</v-icon></v-list-item-title
                         >
                     </v-list-item>
                 </v-list>
             </v-menu>
         </v-app-bar>
-        <v-content>
+        <v-main>
             <v-container>
                 <nuxt />
             </v-container>
-        </v-content>
+        </v-main>
         <v-footer fixed app>
             <span>&copy; {{ new Date().getFullYear() }}</span>
         </v-footer>
