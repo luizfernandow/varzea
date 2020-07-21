@@ -61,12 +61,14 @@ export default {
                 })
                 .then(
                     function () {
-                        this.$auth.loginWith('local', {
-                            data: {
-                                email: this.email,
-                                password: this.password,
-                            },
-                        })
+                        this.$auth
+                            .loginWith('local', {
+                                data: {
+                                    email: this.email,
+                                    password: this.password,
+                                },
+                            })
+                            .catch((e) => {})
                     }.bind(this)
                 )
         },

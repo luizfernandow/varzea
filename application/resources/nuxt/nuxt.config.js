@@ -56,8 +56,9 @@ export default {
      ** Plugins to load before mounting the App
      */
     plugins: [
-        '~/plugins/i18n',
         '~/plugins/mixins/validation',
+        '~/plugins/mixins/user',
+        '~/plugins/i18n',
         '~/plugins/axios'
     ],
     /*

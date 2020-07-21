@@ -26,7 +26,7 @@
             <v-toolbar-title v-text="title" />
             <v-spacer></v-spacer>
 
-            <v-btn v-if="!$auth.loggedIn" icon to="/login">
+            <v-btn v-if="!authenticated" icon to="/login">
                 <v-icon>mdi-login</v-icon>
             </v-btn>
 
@@ -38,11 +38,21 @@
                 </template>
 
                 <v-list>
+                    <v-list-item to="/profile" link>
+                        <v-list-item-icon>
+                            <v-icon>mdi-account-box</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title>
+                            {{ $t('auth.profile') }}
+                        </v-list-item-title>
+                    </v-list-item>
                     <v-list-item @click.prevent="logout()">
-                        <v-list-item-title
-                            >{{ $t('auth.logout') }}
-                            <v-icon>mdi-logout</v-icon></v-list-item-title
-                        >
+                        <v-list-item-icon>
+                            <v-icon>mdi-logout</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title>{{
+                            $t('auth.logout')
+                        }}</v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>
