@@ -12,6 +12,8 @@
                         <v-text-field
                             v-model="email"
                             :label="$t('auth.form.email')"
+                            :class="{ 'error--text': errors.email }"
+                            :error-messages="errors.email"
                             name="email"
                             prepend-icon="mdi-account"
                             type="text"
@@ -21,6 +23,8 @@
                             id="password"
                             v-model="password"
                             :label="$t('auth.form.password')"
+                            :class="{ 'error--text': errors.password }"
+                            :error-messages="errors.password"
                             name="password"
                             prepend-icon="mdi-lock"
                             type="password"

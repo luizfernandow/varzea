@@ -44,10 +44,22 @@ export default {
      ** Global CSS
      */
     css: [],
+
+
+    router: {
+        middleware: [
+            'clearValidationErrors'
+        ]
+    },
+
     /*
      ** Plugins to load before mounting the App
      */
-    plugins: ['~/plugins/i18n.js'],
+    plugins: [
+        '~/plugins/i18n',
+        '~/plugins/mixins/validation',
+        '~/plugins/axios'
+    ],
     /*
      ** Auto import components
      ** See https://nuxtjs.org/api/configuration-components

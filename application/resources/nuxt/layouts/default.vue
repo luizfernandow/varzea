@@ -38,7 +38,7 @@
                 </template>
 
                 <v-list>
-                    <v-list-item @click="logout()">
+                    <v-list-item @click.prevent="logout()">
                         <v-list-item-title
                             >{{ $t('auth.logout') }}
                             <v-icon>mdi-logout</v-icon></v-list-item-title
