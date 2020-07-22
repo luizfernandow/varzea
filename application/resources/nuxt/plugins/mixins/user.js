@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 import { mapGetters } from 'vuex'
 
-const Validation = {
+const User = {
     install(Vue, options) {
         Vue.mixin({
             computed: {
@@ -15,4 +15,4 @@ const Validation = {
     },
 }
 
-Vue.use(Validation)
+Vue.use(User)

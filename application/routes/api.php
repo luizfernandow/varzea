@@ -18,3 +18,9 @@ Route::prefix('auth')->group(function () {
     Route::post('logout', 'AuthController@logout');
     Route::get('user', 'AuthController@user');
 });
+
+
+Route::prefix('ranking')->group(function () {
+    Route::get('championships', 'RankingController@championships');
+    Route::get('by-championship/{championship}', 'RankingController@byChampionship');
+});
