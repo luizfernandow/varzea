@@ -1,49 +1,79 @@
 <template>
     <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="4">
-            <v-card class="elevation-12">
-                <v-toolbar color="primary" dark flat>
-                    <v-toolbar-title>{{
-                        $t('auth.form.title')
-                    }}</v-toolbar-title>
-                </v-toolbar>
-                <v-card-text>
-                    <v-form>
-                        <v-text-field
-                            v-model="email"
-                            :label="$t('auth.form.email')"
-                            :class="{ 'error--text': errors.email }"
-                            :error-messages="errors.email"
-                            name="email"
-                            prepend-icon="mdi-account"
-                            type="text"
-                        ></v-text-field>
-
-                        <v-text-field
-                            id="password"
-                            v-model="password"
-                            :label="$t('auth.form.password')"
-                            :class="{ 'error--text': errors.password }"
-                            :error-messages="errors.password"
-                            name="password"
-                            prepend-icon="mdi-lock"
-                            type="password"
-                        ></v-text-field>
-                    </v-form>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" @click="login()">{{
-                        $t('auth.form.login')
-                    }}</v-btn>
-                </v-card-actions>
-            </v-card>
+            <ValidationObserver ref="form">
+                <v-card
+                    slot-scope="{ invalid, validated }"
+                    class="elevation-12"
+                >
+                    <v-toolbar color="primary" dark flat>
+                        <v-toolbar-title>{{
+                            $t('auth.form.title')
+                        }}</v-toolbar-title>
+                    </v-toolbar>
+                    <v-card-text>
+                        <v-form>
+                            <ValidationProvider
+                                name="email"
+                                rules="required|email"
+                            >
+                                <v-text-field
+                                    v-model="email"
+                                    slot-scope="{ errors, valid }"
+                                    :label="$t('auth.form.email')"
+                                    :error-messages="errors"
+                                    :success="valid"
+                                    name="email"
+                                    prepend-icon="mdi-account"
+                                    type="text"
+                                    required
+                                ></v-text-field>
+                            </ValidationProvider>
+                            <ValidationProvider
+                                name="password"
+                                rules="required"
+                            >
+                                <v-text-field
+                                    v-model="password"
+                                    slot-scope="{ errors, valid }"
+                                    :label="$t('auth.form.password')"
+                                    :error-messages="errors"
+                                    :success="valid"
+                                    name="password"
+                                    prepend-icon="mdi-lock"
+                                    type="password"
+                                    required
+                                ></v-text-field>
+                            </ValidationProvider>
+                        </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="primary"
+                            :disabled="invalid || !validated"
+                            @click="login()"
+                            >{{ $t('auth.form.login') }}</v-btn
+                        >
+                    </v-card-actions>
+                </v-card>
+            </ValidationObserver>
         </v-col>
     </v-row>
 </template>
 <script>
+import { ValidationProvider, ValidationObserver, extend } from 'vee-validate'
+import { required, email } from 'vee-validate/dist/rules'
+
+extend('required', required)
+extend('email', email)
+
 export default {
     middleware: 'guest',
+    components: {
+        ValidationProvider,
+        ValidationObserver,
+    },
     data() {
         return {
             email: '',
@@ -68,7 +98,9 @@ export default {
                                     password: this.password,
                                 },
                             })
-                            .catch((e) => {})
+                            .catch((e) => {
+                                this.$refs.form.setErrors(this.errorsApi)
+                            })
                     }.bind(this)
                 )
         },

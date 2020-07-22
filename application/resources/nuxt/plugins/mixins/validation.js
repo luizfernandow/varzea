@@ -7,7 +7,7 @@ const Validation = {
         Vue.mixin({
             computed: {
                 ...mapGetters({
-                    errors: 'validation/errors',
+                    errorsApi: 'validation/errors',
                 }),
             },
         })
