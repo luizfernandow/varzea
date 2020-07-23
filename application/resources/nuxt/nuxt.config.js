@@ -1,4 +1,5 @@
 import { join } from 'path'
+import fs from 'fs'
 import colors from 'vuetify/es5/util/colors'
 import { copySync, removeSync } from 'fs-extra'
 
@@ -45,11 +46,8 @@ export default {
      */
     css: [],
 
-
     router: {
-        middleware: [
-            'clearValidationErrors'
-        ]
+        middleware: ['clearValidationErrors'],
     },
 
     /*
@@ -59,7 +57,7 @@ export default {
         '~/plugins/mixins/validation',
         '~/plugins/mixins/user',
         '~/plugins/i18n',
-        '~/plugins/axios'
+        '~/plugins/axios',
     ],
     /*
      ** Auto import components
@@ -77,7 +75,7 @@ export default {
         '@nuxtjs/vuetify',
     ],
     eslint: {
-        fix: true
+        fix: true,
     },
     /*
      ** Nuxt.js modules
@@ -154,7 +152,7 @@ export default {
      ** Build configuration
      */
     build: {
-        transpile: ["vee-validate/dist/rules"],
+        transpile: ['vee-validate/dist/rules'],
         /*
          ** You can extend webpack config here
          */
@@ -164,41 +162,30 @@ export default {
         dir: join(__dirname, '/dist'),
     },
     hooks: {
-        generate: {
+        export: {
+            // Used for server the static files on same server as Laravel API
             done(generator) {
                 if (
                     generator.nuxt.options.dev === false &&
                     generator.nuxt.options.mode === 'spa'
                 ) {
-                    const publicDirNuxt = join(
-                        generator.nuxt.options.rootDir,
-                        'public',
-                        '_nuxt'
-                    )
                     const publicDir = join(
                         generator.nuxt.options.rootDir,
                         'public'
                     )
-                    const publicDirImages = join(publicDir, 'images')
-                    removeSync(publicDirNuxt)
-                    removeSync(publicDirImages)
-                    removeSync(join(publicDir, 'sw.js'))
-                    copySync(
-                        join(generator.nuxt.options.generate.dir, '_nuxt'),
-                        publicDirNuxt
-                    )
-                    copySync(
-                        join(generator.nuxt.options.generate.dir, 'images'),
-                        publicDirImages
-                    )
-                    copySync(
-                        join(generator.nuxt.options.generate.dir, '200.html'),
-                        join(publicDirNuxt, 'index.html')
-                    )
-                    copySync(
-                        join(generator.nuxt.options.generate.dir, 'sw.js'),
-                        join(publicDir, 'sw.js')
-                    )
+                    fs.readdir(publicDir, (err, files) => {
+                        if (err) {
+                            return
+                        }
+
+                        files.forEach((file) => {
+                            if (file !== 'index.php' && file !== 'robots.txt') {
+                                removeSync(join(publicDir, file))
+                            }
+                        })
+                    })
+
+                    copySync(generator.nuxt.options.generate.dir, publicDir)
                 }
             },
         },

@@ -25,6 +25,6 @@ class NuxtController extends Controller
      */
     protected function renderNuxtPage() : string
     {
-        return file_get_contents(public_path('_nuxt/index.html'));
+        return file_get_contents(public_path('index.html'));
     }
 }

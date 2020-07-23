@@ -46,6 +46,9 @@ nuxt-logs:
 nuxt-build:
 	docker run --rm -v $(shell pwd)/application:/app -w="/app" -it node:12 bash -c "npm install && npm run build"
 
+nuxt-export:
+	docker run --rm -v $(shell pwd)/application:/app -w="/app" -it node:12 bash -c "npm run export"
+		
 logs:
 	@cd $(DIR) && docker-compose logs -f
 

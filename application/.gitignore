@@ -1,9 +1,8 @@
 /node_modules
-/public/hot
-/public/storage
-/public/_nuxt
-/public/images
-/public/sw.js
+/public/*
+!/public/index.php
+!/public/robots.txt
+/public/*
 /storage/*.key
 /vendor
 .env
