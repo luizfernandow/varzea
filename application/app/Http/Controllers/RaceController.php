@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Race;
 use App\Http\Resources\Race as RaceResource;
+use App\Models\Race;
 
 class RaceController extends Controller
 {
-     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    /**
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
     public function index()
     {
         $races = Race::orderBy('date_start', 'desc')->get();

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Championship extends Model
 {
-	use SoftDeletes;
-	
+    use SoftDeletes;
+    
     protected $fillable = ['name'];
 }

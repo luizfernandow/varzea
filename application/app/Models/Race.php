@@ -3,24 +3,24 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Race extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
-	const TYPE_LAPS = 'laps';
-	const TYPE_HOURS = 'hours';
+    const TYPE_LAPS = 'laps';
+    const TYPE_HOURS = 'hours';
 
     protected $fillable = ['name', 'type', 'laps', 'hours', 'group', 'date_start', 'time_start', 'locked', 'championship_id'];
 
-     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
+    /**
+    * The attributes that should be mutated to dates.
+    *
+    * @var array
+    */
     protected $dates = ['deleted_at'];
 
     private static $positionPoint = [];
@@ -74,7 +74,7 @@ class Race extends Model
     public static function getBasePoint($positionIndex)
     {
         if (empty(self::$positionPoint)) {
-            self::$positionPoint = DB::table('base_points')->get(); 
+            self::$positionPoint = DB::table('base_points')->get();
         }
 
         return isset(self::$positionPoint[$positionIndex]) ? self::$positionPoint[$positionIndex]->point : 1;

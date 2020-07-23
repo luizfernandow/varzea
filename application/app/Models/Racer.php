@@ -2,22 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Racer extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
-	protected $fillable = ['name', 'birthdate', 'weight'];
+    protected $fillable = ['name', 'birthdate', 'weight'];
 
 
-	 /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
+    /**
+    * The attributes that should be mutated to dates.
+    *
+    * @var array
+    */
     protected $dates = ['deleted_at'];
 
 
@@ -41,4 +41,3 @@ class Racer extends Model
                 ->get();
     }
 }
- 
