@@ -80,14 +80,19 @@ export default {
                     to: '/',
                 },
                 {
-                    icon: 'mdi-calendar',
-                    title: this.$t('menu.calendar'),
-                    to: '/calendar',
-                },
-                {
                     icon: 'mdi-trophy',
                     title: this.$t('menu.ranking'),
                     to: '/ranking',
+                },
+                {
+                    icon: 'mdi-flag',
+                    title: this.$t('menu.races'),
+                    to: '/races',
+                },
+                {
+                    icon: 'mdi-calendar',
+                    title: this.$t('menu.calendar'),
+                    to: '/calendar',
                 },
             ],
             title: 'Várzealand',

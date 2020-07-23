@@ -1,7 +1,7 @@
 <template>
     <v-card class="mx-auto">
-        <v-list subheader>
-            <v-subheader>{{ $t('ranking.championships') }}</v-subheader>
+        <v-card-title>{{ $t('ranking.championships') }}</v-card-title>
+        <v-list>
             <v-list-item
                 v-for="item in championships"
                 :key="item.id"

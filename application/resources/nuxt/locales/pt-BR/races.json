@@ -1,4 +1,4 @@
 {
 	"title": "Corridas",
-  "laps": "Voltas"
+ 	"laps": "{laps} Voltas"
 }

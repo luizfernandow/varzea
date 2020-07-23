@@ -24,3 +24,8 @@ Route::prefix('ranking')->group(function () {
     Route::get('championships', 'RankingController@championships');
     Route::get('by-championship/{championship}', 'RankingController@byChampionship');
 });
+
+Route::prefix('races')->group(function () {
+    Route::get('/', 'RaceController@index');
+    Route::get('/{race}', 'RaceController@show');
+});

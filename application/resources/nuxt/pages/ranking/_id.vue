@@ -1,7 +1,7 @@
 <template>
     <v-card class="mx-auto">
-        <v-list two-line subheader>
-            <v-subheader>{{ championship.name }}</v-subheader>
+        <v-card-title>{{ championship.name }}</v-card-title>
+        <v-list two-line>
             <v-list-item v-for="(item, index) in ranking" :key="item.id">
                 <v-list-item-avatar>
                     <v-img src="/images/biker.png"></v-img>
