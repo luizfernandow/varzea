@@ -148,6 +148,40 @@ export default {
             },
         },
     },
+
+    pwa: {
+        manifest: {
+            name: 'Várzealand App',
+            short_name: 'Várzealand',
+            orientation: 'portrait',
+        },
+        workbox: {
+            runtimeCaching: [
+                {
+                    urlPattern: 'https://fonts.(?:googleapis|gstatic).com/(.*)',
+                    handler: 'staleWhileRevalidate',
+                    strategyOptions: {
+                        cacheName: 'googleapis',
+                        cacheExpiration: {
+                            maxEntries: 30,
+                        },
+                    },
+                },
+                {
+                    urlPattern: /\.(?:png|gif|jpg|jpeg|svg)$/,
+                    handler: 'cacheFirst',
+                    strategyOptions: {
+                        cacheName: 'images',
+                        cacheExpiration: {
+                            maxEntries: 60,
+                            maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+                        },
+                    },
+                },
+            ],
+        },
+    },
+
     /*
      ** Build configuration
      */
@@ -162,7 +196,7 @@ export default {
         dir: join(__dirname, '/dist'),
     },
     hooks: {
-        export: {
+        generate: {
             // Used for server the static files on same server as Laravel API
             done(generator) {
                 if (
@@ -173,7 +207,7 @@ export default {
                         generator.nuxt.options.rootDir,
                         'public'
                     )
-                    fs.readdir(publicDir, (err, files) => {
+                    fs.readdirSync(publicDir, (err, files) => {
                         if (err) {
                             return
                         }
