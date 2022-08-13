@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-buster
+FROM php:8.1-fpm-bullseye
 
 WORKDIR /var/www/html
 
@@ -9,6 +9,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt-get update \
     && apt install -y vim unzip libmcrypt-dev zlib1g-dev libpq-dev libpng-dev libxml2-dev libgmp-dev libzip-dev libssl-dev \
     && apt-get clean
+
 RUN docker-php-ext-install gmp pdo_pgsql zip pcntl \
     && pecl install -o -f redis \
     && pecl install -o -f crypto \
@@ -18,6 +19,6 @@ RUN docker-php-ext-install gmp pdo_pgsql zip pcntl \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # NODE
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash \
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash \
     && apt-get install -y nodejs \
     && apt-get clean
