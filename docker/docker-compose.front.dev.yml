@@ -1,7 +1,7 @@
 version: "3"
 services:
     front:
-        image: node:12-slim
+        image: node:16-slim
         container_name: nuxt-varzea
         working_dir: "/var/www/app"
         environment:

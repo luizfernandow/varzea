@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NuxtController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,4 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{any?}', 'NuxtController')->where('any', '^(?!api\/)[\/\w\.-]*');
+Route::get('/{any?}', NuxtController::class)->where('any', '^(?!api\/)[\/\w\.-]*');

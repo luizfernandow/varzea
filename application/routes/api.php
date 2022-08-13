@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RankingController;
+use App\Http\Controllers\RaceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,18 +17,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('auth')->group(function () {
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::get('user', 'AuthController@user');
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('user', [AuthController::class, 'user']);
 });
 
 
 Route::prefix('ranking')->group(function () {
-    Route::get('championships', 'RankingController@championships');
-    Route::get('by-championship/{championship}', 'RankingController@byChampionship');
+    Route::get('championships', [RankingController::class, 'championships']);
+    Route::get('by-championship/{championship}', [RankingController::class, 'byChampionship']);
 });
 
 Route::prefix('races')->group(function () {
-    Route::get('/', 'RaceController@index');
-    Route::get('/{race}', 'RaceController@show');
+    Route::get('/', [RaceController::class, 'index']);
+    Route::get('/{race}', [RaceController::class, 'show']);
 });
