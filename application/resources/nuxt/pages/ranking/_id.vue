@@ -9,7 +9,7 @@
 
                 <v-list-item-content>
                     <v-list-item-title
-                        >{{ (index + 1) }} - {{ item.name }}</v-list-item-title
+                        >{{ index + 1 }} - {{ item.name }}</v-list-item-title
                     >
                     <v-list-item-subtitle
                         v-text="$t('ranking.points', { points: item.points })"

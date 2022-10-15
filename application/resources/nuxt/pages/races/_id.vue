@@ -23,7 +23,7 @@
 
                     <v-list-item-content>
                         <v-list-item-title
-                            >{{ (index + 1) }} -
+                            >{{ index + 1 }} -
                             {{ item.racer.name }}</v-list-item-title
                         >
                         <v-list-item-subtitle v-text="item.time">
@@ -41,7 +41,7 @@
                 >
                     <v-list-item-content>
                         <v-list-item-title>
-                            {{ (indexSub + 1) }}. {{ subItem }}
+                            {{ indexSub + 1 }}. {{ subItem }}
                             <v-icon v-if="subItem === ranking.best_lap.time"
                                 >mdi-medal</v-icon
                             >
