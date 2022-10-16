@@ -19,7 +19,9 @@ services:
         networks:
             - varzea
     php:
-        build: ./php
+        build: 
+            context: ../
+            dockerfile: docker/php/Dockerfile
         image: docker_varzea/php
         container_name: php-varzea
         volumes:
