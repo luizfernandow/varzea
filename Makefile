@@ -29,6 +29,12 @@ build:
 		--tag varzea:latest \
 		.
 
+build-production:
+	DOCKER_BUILDKIT=1 docker build \
+		--file docker/php/Dockerfile \
+		--tag varzea:latest \
+		.
+
 rebuild:
 	@cd $(DIR) && docker-compose build --no-cache
 

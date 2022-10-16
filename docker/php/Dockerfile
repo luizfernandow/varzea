@@ -22,3 +22,8 @@ RUN docker-php-ext-install gmp pdo_pgsql zip pcntl \
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash \
     && apt-get install -y nodejs \
     && apt-get clean
+
+#PRODUCTION IMAGE
+FROM php:8.1-fpm-bullseye
+WORKDIR /var/www/html
+COPY ../application /var/www/html
