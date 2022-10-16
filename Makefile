@@ -23,7 +23,11 @@ help:
 	@echo "  production    Start production envirioment"
 
 build:
-	@cd $(DIR) && docker-compose build
+	DOCKER_BUILDKIT=1 docker build \
+		--file docker/php/Dockerfile \
+		--target dependencies \
+		--tag varzea:latest \
+		.
 
 rebuild:
 	@cd $(DIR) && docker-compose build --no-cache

@@ -1,0 +1,45 @@
+name: Deployment workflow
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: [main]
+
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: 'application/.nvmrc'
+
+      - name: Enable cache for packages
+        id: cache
+        uses: actions/cache@v2 # https://github.com/actions/cache/blob/main/examples.md#node---npm
+        with:
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: |
+            ${{ github.workspace }}/.npm
+            ${{ github.workspace }}/node_modules
+            
+      - name: Install packages
+        if: steps.cache.outputs.cache-hit != 'true' #only run npm ci if cache for packages not found
+        run: npm ci
+
+      - name: nuxt-build
+        run: npm run build
+
+      - name: nuxt-generate
+        run: npm run generate
+
+      - name: Upload project build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: |
+            ${{ github.workspace }}/application/public
