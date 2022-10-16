@@ -26,16 +26,16 @@ jobs:
           path: |
             ${{ github.workspace }}/.npm
             ${{ github.workspace }}/node_modules
-            
+
       - name: Install packages
         if: steps.cache.outputs.cache-hit != 'true' #only run npm ci if cache for packages not found
-        run: npm ci
+        run: cd application && npm ci
 
       - name: nuxt-build
-        run: npm run build
+        run: cd application && npm run build
 
       - name: nuxt-generate
-        run: npm run generate
+        run: cd application && npm run generate
 
       - name: Upload project build
         uses: actions/upload-artifact@v2
