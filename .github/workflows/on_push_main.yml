@@ -47,6 +47,7 @@ jobs:
   docker:
     name: Docker build
     runs-on: ubuntu-latest
+    needs: nuxt
     steps:
       - uses: actions/checkout@v3
 
