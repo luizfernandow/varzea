@@ -70,7 +70,6 @@ jobs:
         with:
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          load: true
           push: true
           file: docker/php/Dockerfile
           tags: varzea:latest 
