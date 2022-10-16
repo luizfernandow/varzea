@@ -3,7 +3,7 @@ name: Certbot renew
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 12 ? * SUN *'
+    - cron: '0 12 * * 0'
 
 jobs:
   nuxt:
