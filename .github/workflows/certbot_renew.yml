@@ -17,7 +17,6 @@ jobs:
           username: ${{ secrets.AWS_USERNAME }}
           key: ${{ secrets.AWS_KEY }}
           port: ${{ secrets.AWS_PORT }}
-          fingerprint: ${{ secrets.AWS_FINGERPRINT }}
           script: |
             cd varzea
             make certbot-renew
