@@ -50,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - run: mv composer.* .
+      - run: mv ${{ github.workspace }}/application/composer.* ${{ github.workspace }}
 
       - name: Cache Composer dependencies
         uses: actions/cache@v3
