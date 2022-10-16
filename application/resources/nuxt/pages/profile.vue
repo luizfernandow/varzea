@@ -1,5 +1,7 @@
 <template>
-    <h1>{{ user.name }}</h1>
+    <v-card>
+        <v-card-title>{{ user.name }}</v-card-title>
+    </v-card>
 </template>
 
 <script>
