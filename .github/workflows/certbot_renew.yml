@@ -1,0 +1,22 @@
+name: Certbot renew
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 12 ? * SUN *'
+
+jobs:
+  nuxt:
+    name: renew
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing certbot-renew
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_KEY }}
+          port: ${{ secrets.AWS_PORT }}
+          script: |
+            cd varzea
+            ls
