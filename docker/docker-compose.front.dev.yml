@@ -1,4 +1,4 @@
-version: "3"
+version: "3.4"
 services:
     front:
         image: node:16-slim
