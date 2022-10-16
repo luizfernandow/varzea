@@ -18,17 +18,28 @@ jobs:
         with:
           node-version-file: 'application/.nvmrc'
 
+      - name: Get cache paths
+        id: path
+        shell: bash
+        run: |
+          prefix=$(npm prefix --global)
+          bin=$(npm bin --global)
+          echo "::set-output name=prefix::$prefix"
+          echo "::set-output name=bin::$bin"
+
       - name: Enable cache for packages
         id: cache
-        uses: actions/cache@v3 # https://github.com/actions/cache/blob/main/examples.md#node---npm
+        uses: actions/cache@v3 
         with:
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-npx-${{ hashFiles('**/package-lock.json') }}
           path: |
             ${{ github.workspace }}/.npm
             ${{ github.workspace }}/node_modules
+            ${{ steps.path.outputs.prefix }}/lib/node_modules
+            ${{ steps.path.outputs.bin }}
 
       - name: Install packages
-        if: steps.cache.outputs.cache-hit != 'true' #only run npm ci if cache for packages not found
+        if: steps.cache.outputs.cache-hit != 'true'
         run: cd application && npm ci
 
       - name: nuxt-build
