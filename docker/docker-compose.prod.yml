@@ -14,12 +14,10 @@ services:
     php:
         image: ${USERNAME}/varzea:latest
         container_name: php-varzea
-        env_file:
-            - "../application/.env"
         volumes:
             - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
+            - "../application/.env:/var/www/html/.env"
             - "../application/storage:/var/www/html/storage"
 volumes:
     certs:
     certs-data:
-    application:

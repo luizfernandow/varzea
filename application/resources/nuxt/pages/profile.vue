@@ -8,10 +8,7 @@
             ></v-progress-linear>
         </template>
 
-        <v-img
-            height="250"
-            src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-        ></v-img>
+        <v-img height="250" src="/images/mapa.jpeg"></v-img>
 
         <v-card-title>{{ user.name }}</v-card-title>
 
