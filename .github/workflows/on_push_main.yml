@@ -50,6 +50,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - run: mv composer.* .
+
       - name: Cache Composer dependencies
         uses: actions/cache@v3
         with:
@@ -58,7 +60,6 @@ jobs:
 
       - name: Install dependencies
         uses: php-actions/composer@v7
-        working-directory: ./application
         with:
           dev: no
           args: --profile --ignore-platform-reqs
@@ -68,7 +69,7 @@ jobs:
         with:
           name: vendor
           path: |
-            ${{ github.workspace }}/application/vendor
+            ${{ github.workspace }}/vendor
   
   docker:
     name: Docker build
