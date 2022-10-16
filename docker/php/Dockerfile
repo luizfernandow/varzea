@@ -27,3 +27,4 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash \
 FROM dependencies
 WORKDIR /var/www/html
 COPY ../application /var/www/html
+RUN composer install
