@@ -10,6 +10,8 @@ jobs:
   nuxt:
     name: Nuxt build
     runs-on: ubuntu-latest
+    env:
+      NUXT_API_URL: http://varzea.local
     steps:
       - uses: actions/checkout@v3
 
