@@ -18,15 +18,6 @@ jobs:
         with:
           node-version-file: 'application/.nvmrc'
 
-      - name: Get cache paths
-        id: path
-        shell: bash
-        run: |
-          prefix=$(npm prefix --global)
-          bin=$(npm bin --global)
-          echo "::set-output name=prefix::$prefix"
-          echo "::set-output name=bin::$bin"
-
       - name: Enable cache for packages
         id: cache
         uses: actions/cache@v3 
@@ -35,8 +26,6 @@ jobs:
           path: |
             ${{ github.workspace }}/.npm
             ${{ github.workspace }}/node_modules
-            ${{ steps.path.outputs.prefix }}/lib/node_modules
-            ${{ steps.path.outputs.bin }}
 
       - name: Install packages
         if: steps.cache.outputs.cache-hit != 'true'
