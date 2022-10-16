@@ -19,4 +19,4 @@ jobs:
           port: ${{ secrets.AWS_PORT }}
           script: |
             cd varzea
-            ls -al
+            make certbot-renew
