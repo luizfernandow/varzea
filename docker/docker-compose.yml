@@ -2,7 +2,7 @@ version: '3'
 services:
     web:
         image: nginx:1.18
-        container_name: nginx-varzea=
+        container_name: nginx-varzea
         ports:
             - "80:80"
         environment:
