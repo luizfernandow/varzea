@@ -24,6 +24,6 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash \
     && apt-get clean
 
 #PRODUCTION IMAGE
-FROM php:8.1-fpm-bullseye
+FROM dependencies
 WORKDIR /var/www/html
 COPY ../application /var/www/html
