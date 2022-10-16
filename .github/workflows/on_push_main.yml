@@ -27,7 +27,7 @@ jobs:
           key: ${{ runner.os }}-node-npx-${{ hashFiles('**/package-lock.json') }}
           path: |
             ${{ github.workspace }}/.npm
-            ${{ github.workspace }}/node_modules
+            ${{ github.workspace }}/application/node_modules
 
       - name: Install packages
         if: steps.cache.outputs.cache-hit != 'true'
