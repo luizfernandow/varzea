@@ -1,5 +1,6 @@
 <template>
     <div class="map-iframe">
+        <h1>Test</h1>
         <iframe
             width="100%"
             height="100%"
