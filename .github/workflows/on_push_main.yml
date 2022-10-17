@@ -92,5 +92,7 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/varzea:latest  
             cd varzea
+            make stop
+            docker volume rm docker_application
             git pull
             make production

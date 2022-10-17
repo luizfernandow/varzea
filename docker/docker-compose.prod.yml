@@ -16,7 +16,7 @@ services:
         container_name: php-varzea
         volumes:
             - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
-            - application:/var/www/html:ro
+            - application:/var/www/html
             - "../application/.env:/var/www/html/.env"
             - "../application/storage:/var/www/html/storage"
 volumes:
