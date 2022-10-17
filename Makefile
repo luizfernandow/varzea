@@ -65,6 +65,9 @@ logs:
 php:
 	@cd $(DIR) && docker exec -it $(shell cd $(DIR) && docker-compose ps -q php) bash
 
+deploy:
+	@cd $(DIR) && docker exec -it $(shell cd $(DIR) && docker-compose ps -q php) bash deploy.sh
+
 php-artisan:
 	@cd $(DIR) && docker exec -u $(shell id -u):$(shell id -g) -it $(shell cd $(DIR) && docker-compose ps -q php) bash
 
