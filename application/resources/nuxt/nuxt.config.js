@@ -53,6 +53,7 @@ export default {
         '~/plugins/mixins/user',
         '~/plugins/i18n',
         '~/plugins/axios',
+        '~/plugins/serviceWorker.client.js',
     ],
     /*
      ** Auto import components

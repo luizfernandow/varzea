@@ -22,9 +22,6 @@ php artisan route:cache
 # Clear and cache config
 php artisan config:cache
 
-# Clear and cache views
-php artisan view:cache
-
 echo ""
 echo "Setup completed!"
 echo ""
