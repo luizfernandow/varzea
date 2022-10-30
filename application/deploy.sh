@@ -7,8 +7,23 @@ chown -R www-data:www-data storage
 echo "chown -R www-data:www-data bootstrap/cache"
 chown -R www-data:www-data bootstrap/cache
 
+# Run database migrations
+php artisan migrate --force
 
-php artisan migrate -n
+# Clear caches
+php artisan cache:clear
+
+# Clear expired password reset tokens
+php artisan auth:clear-resets
+
+# Clear and cache routes
+php artisan route:cache
+
+# Clear and cache config
+php artisan config:cache
+
+# Clear and cache views
+php artisan view:cache
 
 echo ""
 echo "Setup completed!"
