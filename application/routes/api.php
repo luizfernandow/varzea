@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\RaceController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,10 @@ Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'user']);
+});
+
+Route::prefix('profile')->middleware('auth:sanctum')->group(function () {
+    Route::post('update', [ProfileController::class, 'update']);
 });
 
 
