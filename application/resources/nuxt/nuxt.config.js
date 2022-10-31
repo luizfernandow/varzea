@@ -138,6 +138,11 @@ export default {
             orientation: 'portrait',
         },
         workbox: {
+            cacheNames: {
+                prefix: 'varzea',
+                suffix: 'v2',
+            },
+            cleanupOutdatedCaches: true,
             runtimeCaching: [
                 {
                     urlPattern: 'https://fonts.(?:googleapis|gstatic).com/(.*)',
