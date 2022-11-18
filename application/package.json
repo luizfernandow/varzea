@@ -5,11 +5,11 @@
   "author": "Luiz Fernando",
   "private": true,
   "scripts": {
-    "build": "nuxt build resources/nuxt3/",
-    "dev": "nuxt dev resources/nuxt3/",
-    "generate": "nuxt generate resources/nuxt3/",
-    "preview": "nuxt preview resources/nuxt3/",
-    "postinstall": "nuxt prepare resources/nuxt3/"
+    "build": "nuxi build resources/nuxt3/",
+    "dev": "nuxi dev resources/nuxt3/",
+    "generate": "nuxi generate resources/nuxt3/",
+    "preview": "nuxi preview resources/nuxt3/",
+    "postinstall": "nuxi prepare resources/nuxt3/"
   },
   "devDependencies": {
     "@nuxt/vite-builder": "^3.0.0",
