@@ -39,6 +39,9 @@ jobs:
       - name: nuxt-generate
         run: cd application && npm run generate
 
+      - run: |
+          mv ${{ github.workspace }}/application/resources/nuxt3/.output/public/* ${{ github.workspace }}/application/public
+
       - name: Upload nuxt build
         uses: actions/upload-artifact@v3
         with:
