@@ -31,7 +31,7 @@ jobs:
 
       - name: Install packages
         if: steps.cache.outputs.cache-hit != 'true'
-        run: cd application && npm ci
+        run: cd application && npm install
 
       - name: nuxt-build
         run: cd application && npm run build
