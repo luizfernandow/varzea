@@ -138,6 +138,7 @@ export default {
             orientation: 'portrait',
         },
         workbox: {
+            offline: false,
             cacheNames: {
                 prefix: 'varzea',
                 suffix: 'v2',
