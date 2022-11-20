@@ -6,13 +6,13 @@
                     slot-scope="{ invalid, validated }"
                     class="elevation-12"
                 >
-                    <v-toolbar color="primary" dark flat>
-                        <v-toolbar-title>{{
-                            $t('auth.form.title')
-                        }}</v-toolbar-title>
-                    </v-toolbar>
-                    <v-card-text>
-                        <v-form>
+                    <v-form @submit.prevent="login">
+                        <v-toolbar color="primary" dark flat>
+                            <v-toolbar-title>{{
+                                $t('auth.form.title')
+                            }}</v-toolbar-title>
+                        </v-toolbar>
+                        <v-card-text>
                             <ValidationProvider
                                 name="email"
                                 rules="required|email"
@@ -45,17 +45,17 @@
                                     required
                                 ></v-text-field>
                             </ValidationProvider>
-                        </v-form>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            color="primary"
-                            :disabled="invalid || !validated"
-                            @click="login()"
-                            >{{ $t('auth.form.login') }}</v-btn
-                        >
-                    </v-card-actions>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                color="primary"
+                                type="submit"
+                                :disabled="invalid || !validated"
+                                >{{ $t('auth.form.login') }}</v-btn
+                            >
+                        </v-card-actions>
+                    </v-form>
                 </v-card>
             </ValidationObserver>
         </v-col>
