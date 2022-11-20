@@ -1,6 +1,11 @@
-<template><h1>Coming soon</h1></template>
+<template>
+    <RaceForm @raceSubmit="create" />
+</template>
 <script>
 export default {
     middleware: 'auth',
+    methods: {
+        create() {},
+    },
 }
 </script>
