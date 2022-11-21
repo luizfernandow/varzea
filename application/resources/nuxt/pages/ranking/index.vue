@@ -1,6 +1,19 @@
 <template>
     <v-card class="mx-auto">
-        <v-card-title>{{ $t('ranking.championships') }}</v-card-title>
+        <v-card-title>
+            <p class="ma-0 mr-auto">{{ $t('ranking.championships') }}</p>
+            <v-btn
+                v-if="authenticated"
+                class="mx-2"
+                fab
+                small
+                dark
+                color="indigo"
+                :to="{ name: 'championships-create' }"
+            >
+                <v-icon dark> mdi-plus </v-icon>
+            </v-btn>
+        </v-card-title>
         <v-list>
             <v-list-item
                 v-for="item in championships"

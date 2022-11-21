@@ -1,6 +1,22 @@
 <template>
     <v-card class="mx-auto">
-        <v-card-title>{{ championship.name }}</v-card-title>
+        <v-card-title>
+            <p class="ma-0 mr-auto">{{ championship.name }}</p>
+            <v-btn
+                v-if="authenticated"
+                class="mx-2"
+                fab
+                small
+                dark
+                color="indigo"
+                :to="{
+                    name: 'championships-edit-id',
+                    params: { id: championship.id },
+                }"
+            >
+                <v-icon dark> mdi-pencil </v-icon>
+            </v-btn>
+        </v-card-title>
         <v-list two-line>
             <v-list-item v-for="(item, index) in ranking" :key="item.id">
                 <v-list-item-avatar>

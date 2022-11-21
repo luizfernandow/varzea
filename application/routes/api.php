@@ -41,4 +41,8 @@ Route::prefix('races')->group(function () {
 
 Route::prefix('championships')->group(function () {
     Route::get('/', [ChampionshipController::class, 'index']);
+    Route::get('/{id}', [ChampionshipController::class, 'edit']);
+    Route::post('/create', [ChampionshipController::class, 'store']);
+    Route::put('/update/{id}', [ChampionshipController::class, 'update']);
+    Route::delete('/delete/{id}', [ChampionshipController::class, 'destroy']);
 });
