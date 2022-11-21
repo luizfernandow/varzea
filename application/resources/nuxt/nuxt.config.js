@@ -138,13 +138,23 @@ export default {
             orientation: 'portrait',
         },
         workbox: {
-            offline: false,
             cacheNames: {
                 prefix: 'varzea',
                 suffix: 'v2',
             },
             cleanupOutdatedCaches: true,
             runtimeCaching: [
+                {
+                    urlPattern: /.*\/api\/.*/,
+                    handler: 'networkFirst',
+                    strategyOptions: {
+                        cacheName: 'api',
+                        cacheExpiration: {
+                            maxEntries: 30,
+                            maxAgeSeconds: 1 * 24 * 60 * 60, // 1 Day
+                        },
+                    },
+                },
                 {
                     urlPattern: 'https://fonts.(?:googleapis|gstatic).com/(.*)',
                     handler: 'staleWhileRevalidate',

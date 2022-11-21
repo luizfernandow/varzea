@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\RaceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ChampionshipController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,4 +37,8 @@ Route::prefix('ranking')->group(function () {
 Route::prefix('races')->group(function () {
     Route::get('/', [RaceController::class, 'index']);
     Route::get('/{race}', [RaceController::class, 'show']);
+});
+
+Route::prefix('championships')->group(function () {
+    Route::get('/', [ChampionshipController::class, 'index']);
 });

@@ -5,7 +5,9 @@
 export default {
     middleware: 'auth',
     methods: {
-        create() {},
+        create(form) {
+            alert(form.name)
+        },
     },
 }
 </script>

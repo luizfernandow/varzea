@@ -2,6 +2,7 @@
 	"form": {
 		"title": "Race",
 		"name": "Name",
+		"championship": "Championship",
 		"create": "Create"
 	}
 }

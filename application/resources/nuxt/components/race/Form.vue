@@ -6,7 +6,7 @@
                     slot-scope="{ invalid, validated }"
                     class="elevation-12"
                 >
-                    <v-form @submit.prevent="handleSubmit">
+                    <v-form autocomplete="off" @submit.prevent="handleSubmit">
                         <v-toolbar color="primary" dark flat>
                             <v-toolbar-title>{{
                                 $t('race-form.form.title')
@@ -15,7 +15,7 @@
                         <v-card-text>
                             <ValidationProvider name="name" rules="required">
                                 <v-text-field
-                                    v-model="name"
+                                    v-model="form.name"
                                     slot-scope="{ errors, valid }"
                                     :label="$t('race-form.form.name')"
                                     :error-messages="errors"
@@ -25,6 +25,14 @@
                                     required
                                 ></v-text-field>
                             </ValidationProvider>
+                            <v-select
+                                v-model="form.championship_id"
+                                :items="championships"
+                                item-text="name"
+                                item-value="id"
+                                name="championship_id"
+                                :label="$t('race-form.form.championship')"
+                            ></v-select>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -52,14 +60,30 @@ export default {
         ValidationProvider,
         ValidationObserver,
     },
+    // eslint-disable-next-line vue/require-prop-types
+    props: ['formData'],
+    async fetch() {
+        this.championships = await this.$axios
+            .get('/api/championships')
+            .then((res) => res.data.data)
+    },
     data() {
         return {
-            name: '',
+            form: {
+                name: '',
+                championship_id: null,
+            },
+            championships: [],
+        }
+    },
+    created() {
+        if (this.formData) {
+            this.form = { ...this.formData }
         }
     },
     methods: {
         handleSubmit() {
-            this.$emit('raceSubmit')
+            this.$emit('raceSubmit', this.form)
         },
     },
 }

@@ -2,6 +2,7 @@
 	"form": {
 		"title": "Corrida",
 		"name": "Nome",
+		"championship": "Campeonato",
 		"create": "Criar"
 	}
 }
