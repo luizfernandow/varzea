@@ -3,6 +3,7 @@
 		"title": "Campeonato",
 		"name": "Nome",
 		"create": "Criar",
-		"update": "Atualizar"
+		"update": "Atualizar",
+		"cancel": "Cancelar"
 	}
 }

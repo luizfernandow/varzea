@@ -28,6 +28,9 @@
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
+                            <v-btn color="secondary" @click="cancel">{{
+                                $t('championship-form.form.cancel')
+                            }}</v-btn>
                             <v-btn
                                 color="primary"
                                 type="submit"
@@ -73,6 +76,9 @@ export default {
     methods: {
         handleSubmit() {
             this.$emit('championshipSubmit', this.form)
+        },
+        cancel() {
+            this.$router.go(-1)
         },
     },
 }

@@ -3,6 +3,7 @@
 		"title": "Championship",
 		"name": "Name",
 		"create": "Create",
-		"update": "Update"
+		"update": "Update",
+		"cancel": "Cancel"
 	}
 }
