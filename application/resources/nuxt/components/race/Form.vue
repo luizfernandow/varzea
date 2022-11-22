@@ -25,17 +25,124 @@
                                     required
                                 ></v-text-field>
                             </ValidationProvider>
-                            <v-select
-                                v-model="form.championship_id"
-                                :items="championships"
-                                item-text="name"
-                                item-value="id"
+                            <ValidationProvider
                                 name="championship_id"
-                                :label="$t('race-form.form.championship')"
-                            ></v-select>
+                                rules="required"
+                            >
+                                <v-select
+                                    v-model="form.championship_id"
+                                    slot-scope="{ errors, valid }"
+                                    :items="championships"
+                                    item-text="name"
+                                    item-value="id"
+                                    :error-messages="errors"
+                                    :success="valid"
+                                    name="championship_id"
+                                    :label="$t('race-form.form.championship')"
+                                ></v-select>
+                            </ValidationProvider>
+                            <v-menu
+                                ref="menuDateStart"
+                                v-model="menuDateStart"
+                                :close-on-content-click="false"
+                                transition="scale-transition"
+                                offset-y
+                                max-width="290px"
+                                min-width="auto"
+                            >
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                        v-model="dateFormatted"
+                                        :label="$t('race-form.form.date_start')"
+                                        persistent-hint
+                                        prepend-icon="mdi-calendar"
+                                        v-bind="attrs"
+                                        @blur="date = parseDate(dateFormatted)"
+                                        v-on="on"
+                                    ></v-text-field>
+                                </template>
+                                <v-date-picker
+                                    v-model="form.date_start"
+                                    name="date_start"
+                                    no-title
+                                    @input="menuDateStart = false"
+                                ></v-date-picker>
+                            </v-menu>
+
+                            <v-menu
+                                ref="menuTimeStart"
+                                v-model="menuTimeStart"
+                                :close-on-content-click="false"
+                                :nudge-right="40"
+                                :return-value.sync="form.time_start"
+                                transition="scale-transition"
+                                offset-y
+                                max-width="290px"
+                                min-width="290px"
+                            >
+                                <template v-slot:activator="{ on, attrs }">
+                                    <ValidationProvider
+                                        name="time_start"
+                                        rules="required"
+                                    >
+                                        <v-text-field
+                                            v-model="form.time_start"
+                                            slot-scope="{ errors, valid }"
+                                            :label="
+                                                $t('race-form.form.time_start')
+                                            "
+                                            :error-messages="errors"
+                                            :success="valid"
+                                            prepend-icon="mdi-clock-time-four-outline"
+                                            readonly
+                                            name="time_start"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                        ></v-text-field>
+                                    </ValidationProvider>
+                                </template>
+                                <v-time-picker
+                                    v-if="menuTimeStart"
+                                    v-model="form.time_start"
+                                    full-width
+                                    @click:minute="
+                                        $refs.menuTimeStart.save(
+                                            form.time_start
+                                        )
+                                    "
+                                ></v-time-picker>
+                            </v-menu>
+                            <v-checkbox
+                                v-model="form.type"
+                                :label="$t('race-form.form.type')"
+                            ></v-checkbox>
+                            <v-text-field
+                                v-if="!form.type"
+                                v-model="form.laps"
+                                :label="$t('race-form.form.laps')"
+                                name="name"
+                                type="number"
+                            ></v-text-field>
+                            <v-text-field
+                                v-if="form.type"
+                                v-model="form.hours"
+                                :label="$t('race-form.form.hours')"
+                                name="hours"
+                                type="number"
+                            ></v-text-field>
+                            <v-text-field
+                                v-if="form.type"
+                                v-model="form.group"
+                                :label="$t('race-form.form.group')"
+                                name="group"
+                                type="number"
+                            ></v-text-field>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
+                            <v-btn color="accent" @click="cancel">{{
+                                $t('race-form.form.cancel')
+                            }}</v-btn>
                             <v-btn
                                 color="primary"
                                 type="submit"
@@ -72,9 +179,36 @@ export default {
             form: {
                 name: '',
                 championship_id: null,
+                date_start: new Date(
+                    Date.now() - new Date().getTimezoneOffset() * 60000
+                )
+                    .toISOString()
+                    .substring(0, 10),
+                time_start: null,
+                type: false,
+                laps: null,
+                hours: null,
+                group: null,
             },
             championships: [],
+            dateFormatted: this.formatDate(
+                new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                    .toISOString()
+                    .substring(0, 10)
+            ),
+            menuDateStart: false,
+            menuTimeStart: false,
         }
+    },
+    computed: {
+        computedDateFormatted() {
+            return this.formatDate(this.form.date_start)
+        },
+    },
+    watch: {
+        'form.date_start'() {
+            this.dateFormatted = this.formatDate(this.form.date_start)
+        },
     },
     created() {
         if (this.formData) {
@@ -82,8 +216,23 @@ export default {
         }
     },
     methods: {
+        formatDate(date) {
+            if (!date) return null
+
+            const [year, month, day] = date.split('-')
+            return `${day}/${month}/${year}`
+        },
+        parseDate(date) {
+            if (!date) return null
+
+            const [month, day, year] = date.split('/')
+            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+        },
         handleSubmit() {
             this.$emit('raceSubmit', this.form)
+        },
+        cancel() {
+            this.$router.go(-1)
         },
     },
 }

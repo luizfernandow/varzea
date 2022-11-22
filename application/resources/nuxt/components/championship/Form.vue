@@ -28,7 +28,7 @@
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="secondary" @click="cancel">{{
+                            <v-btn color="accent" @click="cancel">{{
                                 $t('championship-form.form.cancel')
                             }}</v-btn>
                             <v-btn

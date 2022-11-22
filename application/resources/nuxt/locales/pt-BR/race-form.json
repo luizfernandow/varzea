@@ -3,6 +3,13 @@
 		"title": "Corrida",
 		"name": "Nome",
 		"championship": "Campeonato",
-		"create": "Criar"
+		"date_start": "Data",
+		"time_start": "Hora",
+		"type": "Tipo hora",
+		"laps": "Voltas",
+		"hours": "Horas",
+		"group": "Groupo",
+		"create": "Criar",
+		"cancel": "Cancelar"
 	}
 }

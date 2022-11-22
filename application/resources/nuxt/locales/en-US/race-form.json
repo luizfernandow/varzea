@@ -3,6 +3,13 @@
 		"title": "Race",
 		"name": "Name",
 		"championship": "Championship",
-		"create": "Create"
+		"date_start": "Date",
+		"time_start": "Time",
+		"type": "Hour type",
+		"laps": "Laps",
+		"hours": "Hours",
+		"group": "Group",
+		"create": "Create",
+		"cancel": "Cancel"
 	}
 }
