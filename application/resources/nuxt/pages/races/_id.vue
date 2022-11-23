@@ -16,6 +16,34 @@
             >
                 <v-icon dark> mdi-pencil </v-icon>
             </v-btn>
+            <v-btn
+                v-if="authenticated && !race.locked && race.type == 'hours'"
+                class="mx-2"
+                fab
+                small
+                dark
+                color="secondary"
+                :to="{
+                    name: 'races-edit-id',
+                    params: { id: race.id },
+                }"
+            >
+                <v-icon dark> mdi-account-group </v-icon>
+            </v-btn>
+            <v-btn
+                v-if="authenticated && !race.locked"
+                class="mx-2"
+                fab
+                small
+                dark
+                color="teal"
+                :to="{
+                    name: 'races-edit-id',
+                    params: { id: race.id },
+                }"
+            >
+                <v-icon dark> mdi-flag-checkered </v-icon>
+            </v-btn>
         </v-card-title>
         <v-card-text>
             {{ race.date_start }} - {{ race.time_start }}
