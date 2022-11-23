@@ -6,7 +6,9 @@ export default {
     middleware: 'auth',
     methods: {
         create(form) {
-            alert(form.name)
+            this.$axios.post('/api/races/create', form).then(() => {
+                this.$router.push('/races')
+            })
         },
     },
 }

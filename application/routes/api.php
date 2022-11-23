@@ -37,6 +37,9 @@ Route::prefix('ranking')->group(function () {
 Route::prefix('races')->group(function () {
     Route::get('/', [RaceController::class, 'index']);
     Route::get('/{race}', [RaceController::class, 'show']);
+    Route::post('/create', [RaceController::class, 'store']);
+    Route::get('/{race}/edit', [RaceController::class, 'edit']);
+    Route::put('/update/{id}', [RaceController::class, 'update']);
 });
 
 Route::prefix('championships')->group(function () {

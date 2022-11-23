@@ -1,12 +1,28 @@
 <template>
     <v-card class="mx-auto">
-        <v-card-title>{{ race.name }}</v-card-title>
+        <v-card-title>
+            <p class="ma-0 mr-auto">{{ race.name }}</p>
+            <v-btn
+                v-if="authenticated && !race.locked"
+                class="mx-2"
+                fab
+                small
+                dark
+                color="indigo"
+                :to="{
+                    name: 'races-edit-id',
+                    params: { id: race.id },
+                }"
+            >
+                <v-icon dark> mdi-pencil </v-icon>
+            </v-btn>
+        </v-card-title>
         <v-card-text>
             {{ race.date_start }} - {{ race.time_start }}
             <div class="my-4 subtitle-1">
                 {{ $t('race.best_lap') }} <v-icon>mdi-medal</v-icon>
             </div>
-            {{ ranking.best_lap.racer.name }} - {{ ranking.best_lap.time }}
+            {{ ranking.best_lap?.racer.name }} - {{ ranking.best_lap?.time }}
         </v-card-text>
         <v-divider class="mx-4"></v-divider>
         <v-list>

@@ -13,7 +13,11 @@
                             }}</v-toolbar-title>
                         </v-toolbar>
                         <v-card-text>
-                            <ValidationProvider name="name" rules="required">
+                            <ValidationProvider
+                                :immediate="update"
+                                name="name"
+                                rules="required"
+                            >
                                 <v-text-field
                                     v-model="form.name"
                                     slot-scope="{ errors, valid }"
@@ -26,6 +30,7 @@
                                 ></v-text-field>
                             </ValidationProvider>
                             <ValidationProvider
+                                :immediate="update"
                                 name="championship_id"
                                 rules="required"
                             >
@@ -51,15 +56,29 @@
                                 min-width="auto"
                             >
                                 <template v-slot:activator="{ on, attrs }">
-                                    <v-text-field
-                                        v-model="dateFormatted"
-                                        :label="$t('race-form.form.date_start')"
-                                        persistent-hint
-                                        prepend-icon="mdi-calendar"
-                                        v-bind="attrs"
-                                        @blur="date = parseDate(dateFormatted)"
-                                        v-on="on"
-                                    ></v-text-field>
+                                    <ValidationProvider
+                                        :immediate="update"
+                                        name="date_start"
+                                        rules="required"
+                                    >
+                                        <v-text-field
+                                            v-model="dateFormatted"
+                                            slot-scope="{ errors, valid }"
+                                            name="date_start"
+                                            :error-messages="errors"
+                                            :success="valid"
+                                            :label="
+                                                $t('race-form.form.date_start')
+                                            "
+                                            persistent-hint
+                                            prepend-icon="mdi-calendar"
+                                            v-bind="attrs"
+                                            @blur="
+                                                date = parseDate(dateFormatted)
+                                            "
+                                            v-on="on"
+                                        ></v-text-field>
+                                    </ValidationProvider>
                                 </template>
                                 <v-date-picker
                                     v-model="form.date_start"
@@ -82,6 +101,7 @@
                             >
                                 <template v-slot:activator="{ on, attrs }">
                                     <ValidationProvider
+                                        :immediate="update"
                                         name="time_start"
                                         rules="required"
                                     >
@@ -147,7 +167,11 @@
                                 color="primary"
                                 type="submit"
                                 :disabled="invalid || !validated"
-                                >{{ $t('race-form.form.create') }}</v-btn
+                                >{{
+                                    update
+                                        ? $t('race-form.form.update')
+                                        : $t('race-form.form.create')
+                                }}</v-btn
                             >
                         </v-card-actions>
                     </v-form>
@@ -168,7 +192,7 @@ export default {
         ValidationObserver,
     },
     // eslint-disable-next-line vue/require-prop-types
-    props: ['formData'],
+    props: ['formData', 'update'],
     async fetch() {
         this.championships = await this.$axios
             .get('/api/championships')
@@ -191,11 +215,7 @@ export default {
                 group: null,
             },
             championships: [],
-            dateFormatted: this.formatDate(
-                new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-                    .toISOString()
-                    .substring(0, 10)
-            ),
+            dateFormatted: null,
             menuDateStart: false,
             menuTimeStart: false,
         }
@@ -212,7 +232,11 @@ export default {
     },
     created() {
         if (this.formData) {
-            this.form = { ...this.formData }
+            const [day, month, year] = this.formData.date_start.split('/')
+            this.form = {
+                ...this.formData,
+                date_start: `${year}-${month}-${day}`,
+            }
         }
     },
     methods: {
