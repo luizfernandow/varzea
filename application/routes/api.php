@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChampionshipController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RaceController;
+use App\Http\Controllers\RacerController;
 use App\Http\Controllers\RankingController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,4 +52,12 @@ Route::prefix('championships')->group(function () {
     Route::post('/create', [ChampionshipController::class, 'store']);
     Route::put('/update/{id}', [ChampionshipController::class, 'update']);
     Route::delete('/delete/{id}', [ChampionshipController::class, 'destroy']);
+});
+
+Route::prefix('racers')->group(function () {
+    Route::get('/', [RacerController::class, 'index']);
+    Route::get('/{id}', [RacerController::class, 'edit']);
+    Route::post('/create', [RacerController::class, 'store']);
+    Route::put('/update/{id}', [RacerController::class, 'update']);
+    Route::delete('/delete/{id}', [RacerController::class, 'destroy']);
 });

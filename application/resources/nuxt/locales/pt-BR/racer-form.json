@@ -1,0 +1,9 @@
+{
+	"form": {
+		"title": "Corredor",
+		"name": "Nome",
+		"create": "Criar",
+		"update": "Atualizar",
+		"cancel": "Cancelar"
+	}
+}

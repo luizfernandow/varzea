@@ -1,0 +1,9 @@
+{
+	"form": {
+		"title": "Racer",
+		"name": "Name",
+		"create": "Create",
+		"update": "Update",
+		"cancel": "Cancel"
+	}
+}
