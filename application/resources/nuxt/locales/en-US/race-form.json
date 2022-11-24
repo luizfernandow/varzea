@@ -12,5 +12,13 @@
 		"create": "Create",
 		"update": "Update",
 		"cancel": "Cancel"
+	},
+	"select-groups": {
+		"racer": "Racer",
+		"group": "Group",
+		"member": "Member",
+		"add": "Add",
+		"save": "Save",
+		"delete": "Delete"
 	}
 }

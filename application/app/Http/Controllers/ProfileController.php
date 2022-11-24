@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    
     public function update(Request $request)
     {
         /** @var User $user */
@@ -17,5 +16,4 @@ class ProfileController extends Controller
 
         return response()->json('', 200);
     }
-
 }

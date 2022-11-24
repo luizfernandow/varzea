@@ -12,5 +12,13 @@
 		"create": "Criar",
 		"update": "Atualizar",
 		"cancel": "Cancelar"
+	},
+	"select-groups": {
+		"racer": "Corredor",
+		"group": "Grupo",
+		"member": "Membro",
+		"add": "Adicionar",
+		"save": "Salvar",
+		"delete": "Remover"
 	}
 }

@@ -24,7 +24,7 @@
                 dark
                 color="secondary"
                 :to="{
-                    name: 'races-edit-id',
+                    name: 'races-select-groups-id',
                     params: { id: race.id },
                 }"
             >

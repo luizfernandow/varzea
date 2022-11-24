@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\RankingController;
-use App\Http\Controllers\RaceController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChampionshipController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RaceController;
+use App\Http\Controllers\RankingController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +40,9 @@ Route::prefix('races')->group(function () {
     Route::post('/create', [RaceController::class, 'store']);
     Route::get('/{race}/edit', [RaceController::class, 'edit']);
     Route::put('/update/{id}', [RaceController::class, 'update']);
+
+    Route::get('/select-groups/{race}', [RaceController::class, 'selectGroups']);
+    Route::post('/save-groups/{id}', [RaceController::class, 'saveGroups']);
 });
 
 Route::prefix('championships')->group(function () {
