@@ -55,20 +55,19 @@ export default {
             search: '',
             headers: [
                 {
-                    text: 'Name',
+                    text: this.$t('racers.name'),
                     align: 'start',
                     sortable: false,
                     value: 'name',
                 },
-                { text: 'Actions', value: 'actions', sortable: false },
+                {
+                    text: this.$t('racers.actions'),
+                    value: 'actions',
+                    sortable: false,
+                },
             ],
             racers: [],
         }
-    },
-    methods: {
-        editItem(item) {
-            alert(item)
-        },
     },
 }
 </script>
