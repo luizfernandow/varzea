@@ -12,7 +12,7 @@ class RaceController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->only(['store']);
+        $this->middleware('auth:sanctum')->except(['index', 'show']);
     }
 
     /**
@@ -88,6 +88,18 @@ class RaceController extends Controller
             );
         }
         return response()->json('', 200);
+    }
+
+    public function startRaceGroups(Race $race)
+    {
+        $groups = RacersGroup::where('race_id', '=', $race->id)->get();
+        $racers = $groups->mapToGroups(function ($item) {
+            $item = $item->toArray();
+            $item['racer'] = Racer::where('id', '=', $item['racer_id'])->get()->first()->toArray();  
+            return [$item['group'] => $item];
+        })->toArray();
+        
+        return response()->json(['race' => $race, 'racers' => $racers], 200);
     }
 
     private function getData(Request $request)

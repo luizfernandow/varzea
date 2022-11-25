@@ -1,4 +1,6 @@
 {
 	"best_lap": "Best lap",
-  	"points": "{points} Points"
+  	"points": "{points} Points",
+	"start": "Start",
+	"reset": "Reset"
 }

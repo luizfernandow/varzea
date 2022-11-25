@@ -17,14 +17,14 @@
                 <v-icon dark> mdi-pencil </v-icon>
             </v-btn>
             <v-btn
-                v-if="authenticated && !race.locked && race.type == 'hours'"
+                v-if="authenticated && !race.locked"
                 class="mx-2"
                 fab
                 small
                 dark
                 color="secondary"
                 :to="{
-                    name: 'races-select-groups-id',
+                    name: `races-select-${race.type == 'hours' && 'groups-'}id`,
                     params: { id: race.id },
                 }"
             >
@@ -38,7 +38,7 @@
                 dark
                 color="teal"
                 :to="{
-                    name: 'races-edit-id',
+                    name: `races-start-${race.type == 'hours' && 'groups-'}id`,
                     params: { id: race.id },
                 }"
             >

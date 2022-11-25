@@ -1,4 +1,6 @@
 {
 	"best_lap": "Melhor volta",
-  	"points": "{points} Pontos"
+  	"points": "{points} Pontos",
+	"start": "Iniciar",
+	"reset": "Resetar"
 }

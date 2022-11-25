@@ -43,6 +43,7 @@ Route::prefix('races')->group(function () {
     Route::put('/update/{id}', [RaceController::class, 'update']);
 
     Route::get('/select-groups/{race}', [RaceController::class, 'selectGroups']);
+    Route::get('/start-groups/{race}', [RaceController::class, 'startRaceGroups']);
     Route::post('/save-groups/{id}', [RaceController::class, 'saveGroups']);
 });
 
