@@ -2,5 +2,11 @@
 	"best_lap": "Best lap",
   	"points": "{points} Points",
 	"start": "Start",
-	"reset": "Reset"
+	"reset": "Reset",
+	"resetDialog": {
+		"title": "Are you sure you want to reset the race?",
+		"content": "All data will be lost!",
+		"cancel": "Cancel",
+		"confirm": "Confirm"
+	}
 }

@@ -24,9 +24,8 @@
             </v-btn>
         </v-card-title>
         <v-data-table :headers="headers" :items="racers" :search="search">
-            <template v-slot:item.actions="{ item }">
+            <template v-if="authenticated" v-slot:item.actions="{ item }">
                 <v-btn
-                    v-if="authenticated"
                     class="mr-2"
                     fab
                     small
@@ -60,7 +59,7 @@ export default {
                     sortable: false,
                     value: 'name',
                 },
-                {
+                this.$auth.loggedIn && {
                     text: this.$t('racers.actions'),
                     value: 'actions',
                     sortable: false,

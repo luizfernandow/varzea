@@ -7,9 +7,12 @@
         <v-btn color="primary" :disabled="raceStarted" @click="startTimer">{{
             $t('race.start')
         }}</v-btn>
-        <v-btn color="red" @click="resetDialog = true">{{
-            $t('race.reset')
-        }}</v-btn>
+        <v-btn
+            color="red"
+            :disabled="!raceStarted"
+            @click="resetDialog = true"
+            >{{ $t('race.reset') }}</v-btn
+        >
         <v-list>
             <v-list-item
                 v-for="(items, index) in racers"
@@ -54,11 +57,14 @@ export default {
             resetDialog: false,
         }
     },
+    computed: {
+        storageTimeKey() {
+            return `timeStartedRace${this.$route.params.id}`
+        },
+    },
     mounted() {
         const self = this
-        const timeStartedRaceStorage = localStorage.getItem(
-            `timeStartedRace${this.$route.params.id}`
-        )
+        const timeStartedRaceStorage = localStorage.getItem(this.storageTimeKey)
         if (timeStartedRaceStorage) {
             this.timeStartedRace = JSON.parse(timeStartedRaceStorage)
             const startTime = new Date(this.timeStartedRace)
@@ -87,7 +93,7 @@ export default {
             if (!this.timeStartedRace) {
                 this.timeStartedRace = new Date()
                 localStorage.setItem(
-                    `timeStartedRace${this.$route.params.id}`,
+                    this.storageTimeKey,
                     JSON.stringify(this.timeStartedRace)
                 )
             }
@@ -95,7 +101,10 @@ export default {
         handleReset(reset) {
             this.resetDialog = false
             if (reset) {
-                alert('ioa')
+                localStorage.clear(this.storageTimeKey)
+                this.raceStarted = false
+                this.timerText = '-'
+                timer.stop()
             }
         },
     },

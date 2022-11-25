@@ -2,5 +2,11 @@
 	"best_lap": "Melhor volta",
   	"points": "{points} Pontos",
 	"start": "Iniciar",
-	"reset": "Resetar"
+	"reset": "Resetar",
+	"resetDialog": {
+		"title": "Tem certeza que quer resetar a corrida?",
+		"content": "Todos os dados serão perdidos!",
+		"cancel": "Cancelar",
+		"confirm": "Confirmar"
+	}
 }

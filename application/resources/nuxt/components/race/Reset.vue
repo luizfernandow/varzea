@@ -1,21 +1,21 @@
 <template>
-    <v-dialog v-model="resetDialog" max-width="290">
+    <v-dialog v-model="resetDialog" max-width="290" :persistent="true">
         <v-card>
             <v-card-title class="text-h5">
-                Tem certeza que quer resetar a corrida?
+                {{ $t('race.resetDialog.title') }}
             </v-card-title>
 
-            <v-card-text> Isso vai... blah blah </v-card-text>
+            <v-card-text> {{ $t('race.resetDialog.content') }} </v-card-text>
 
             <v-card-actions>
                 <v-spacer></v-spacer>
 
                 <v-btn color="green darken-1" text @click="close">
-                    Cancelar
+                    {{ $t('race.resetDialog.cancel') }}
                 </v-btn>
 
-                <v-btn color="red darken-1" text @click="close">
-                    Confirmar
+                <v-btn color="red darken-1" text @click="confirm">
+                    {{ $t('race.resetDialog.confirm') }}
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -34,6 +34,9 @@ export default {
     methods: {
         close() {
             this.$emit('resetRace', false)
+        },
+        confirm() {
+            this.$emit('resetRace', true)
         },
     },
 }
