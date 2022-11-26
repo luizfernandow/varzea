@@ -35,6 +35,7 @@
                         v-model="lapNumber"
                         append-outer-icon="mdi-send"
                         filled
+                        :disabled="!raceStarted"
                         :label="$t('race.doLapField')"
                         type="number"
                         @click:append-outer="doLap"
@@ -87,11 +88,15 @@ export default {
             resetDialog: false,
             saveDialog: false,
             lapNumber: null,
+            racersTime: [],
         }
     },
     computed: {
         storageTimeKey() {
             return `timeStartedRace${this.$route.params.id}`
+        },
+        storageRacersTimeKey() {
+            return `racersTime${this.$route.params.id}`
         },
     },
     mounted() {
@@ -136,6 +141,12 @@ export default {
         },
         doLap() {
             this.lapNumber = null
+            if (timer.isRunning()) {
+                localStorage.setItem(
+                    this.storageRacersTimeKey,
+                    JSON.stringify(this.racersTime)
+                )
+            }
         },
         handleSave() {
             this.saveDialog = false
