@@ -35,9 +35,11 @@
                         v-model="lapNumber"
                         append-outer-icon="mdi-send"
                         filled
-                        :disabled="!raceStarted"
+                        :disabled="!raceStarted || lapSaving"
                         :label="$t('race.doLapField')"
                         type="number"
+                        :hint="lapNumberHint"
+                        persistent-hint
                         @click:append-outer="doLap"
                     ></v-text-field>
                 </v-col>
@@ -64,6 +66,23 @@
 
 <script>
 import { Timer } from 'easytimer.js'
+const toHHMMSS = function (string) {
+    const secNum = parseInt(string, 10) // don't forget the second param
+    let hours = Math.floor(secNum / 3600)
+    let minutes = Math.floor((secNum - hours * 3600) / 60)
+    let seconds = secNum - hours * 3600 - minutes * 60
+
+    if (hours < 10) {
+        hours = '0' + hours
+    }
+    if (minutes < 10) {
+        minutes = '0' + minutes
+    }
+    if (seconds < 10) {
+        seconds = '0' + seconds
+    }
+    return hours + ':' + minutes + ':' + seconds
+}
 const timer = new Timer()
 
 export default {
@@ -88,7 +107,11 @@ export default {
             resetDialog: false,
             saveDialog: false,
             lapNumber: null,
-            racersTime: [],
+            lapNumberHint: null,
+            lapSaving: false,
+            racersTime: {},
+            racersByNumber: {},
+            lapText: {},
         }
     },
     computed: {
@@ -100,7 +123,19 @@ export default {
         },
     },
     mounted() {
-        const self = this
+        for (const group of Object.values(this.racers)) {
+            for (const racer of group) {
+                this.racersByNumber[`${racer.group}${racer.number}`] = racer
+            }
+            const groupNumber = group[0].group
+            this.racersTime[groupNumber] = {
+                lap: 0,
+                laps: [],
+                lapsNumber: [],
+                totalSeconds: 0,
+            }
+            this.lapText[groupNumber] = []
+        }
         const timeStartedRaceStorage = localStorage.getItem(this.storageTimeKey)
         if (timeStartedRaceStorage) {
             this.timeStartedRace = JSON.parse(timeStartedRaceStorage)
@@ -117,8 +152,16 @@ export default {
                 startValues: { seconds },
             })
             this.timerText = timer.getTimeValues().toString()
+        }
+        const racersTimeStorage = localStorage.getItem(
+            this.storageRacersTimeKey
+        )
+        if (racersTimeStorage) {
+            this.racersTime = JSON.parse(racersTimeStorage)
             this.raceStarted = true
         }
+
+        const self = this
         timer.addEventListener('secondsUpdated', function (e) {
             self.timerText = timer.getTimeValues().toString()
         })
@@ -140,13 +183,42 @@ export default {
             timer.pause()
         },
         doLap() {
-            this.lapNumber = null
-            if (timer.isRunning()) {
+            this.lapSaving = true
+            const racer = this.racersByNumber[this.lapNumber]
+            this.lapNumberHint = null
+            if (!racer) {
+                this.lapNumberHint = this.$t('race.doLapFieldError')
+            }
+            if (timer.isRunning() && racer) {
+                const groupNumber = racer.group
+                const racerTimer = this.racersTime[groupNumber]
+
+                const currentTime = timer.getTimeValues().toString()
+                const totalSeconds = timer.getTotalTimeValues().seconds
+
+                let lapTime = 0
+                let time = ''
+                if (!racerTimer.lap) {
+                    time = currentTime
+                    lapTime = totalSeconds
+                } else {
+                    lapTime = totalSeconds
+                    racerTimer.laps.forEach(function (item) {
+                        lapTime -= item
+                    })
+                    time = toHHMMSS(lapTime.toString())
+                }
+                this.lapText[groupNumber].push(time)
+                racerTimer.laps.push(lapTime)
+                racerTimer.lapsNumber.push(parseInt(this.lapNumber))
+                racerTimer.lap++
                 localStorage.setItem(
                     this.storageRacersTimeKey,
                     JSON.stringify(this.racersTime)
                 )
+                this.lapNumber = null
             }
+            this.lapSaving = false
         },
         handleSave() {
             this.saveDialog = false
@@ -155,6 +227,7 @@ export default {
             this.resetDialog = false
             if (reset) {
                 localStorage.clear(this.storageTimeKey)
+                localStorage.clear(this.storageRacersTimeKey)
                 this.raceStarted = false
                 this.timerText = '-'
                 timer.stop()

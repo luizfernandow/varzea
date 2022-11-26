@@ -6,6 +6,7 @@
 	"save": "Save",
 	"reset": "Reset",
 	"doLapField": "Racer number",
+	"doLapFieldError": "Racer number incorrect!!",
 	"resetDialog": {
 		"title": "Are you sure you want to reset the race?",
 		"content": "All data will be lost!",
