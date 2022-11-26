@@ -2,10 +2,19 @@
 	"best_lap": "Best lap",
   	"points": "{points} Points",
 	"start": "Start",
+	"stop": "Stop",
+	"save": "Save",
 	"reset": "Reset",
+	"doLapField": "Racer number",
 	"resetDialog": {
 		"title": "Are you sure you want to reset the race?",
 		"content": "All data will be lost!",
+		"cancel": "Cancel",
+		"confirm": "Confirm"
+	},
+	"saveDialog": {
+		"title": "Are you sure you want save the race?",
+		"content": "After save, this cannot be edited!",
 		"cancel": "Cancel",
 		"confirm": "Confirm"
 	}

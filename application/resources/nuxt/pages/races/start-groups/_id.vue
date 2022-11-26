@@ -4,15 +4,44 @@
             <p class="ma-0 mr-auto">{{ race.name }}</p>
         </v-card-title>
         <p class="d-flex justify-center mb-6 title">{{ timerText }}</p>
-        <v-btn color="primary" :disabled="raceStarted" @click="startTimer">{{
-            $t('race.start')
-        }}</v-btn>
-        <v-btn
-            color="red"
-            :disabled="!raceStarted"
-            @click="resetDialog = true"
-            >{{ $t('race.reset') }}</v-btn
-        >
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="primary"
+                :disabled="raceStarted"
+                @click="startTimer"
+                >{{ $t('race.start') }}</v-btn
+            >
+            <v-btn color="secondary" :disabled="!raceStarted" @click="stop">{{
+                $t('race.stop')
+            }}</v-btn>
+            <v-btn
+                color="green"
+                :disabled="raceStarted"
+                @click="saveDialog = true"
+                >{{ $t('race.save') }}</v-btn
+            >
+            <v-btn
+                color="red"
+                :disabled="raceStarted"
+                @click="resetDialog = true"
+                >{{ $t('race.reset') }}</v-btn
+            >
+        </v-card-actions>
+        <v-card-text class="mt-10"
+            ><v-row>
+                <v-col cols="12">
+                    <v-text-field
+                        v-model="lapNumber"
+                        append-outer-icon="mdi-send"
+                        filled
+                        :label="$t('race.doLapField')"
+                        type="number"
+                        @click:append-outer="doLap"
+                    ></v-text-field>
+                </v-col>
+            </v-row>
+        </v-card-text>
         <v-list>
             <v-list-item
                 v-for="(items, index) in racers"
@@ -28,6 +57,7 @@
             </v-list-item>
         </v-list>
         <RaceReset :dialog="resetDialog" @resetRace="handleReset" />
+        <RaceSave :dialog="saveDialog" @saveRace="handleSave" />
     </v-card>
 </template>
 
@@ -55,6 +85,8 @@ export default {
             timeStartedRace: null,
             raceStarted: false,
             resetDialog: false,
+            saveDialog: false,
+            lapNumber: null,
         }
     },
     computed: {
@@ -97,6 +129,16 @@ export default {
                     JSON.stringify(this.timeStartedRace)
                 )
             }
+        },
+        stop() {
+            this.raceStarted = false
+            timer.pause()
+        },
+        doLap() {
+            this.lapNumber = null
+        },
+        handleSave() {
+            this.saveDialog = false
         },
         handleReset(reset) {
             this.resetDialog = false

@@ -2,10 +2,19 @@
 	"best_lap": "Melhor volta",
   	"points": "{points} Pontos",
 	"start": "Iniciar",
+	"stop": "Parar",
+	"save": "Salvar",
 	"reset": "Resetar",
+	"doLapField": "Número do corredor",
 	"resetDialog": {
 		"title": "Tem certeza que quer resetar a corrida?",
 		"content": "Todos os dados serão perdidos!",
+		"cancel": "Cancelar",
+		"confirm": "Confirmar"
+	},
+	"saveDialog": {
+		"title": "Tem certeza que quer salvar a corrida?",
+		"content": "Apos salvar não sera possível editar mais!",
 		"cancel": "Cancelar",
 		"confirm": "Confirmar"
 	}
