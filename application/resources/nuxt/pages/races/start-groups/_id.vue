@@ -46,18 +46,40 @@
             </v-row>
         </v-card-text>
         <v-list>
-            <v-list-item
-                v-for="(items, index) in racers"
-                :key="index"
-                :three-line="true"
-            >
-                <v-list-item-content>
-                    {{ index }}
-                    <div v-for="item in items" :key="item.group + item.number">
-                        <div>{{ item.racer.name }}</div>
-                    </div>
-                </v-list-item-content>
-            </v-list-item>
+            <div v-for="(items, index) in racersPositions" :key="index">
+                <v-divider></v-divider>
+                <v-list-item :three-line="true">
+                    <v-list-item-content>
+                        {{ index + 1 }}
+                        <div
+                            v-for="item in items.group"
+                            :key="item.group + item.number"
+                        >
+                            <div>
+                                {{ item.racer.name }} ({{
+                                    item.group
+                                        .toString()
+                                        .concat(item.number.toString())
+                                }})
+                            </div>
+                        </div>
+                        <h3>{{ groupCurrentTime[getGroupId(items.group)] }}</h3>
+                    </v-list-item-content>
+                    <v-list-item-content>
+                        <v-alert
+                            v-for="lap in lapText[getGroupId(items.group)]"
+                            :key="lap"
+                            dense
+                            text
+                            type="success"
+                            border="left"
+                            :icon="false"
+                        >
+                            {{ lap }}
+                        </v-alert>
+                    </v-list-item-content>
+                </v-list-item>
+            </div>
         </v-list>
         <RaceReset :dialog="resetDialog" @resetRace="handleReset" />
         <RaceSave :dialog="saveDialog" @saveRace="handleSave" />
@@ -100,7 +122,8 @@ export default {
     data() {
         return {
             race: null,
-            racers: [],
+            racers: {},
+            racersPositions: [],
             timerText: '-',
             timeStartedRace: null,
             raceStarted: false,
@@ -112,6 +135,7 @@ export default {
             racersTime: {},
             racersByNumber: {},
             lapText: {},
+            groupCurrentTime: {},
         }
     },
     computed: {
@@ -121,21 +145,16 @@ export default {
         storageRacersTimeKey() {
             return `racersTime${this.$route.params.id}`
         },
+        storageLapTextKey() {
+            return `lapText${this.$route.params.id}`
+        },
+        storageGroupCurrentTimeKey() {
+            return `groupCurrentTime${this.$route.params.id}`
+        },
     },
     mounted() {
-        for (const group of Object.values(this.racers)) {
-            for (const racer of group) {
-                this.racersByNumber[`${racer.group}${racer.number}`] = racer
-            }
-            const groupNumber = group[0].group
-            this.racersTime[groupNumber] = {
-                lap: 0,
-                laps: [],
-                lapsNumber: [],
-                totalSeconds: 0,
-            }
-            this.lapText[groupNumber] = []
-        }
+        this.init()
+
         const timeStartedRaceStorage = localStorage.getItem(this.storageTimeKey)
         if (timeStartedRaceStorage) {
             this.timeStartedRace = JSON.parse(timeStartedRaceStorage)
@@ -160,6 +179,19 @@ export default {
             this.racersTime = JSON.parse(racersTimeStorage)
             this.raceStarted = true
         }
+        const lapTextStorage = localStorage.getItem(this.storageLapTextKey)
+        if (lapTextStorage) {
+            this.lapText = JSON.parse(lapTextStorage)
+        }
+
+        const groupCurrentTimeStorage = localStorage.getItem(
+            this.storageGroupCurrentTimeKey
+        )
+        if (groupCurrentTimeStorage) {
+            this.groupCurrentTime = JSON.parse(groupCurrentTimeStorage)
+        }
+
+        this.sortPositions()
 
         const self = this
         timer.addEventListener('secondsUpdated', function (e) {
@@ -167,6 +199,45 @@ export default {
         })
     },
     methods: {
+        sortPositions() {
+            const sortable = this.racersPositions
+            const self = this
+            sortable.sort((a, b) => {
+                const timerA = self.racersTime[a.groupNumber]
+                const timerB = self.racersTime[b.groupNumber]
+                if (timerA.lap === timerB.lap) {
+                    return timerA.totalSeconds - timerB.totalSeconds
+                }
+                return timerB.lap - timerA.lap
+            })
+            this.racersPositions = sortable
+        },
+        init() {
+            this.racersPositions = []
+            for (const group of Object.values(this.racers)) {
+                for (const racer of group) {
+                    this.racersByNumber[`${racer.group}${racer.number}`] = racer
+                }
+                const groupNumber = this.getGroupIdKey(group[0].group)
+                this.racersTime[groupNumber] = {
+                    lap: 0,
+                    laps: [],
+                    lapsNumber: [],
+                    totalSeconds: 0,
+                }
+                this.lapText[groupNumber] = []
+                this.racersPositions.push({
+                    groupNumber,
+                    group,
+                })
+            }
+        },
+        getGroupId(items) {
+            return this.getGroupIdKey(items[0].group)
+        },
+        getGroupIdKey(groupId) {
+            return `group_${groupId}`
+        },
         startTimer() {
             timer.start()
             this.raceStarted = true
@@ -190,7 +261,7 @@ export default {
                 this.lapNumberHint = this.$t('race.doLapFieldError')
             }
             if (timer.isRunning() && racer) {
-                const groupNumber = racer.group
+                const groupNumber = this.getGroupIdKey(racer.group)
                 const racerTimer = this.racersTime[groupNumber]
 
                 const currentTime = timer.getTimeValues().toString()
@@ -208,17 +279,33 @@ export default {
                     })
                     time = toHHMMSS(lapTime.toString())
                 }
-                this.lapText[groupNumber].push(time)
                 racerTimer.laps.push(lapTime)
                 racerTimer.lapsNumber.push(parseInt(this.lapNumber))
                 racerTimer.lap++
-                localStorage.setItem(
-                    this.storageRacersTimeKey,
-                    JSON.stringify(this.racersTime)
+                racerTimer.totalSeconds = totalSeconds
+                this.lapText[groupNumber].push(
+                    `${racerTimer.lap} - ${time} (${this.lapNumber})`
                 )
+                this.groupCurrentTime[groupNumber] = currentTime
+                this.localStorageSet()
                 this.lapNumber = null
+                this.sortPositions()
             }
             this.lapSaving = false
+        },
+        localStorageSet() {
+            localStorage.setItem(
+                this.storageRacersTimeKey,
+                JSON.stringify(this.racersTime)
+            )
+            localStorage.setItem(
+                this.storageLapTextKey,
+                JSON.stringify(this.lapText)
+            )
+            localStorage.setItem(
+                this.storageGroupCurrentTimeKey,
+                JSON.stringify(this.groupCurrentTime)
+            )
         },
         handleSave() {
             this.saveDialog = false
@@ -228,8 +315,13 @@ export default {
             if (reset) {
                 localStorage.clear(this.storageTimeKey)
                 localStorage.clear(this.storageRacersTimeKey)
+                localStorage.clear(this.storageLapTextKey)
+                localStorage.clear(this.storageGroupCurrentTimeKey)
                 this.raceStarted = false
                 this.timerText = '-'
+                this.lapText = {}
+                this.groupCurrentTime = {}
+                this.init()
                 timer.stop()
             }
         },

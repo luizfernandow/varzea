@@ -96,6 +96,7 @@ class RaceController extends Controller
         $racers = $groups->mapToGroups(function ($item) {
             $item = $item->toArray();
             $item['racer'] = Racer::where('id', '=', $item['racer_id'])->get()->first()->toArray();  
+            $item['racer']['name'] = explode(' ',$item['racer']['name'])[0];
             return [$item['group'] => $item];
         })->toArray();
         
