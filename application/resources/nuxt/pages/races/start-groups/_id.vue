@@ -83,6 +83,7 @@
         </v-list>
         <RaceReset :dialog="resetDialog" @resetRace="handleReset" />
         <RaceSave :dialog="saveDialog" @saveRace="handleSave" />
+        <CoreLoadingDialog :dialog="loading" :message="loadingMessage" />
     </v-card>
 </template>
 
@@ -136,6 +137,8 @@ export default {
             racersByNumber: {},
             lapText: {},
             groupCurrentTime: {},
+            loading: false,
+            loadingMessage: '',
         }
     },
     computed: {
@@ -280,7 +283,7 @@ export default {
                     time = toHHMMSS(lapTime.toString())
                 }
                 racerTimer.laps.push(lapTime)
-                racerTimer.lapsNumber.push(parseInt(this.lapNumber))
+                racerTimer.lapsNumber.push(racer.racer.id)
                 racerTimer.lap++
                 racerTimer.totalSeconds = totalSeconds
                 this.lapText[groupNumber].push(
@@ -309,6 +312,17 @@ export default {
         },
         handleSave() {
             this.saveDialog = false
+            this.loadingMessage = this.$t('race.saving')
+            this.loading = true
+            this.$axios
+                .post(
+                    `/api/races/save-laps-groups/${this.$route.params.id}`,
+                    this.racersTime
+                )
+                .then((res) => {
+                    this.loading = false
+                    this.$router.push(`/races/${this.$route.params.id}`)
+                })
         },
         handleReset(reset) {
             this.resetDialog = false

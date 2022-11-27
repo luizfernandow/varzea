@@ -7,6 +7,7 @@
 	"reset": "Resetar",
 	"doLapField": "Número do corredor",
 	"doLapFieldError": "Número do corredor incorreto!!",
+	"saving": "Salvando corrida..",
 	"resetDialog": {
 		"title": "Tem certeza que quer resetar a corrida?",
 		"content": "Todos os dados serão perdidos!",

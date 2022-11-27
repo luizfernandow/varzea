@@ -45,6 +45,7 @@ Route::prefix('races')->group(function () {
     Route::get('/select-groups/{race}', [RaceController::class, 'selectGroups']);
     Route::get('/start-groups/{race}', [RaceController::class, 'startRaceGroups']);
     Route::post('/save-groups/{id}', [RaceController::class, 'saveGroups']);
+    Route::post('/save-laps-groups/{id}', [RaceController::class, 'saveLapsGroups']);
 });
 
 Route::prefix('championships')->group(function () {

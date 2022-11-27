@@ -7,6 +7,7 @@ use App\Models\Race;
 use App\Models\Racer;
 use App\Models\RacersGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RaceController extends Controller
 {
@@ -101,6 +102,24 @@ class RaceController extends Controller
         })->toArray();
         
         return response()->json(['race' => $race, 'racers' => $racers], 200);
+    }
+
+    public function saveLapsGroups(Request $request, $id)
+    {
+        $race = Race::find($id);
+        foreach ($request->except('_token') as $groupLaps) {
+            for ($i = 0; $i < $groupLaps['lap']; $i++) {
+                    DB::table('laps')->insert([
+                        'race_id' => $id,
+                        'racer_id' => $groupLaps['lapsNumber'][$i],
+                        'time' => gmdate("H:i:s", $groupLaps['laps'][$i])
+                    ]);
+            }
+        }
+        $race->locked = true;
+        $race->save();
+
+        return response()->json('', 200);
     }
 
     private function getData(Request $request)
