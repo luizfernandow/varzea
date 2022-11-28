@@ -7,18 +7,27 @@
             no-action
         >
             <template v-slot:activator>
-                <v-list-item-avatar>
-                    <v-img src="/images/biker.png"></v-img>
-                </v-list-item-avatar>
-
                 <v-list-item-content>
-                    <v-list-item-title
-                        >{{ index + 1 }} -
-                        {{
-                            getNames(rankingList.groups[item.group])
-                        }}</v-list-item-title
+                    <v-list-item-title>
+                        <strong>{{ index + 1 }}</strong>
+                        <p
+                            v-for="name in getNames(
+                                rankingList.groups[item.group]
+                            )"
+                            :key="name + '_name'"
+                            class="mb-0"
+                        >
+                            {{ name }}
+                        </p>
+                    </v-list-item-title>
+                    <v-list-item-subtitle
+                        v-text="
+                            $t('race.timeLaps', {
+                                laps: item.laps,
+                                time: item.time,
+                            })
+                        "
                     >
-                    <v-list-item-subtitle v-text="item.time">
                     </v-list-item-subtitle>
                 </v-list-item-content>
             </template>
@@ -37,7 +46,7 @@
                 >
                     <v-list-item-content>
                         <v-list-item-title>
-                            {{ indexTime + indexSub + 1 }}. {{ subItem }} -
+                            {{ getLapCount(item.group) }}. {{ subItem }} -
                             {{
                                 getName(
                                     rankingList.groups[item.group],
@@ -60,6 +69,11 @@
 export default {
     // eslint-disable-next-line vue/require-prop-types
     props: ['ranking'],
+    data() {
+        return {
+            lapsCount: {},
+        }
+    },
     computed: {
         rankingList() {
             return this.ranking
@@ -67,7 +81,7 @@ export default {
     },
     methods: {
         getNames(racers) {
-            return racers.map((item) => item.racer.name).join(', ')
+            return racers.map((item) => item.racer.name)
         },
         getName(racers, racerId) {
             return racers
@@ -77,6 +91,12 @@ export default {
         },
         getRacersIdTimeLaps(racers) {
             return racers.map((item) => item.racer_id)
+        },
+        getLapCount(group) {
+            if (!this.lapsCount[group]) {
+                this.lapsCount[group] = 0
+            }
+            return ++this.lapsCount[group]
         },
     },
 }

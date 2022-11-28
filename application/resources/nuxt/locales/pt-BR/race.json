@@ -1,6 +1,7 @@
 {
 	"best_lap": "Melhor volta",
   	"points": "{points} Pontos",
+	"timeLaps": "{laps} voltas em {time}",
 	"start": "Iniciar",
 	"stop": "Parar",
 	"save": "Salvar",
