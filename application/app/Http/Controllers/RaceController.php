@@ -96,8 +96,8 @@ class RaceController extends Controller
         $groups = RacersGroup::where('race_id', '=', $race->id)->get();
         $racers = $groups->mapToGroups(function ($item) {
             $item = $item->toArray();
-            $item['racer'] = Racer::where('id', '=', $item['racer_id'])->get()->first()->toArray();  
-            $item['racer']['name'] = explode(' ',$item['racer']['name'])[0];
+            $item['racer'] = Racer::where('id', '=', $item['racer_id'])->get()->first()->toArray();
+            $item['racer']['name'] = explode(' ', $item['racer']['name'])[0];
             return [$item['group'] => $item];
         })->toArray();
         
@@ -109,7 +109,7 @@ class RaceController extends Controller
         $race = Race::find($id);
         foreach ($request->except('_token') as $groupLaps) {
             for ($i = 0; $i < $groupLaps['lap']; $i++) {
-                    DB::table('laps')->insert([
+                DB::table('laps')->insert([
                         'race_id' => $id,
                         'racer_id' => $groupLaps['lapsNumber'][$i],
                         'time' => gmdate("H:i:s", $groupLaps['laps'][$i])

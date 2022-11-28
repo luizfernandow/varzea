@@ -30,6 +30,11 @@ class Race extends Model
         return $this->hasMany('App\Models\Lap');
     }
 
+    public function racersGroup()
+    {
+        return $this->hasMany('App\Models\RacersGroup');
+    }
+
     public function getDateStartAttribute($value)
     {
         return Carbon::parse($value)->format('d/m/Y');

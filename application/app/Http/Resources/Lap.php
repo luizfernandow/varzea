@@ -16,6 +16,7 @@ class Lap extends JsonResource
     {
         return [
             'time' => $this->time,
+            'group' => $this->group,
             'racer' => new Racer($this->whenLoaded('racer')),
             'laps' => $this->when($this->laps, $this->laps),
             'points' => $this->when($this->laps, $this->points)

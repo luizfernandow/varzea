@@ -23,12 +23,21 @@ class Race extends JsonResource
             'best_lap' => $this->whenLoaded('lap', function () {
                 return new Lap($this->lap->sortBy('time')->first());
             }),
-            'rank' => $this->whenLoaded('lap', $this->generateRank()),
             'time_laps' => $this->whenLoaded('lap', function () {
                 return $this->lap->mapToGroups(function ($item, $key) {
                     return [$item['racer_id'] => $item['time']];
                 });
-            })
+            }),
+            $this->mergeWhen(!$this->isTypeHours(), [
+                'rank' => $this->whenLoaded('lap', $this->generateRank()),
+            ]),
+            $this->mergeWhen($this->isTypeHours(), [
+                'rank_group' => $this->whenLoaded('lap', $this->generateRankGroup()),
+                'groups' => $this->load('racersGroup')->racersGroup->mapToGroups(function ($item) {
+                    $item->load('racer');
+                    return [$item['group'] => $item];
+                }),
+            ]),
         ];
     }
 
@@ -38,6 +47,12 @@ class Race extends JsonResource
             $item->points = $this->laps == $item->laps ? $this->getBasePoint($key) : 0;
             return $item;
         });
+        return Lap::collection($rank);
+    }
+
+    private function generateRankGroup()
+    {
+        $rank = $this->getRankGroup();
         return Lap::collection($rank);
     }
 }
