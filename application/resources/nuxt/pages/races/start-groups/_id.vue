@@ -33,12 +33,13 @@
                 <v-col cols="12">
                     <v-text-field
                         v-model="lapNumber"
+                        :error="!!lapNumberErrorMessage"
+                        :error-messages="lapNumberErrorMessage"
                         append-outer-icon="mdi-send"
                         filled
                         :disabled="!raceStarted || lapSaving"
                         :label="$t('race.doLapField')"
                         type="number"
-                        :hint="lapNumberHint"
                         persistent-hint
                         @click:append-outer="doLap"
                     ></v-text-field>
@@ -79,10 +80,23 @@
                         </v-alert>
                     </v-list-item-content>
                 </v-list-item>
+                <div class="d-flex">
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        class="ml-auto mr-4 mb-2"
+                        fab
+                        dark
+                        small
+                        color="blue-grey"
+                        @click="verifyUndo(getGroupId(items.group))"
+                        ><v-icon>mdi-undo</v-icon></v-btn
+                    >
+                </div>
             </div>
         </v-list>
         <RaceReset :dialog="resetDialog" @resetRace="handleReset" />
         <RaceSave :dialog="saveDialog" @saveRace="handleSave" />
+        <RaceUndoLap :dialog="undoDialog" @undoLap="handleUndoLap" />
         <CoreLoadingDialog :dialog="loading" :message="loadingMessage" />
     </v-card>
 </template>
@@ -130,8 +144,10 @@ export default {
             raceStarted: false,
             resetDialog: false,
             saveDialog: false,
+            undoDialog: false,
+            undoGroup: null,
             lapNumber: null,
-            lapNumberHint: null,
+            lapNumberErrorMessage: null,
             lapSaving: false,
             racersTime: {},
             racersByNumber: {},
@@ -259,9 +275,9 @@ export default {
         doLap() {
             this.lapSaving = true
             const racer = this.racersByNumber[this.lapNumber]
-            this.lapNumberHint = null
+            this.lapNumberErrorMessage = null
             if (!racer) {
-                this.lapNumberHint = this.$t('race.doLapFieldError')
+                this.lapNumberErrorMessage = this.$t('race.doLapFieldError')
             }
             if (timer.isRunning() && racer) {
                 const groupNumber = this.getGroupIdKey(racer.group)
@@ -309,6 +325,29 @@ export default {
                 this.storageGroupCurrentTimeKey,
                 JSON.stringify(this.groupCurrentTime)
             )
+        },
+        verifyUndo(group) {
+            this.undoGroup = group
+            this.undoDialog = true
+        },
+        handleUndoLap(undo) {
+            this.undoDialog = false
+            if (undo) {
+                const racerTimer = this.racersTime[this.undoGroup]
+                if (racerTimer.lap > 0) {
+                    const lapTime = racerTimer.laps.pop()
+                    racerTimer.lapsNumber.pop()
+                    racerTimer.lap--
+                    racerTimer.totalSeconds = racerTimer.totalSeconds - lapTime
+                    this.lapText[this.undoGroup].pop()
+                    this.groupCurrentTime[this.undoGroup] = toHHMMSS(
+                        racerTimer.totalSeconds.toString()
+                    )
+                    this.localStorageSet()
+                    this.sortPositions()
+                }
+            }
+            this.undoGroup = null
         },
         handleSave() {
             this.saveDialog = false

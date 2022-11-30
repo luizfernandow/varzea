@@ -9,6 +9,12 @@
 	"doLapField": "Número do corredor",
 	"doLapFieldError": "Número do corredor incorreto!!",
 	"saving": "Salvando corrida..",
+	"undoLapDialog": {
+		"title": "Tem certeza que quer desfazer a volta?",
+		"content": "",
+		"cancel": "Cancelar",
+		"confirm": "Confirmar"
+	},
 	"resetDialog": {
 		"title": "Tem certeza que quer resetar a corrida?",
 		"content": "Todos os dados serão perdidos!",

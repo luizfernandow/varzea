@@ -9,6 +9,12 @@
 	"doLapField": "Racer number",
 	"doLapFieldError": "Racer number incorrect!!",
 	"saving": "Saving race..",
+	"undoLapDialog": {
+		"title": "Are you sure you want to undo the lap?",
+		"content": "",
+		"cancel": "Cancel",
+		"confirm": "Confirm"
+	},
 	"resetDialog": {
 		"title": "Are you sure you want to reset the race?",
 		"content": "All data will be lost!",
