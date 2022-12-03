@@ -91,40 +91,44 @@ export default {
             racersById: {},
             groups: {},
             form: {
-                racers: [],
-                group: [],
-                number: [],
+                racers: {},
+                group: {},
+                number: {},
             },
         }
     },
     created() {
         for (const group of Object.values(this.groups)) {
-            this.form.racers.push(parseInt(group.racer_id))
-            this.form.group[group.racer_id] = group.group
-            this.form.number[group.racer_id] = group.number
+            const key = this.getRacerKey(group.racer_id)
+            this.form.racers[key] = parseInt(group.racer_id)
+            this.form.group[key] = group.group
+            this.form.number[key] = group.number
         }
     },
     methods: {
+        getRacerKey(racer) {
+            return `key_${racer}`
+        },
         addToGroup() {
-            this.groups[`key_${this.racerSelected}`] = {
+            const key = this.getRacerKey(this.racerSelected)
+            this.groups[key] = {
                 racer_id: this.racerSelected,
                 group: this.racerGroup,
                 number: this.racerNumber,
             }
-            this.form.racers.push(this.racerSelected)
-            this.form.group[this.racerSelected] = this.racerGroup
-            this.form.number[this.racerSelected] = this.racerNumber
+            this.form.racers[key] = parseInt(this.racerSelected)
+            this.form.group[key] = this.racerGroup
+            this.form.number[key] = this.racerNumber
             this.racerSelected = null
             this.racerGroup = null
             this.racerNumber = null
         },
         remove(racerId) {
-            this.$delete(this.groups, `key_${racerId}`)
-            this.$delete(this.form.group, racerId)
-            this.$delete(this.form.number, racerId)
-            this.form.racers = this.form.racers.filter(
-                (item) => item !== racerId
-            )
+            const key = this.getRacerKey(racerId)
+            this.$delete(this.groups, key)
+            this.$delete(this.form.group, key)
+            this.$delete(this.form.number, key)
+            this.$delete(this.form.racers, key)
         },
         save() {
             this.$axios

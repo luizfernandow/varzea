@@ -83,9 +83,10 @@ class RaceController extends Controller
         $number = $request->number;
         RacersGroup::where('race_id', '=', $id)->delete();
         foreach ($racers as $racerId) {
+            $key = "key_$racerId";
             RacersGroup::updateOrCreate(
                 ['race_id' => $id, 'racer_id' => $racerId],
-                ['group' => $group[$racerId], 'number' => $number[$racerId]]
+                ['group' => $group[$key], 'number' => $number[$key]]
             );
         }
         return response()->json('', 200);
