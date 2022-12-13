@@ -1,7 +1,7 @@
 version: '3.4'
 services:
     web:
-        image: nginx:1.18
+        image: nginx:1.23
         container_name: nginx-varzea
         ports:
             - "80:80"
