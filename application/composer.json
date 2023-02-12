@@ -21,6 +21,8 @@
         "friendsofphp/php-cs-fixer": "^3.9",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
+        "pestphp/pest": "^1.22",
+        "pestphp/pest-plugin-laravel": "^1.4",
         "phpstan/phpstan": "*",
         "phpunit/phpunit": "^9.5.10",
         "rector/rector": "^0.15.13",
@@ -29,7 +31,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {
