@@ -6,7 +6,7 @@ use App\Http\Resources\Racer as RacerResource;
 use App\Models\Racer;
 use Illuminate\Http\Request;
 
-class RacerController extends Controller
+final class RacerController extends Controller
 {
     public function __construct()
     {
@@ -28,7 +28,6 @@ class RacerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -60,7 +59,6 @@ class RacerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

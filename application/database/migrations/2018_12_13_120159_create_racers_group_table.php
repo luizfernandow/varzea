@@ -4,16 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRacersGroupTable extends Migration
+final class CreateRacersGroupTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('racers_groups', function (Blueprint $table) {
+        Schema::create('racers_groups', function (Blueprint $table): void {
             $table->increments('id');
             $table->unsignedInteger('racer_id');
             $table->unsignedInteger('race_id');
@@ -28,10 +26,8 @@ class CreateRacersGroupTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('racers_groups');
     }

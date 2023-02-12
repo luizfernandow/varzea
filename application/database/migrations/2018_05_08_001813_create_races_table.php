@@ -4,16 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRacesTable extends Migration
+final class CreateRacesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('races', function (Blueprint $table) {
+        Schema::create('races', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name', 256);
             $table->string('type', 32);
@@ -29,10 +27,8 @@ class CreateRacesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('races');
     }

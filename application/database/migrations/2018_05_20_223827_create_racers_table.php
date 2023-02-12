@@ -4,16 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRacersTable extends Migration
+final class CreateRacersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('racers', function (Blueprint $table) {
+        Schema::create('racers', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name', 256);
             $table->date('birthdate')->nullable();
@@ -25,10 +23,8 @@ class CreateRacersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('racers');
     }

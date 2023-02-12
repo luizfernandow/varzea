@@ -7,7 +7,7 @@ use App\Http\Resources\Ranking;
 use App\Models\Championship;
 use App\Models\Racer;
 
-class RankingController extends Controller
+final class RankingController extends Controller
 {
     /**
     * Display a listing of the resource.

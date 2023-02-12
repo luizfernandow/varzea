@@ -1,0 +1,5 @@
+# sudo touch /usr/local/bin/php
+# sudo chmod +x /usr/local/bin/php
+container=$(docker ps -f name=php -q)
+command="docker exec ${container} php "$@""
+$command

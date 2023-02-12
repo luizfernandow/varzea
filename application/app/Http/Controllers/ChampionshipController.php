@@ -6,7 +6,7 @@ use App\Http\Resources\Championship as ChampionshipResource;
 use App\Models\Championship;
 use Illuminate\Http\Request;
 
-class ChampionshipController extends Controller
+final class ChampionshipController extends Controller
 {
     public function __construct()
     {
@@ -28,7 +28,6 @@ class ChampionshipController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -60,7 +59,6 @@ class ChampionshipController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class NuxtController extends Controller
+final class NuxtController extends Controller
 {
     /**
      * Handle the SPA request.
@@ -23,7 +23,7 @@ class NuxtController extends Controller
     /**
      * Render the Nuxt page.
      */
-    protected function renderNuxtPage() : string
+    private function renderNuxtPage() : string
     {
         return file_get_contents(public_path('index.html'));
     }

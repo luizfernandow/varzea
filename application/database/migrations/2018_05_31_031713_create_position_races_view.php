@@ -2,14 +2,12 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePositionRacesView extends Migration
+final class CreatePositionRacesView extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         DB::statement('CREATE VIEW position_races AS WITH positions AS (select row_number() OVER (
                      PARTITION BY race_id
@@ -29,10 +27,8 @@ class CreatePositionRacesView extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         DB::statement('DROP VIEW position_races');
     }

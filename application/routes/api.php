@@ -19,47 +19,47 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('auth')->group(function () {
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::get('user', [AuthController::class, 'user']);
+Route::prefix('auth')->group(function (): void {
+    Route::post('login', (new AuthController())->login(...));
+    Route::post('logout', (new AuthController())->logout(...));
+    Route::get('user', (new AuthController())->user(...));
 });
 
-Route::prefix('profile')->middleware('auth:sanctum')->group(function () {
-    Route::post('update', [ProfileController::class, 'update']);
+Route::prefix('profile')->middleware('auth:sanctum')->group(function (): void {
+    Route::post('update', (new ProfileController())->update(...));
 });
 
 
-Route::prefix('ranking')->group(function () {
-    Route::get('championships', [RankingController::class, 'championships']);
-    Route::get('by-championship/{championship}', [RankingController::class, 'byChampionship']);
+Route::prefix('ranking')->group(function (): void {
+    Route::get('championships', (new RankingController())->championships(...));
+    Route::get('by-championship/{championship}', (new RankingController())->byChampionship(...));
 });
 
-Route::prefix('races')->group(function () {
-    Route::get('/', [RaceController::class, 'index']);
-    Route::get('/{race}', [RaceController::class, 'show']);
-    Route::post('/create', [RaceController::class, 'store']);
-    Route::get('/{race}/edit', [RaceController::class, 'edit']);
-    Route::put('/update/{id}', [RaceController::class, 'update']);
+Route::prefix('races')->group(function (): void {
+    Route::get('/', (new RaceController())->index(...));
+    Route::get('/{race}', (new RaceController())->show(...));
+    Route::post('/create', (new RaceController())->store(...));
+    Route::get('/{race}/edit', (new RaceController())->edit(...));
+    Route::put('/update/{id}', (new RaceController())->update(...));
 
-    Route::get('/select-groups/{race}', [RaceController::class, 'selectGroups']);
-    Route::get('/start-groups/{race}', [RaceController::class, 'startRaceGroups']);
-    Route::post('/save-groups/{id}', [RaceController::class, 'saveGroups']);
-    Route::post('/save-laps-groups/{id}', [RaceController::class, 'saveLapsGroups']);
+    Route::get('/select-groups/{race}', (new RaceController())->selectGroups(...));
+    Route::get('/start-groups/{race}', (new RaceController())->startRaceGroups(...));
+    Route::post('/save-groups/{id}', (new RaceController())->saveGroups(...));
+    Route::post('/save-laps-groups/{id}', (new RaceController())->saveLapsGroups(...));
 });
 
-Route::prefix('championships')->group(function () {
-    Route::get('/', [ChampionshipController::class, 'index']);
-    Route::get('/{id}', [ChampionshipController::class, 'edit']);
-    Route::post('/create', [ChampionshipController::class, 'store']);
-    Route::put('/update/{id}', [ChampionshipController::class, 'update']);
-    Route::delete('/delete/{id}', [ChampionshipController::class, 'destroy']);
+Route::prefix('championships')->group(function (): void {
+    Route::get('/', (new ChampionshipController())->index(...));
+    Route::get('/{id}', (new ChampionshipController())->edit(...));
+    Route::post('/create', (new ChampionshipController())->store(...));
+    Route::put('/update/{id}', (new ChampionshipController())->update(...));
+    Route::delete('/delete/{id}', (new ChampionshipController())->destroy(...));
 });
 
-Route::prefix('racers')->group(function () {
-    Route::get('/', [RacerController::class, 'index']);
-    Route::get('/{id}', [RacerController::class, 'edit']);
-    Route::post('/create', [RacerController::class, 'store']);
-    Route::put('/update/{id}', [RacerController::class, 'update']);
-    Route::delete('/delete/{id}', [RacerController::class, 'destroy']);
+Route::prefix('racers')->group(function (): void {
+    Route::get('/', (new RacerController())->index(...));
+    Route::get('/{id}', (new RacerController())->edit(...));
+    Route::post('/create', (new RacerController())->store(...));
+    Route::put('/update/{id}', (new RacerController())->update(...));
+    Route::delete('/delete/{id}', (new RacerController())->destroy(...));
 });

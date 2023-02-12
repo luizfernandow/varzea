@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Race extends JsonResource
+final class Race extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,20 +20,14 @@ class Race extends JsonResource
             'date_start' => $this->date_start,
             'time_start' => $this->time_start,
             'laps' => $this->laps,
-            'best_lap' => $this->whenLoaded('lap', function () {
-                return new Lap($this->lap->sortBy('time')->first());
-            }),
-            'time_laps' => $this->whenLoaded('lap', function () {
-                return $this->lap->mapToGroups(function ($item, $key) {
-                    return [$item['racer_id'] => $item['time']];
-                });
-            }),
+            'best_lap' => $this->whenLoaded('lap', fn(): \App\Http\Resources\Lap => new Lap($this->lap->sortBy('time')->first())),
+            'time_laps' => $this->whenLoaded('lap', fn() => $this->lap->mapToGroups(fn($item, $key): array => [$item['racer_id'] => $item['time']])),
             $this->mergeWhen(!$this->isTypeHours(), [
                 'rank' => $this->whenLoaded('lap', $this->generateRank()),
             ]),
             $this->mergeWhen($this->isTypeHours(), [
                 'rank_group' => $this->whenLoaded('lap', $this->generateRankGroup()),
-                'groups' => $this->load('racersGroup')->racersGroup->mapToGroups(function ($item) {
+                'groups' => $this->load('racersGroup')->racersGroup->mapToGroups(function ($item): array {
                     $item->load('racer');
                     return [$item['group'] => $item];
                 }),

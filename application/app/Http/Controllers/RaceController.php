@@ -9,7 +9,7 @@ use App\Models\RacersGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class RaceController extends Controller
+final class RaceController extends Controller
 {
     public function __construct()
     {
@@ -31,7 +31,6 @@ class RaceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Race  $race
      * @return \Illuminate\Http\Response
      */
     public function show(Race $race)
@@ -69,9 +68,7 @@ class RaceController extends Controller
     {
         $racers = Racer::select('id', 'name')->orderBy('name')->get();
         $groups = RacersGroup::where('race_id', '=', $race->id)->get();
-        $groups = $groups->mapWithKeys(function ($item) {
-            return ["key_{$item['racer_id']}" => $item];
-        })->toArray();
+        $groups = $groups->mapWithKeys(fn($item): array => ["key_{$item['racer_id']}" => $item])->toArray();
 
         return response()->json(['race' => $race, 'racersById' => $racers->pluck('name', 'id')->toArray(), 'racers' => $racers->toArray(), 'groups' => $groups], 200);
     }
@@ -95,10 +92,10 @@ class RaceController extends Controller
     public function startRaceGroups(Race $race)
     {
         $groups = RacersGroup::where('race_id', '=', $race->id)->get();
-        $racers = $groups->mapToGroups(function ($item) {
+        $racers = $groups->mapToGroups(function ($item): array {
             $item = $item->toArray();
             $item['racer'] = Racer::where('id', '=', $item['racer_id'])->get()->first()->toArray();
-            $item['racer']['name'] = explode(' ', $item['racer']['name'])[0];
+            $item['racer']['name'] = explode(' ', (string) $item['racer']['name'])[0];
             return [$item['group'] => $item];
         })->toArray();
         

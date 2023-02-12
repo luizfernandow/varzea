@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-class AuthController extends Controller
+final class AuthController extends Controller
 {
     /**
      * Instantiate a new controller instance.
@@ -31,11 +31,10 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             return response()->json('', 204);
-        } else {
-            throw ValidationException::withMessages([
-                'email' => [trans('auth.failed')],
-            ]);
         }
+        throw ValidationException::withMessages([
+            'email' => [trans('auth.failed')],
+        ]);
     }
 
     public function user(Request $request)

@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
-class Race extends Model
+final class Race extends Model
 {
     use SoftDeletes;
 
-    const TYPE_LAPS = 'laps';
-    const TYPE_HOURS = 'hours';
+    public const TYPE_LAPS = 'laps';
+    public const TYPE_HOURS = 'hours';
 
     protected $fillable = ['name', 'type', 'laps', 'hours', 'group', 'date_start', 'time_start', 'locked', 'championship_id'];
 
@@ -27,12 +27,12 @@ class Race extends Model
 
     public function lap()
     {
-        return $this->hasMany('App\Models\Lap');
+        return $this->hasMany(\App\Models\Lap::class);
     }
 
     public function racersGroup()
     {
-        return $this->hasMany('App\Models\RacersGroup');
+        return $this->hasMany(\App\Models\RacersGroup::class);
     }
 
     public function getDateStartAttribute($value)
@@ -45,7 +45,7 @@ class Race extends Model
         return Carbon::parse($value)->format('H:i');
     }
 
-    public function isTypeHours()
+    public function isTypeHours(): bool
     {
         return $this->type == self::TYPE_HOURS;
     }

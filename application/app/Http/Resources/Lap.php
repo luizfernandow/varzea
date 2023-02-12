@@ -4,13 +4,13 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Lap extends JsonResource
+final class Lap extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return array{time: mixed, group: mixed, racer: \App\Http\Resources\Racer, laps: mixed, points: mixed}
      */
     public function toArray($request)
     {

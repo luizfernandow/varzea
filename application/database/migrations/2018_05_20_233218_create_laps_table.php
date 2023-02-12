@@ -4,16 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLapsTable extends Migration
+final class CreateLapsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('laps', function (Blueprint $table) {
+        Schema::create('laps', function (Blueprint $table): void {
             $table->increments('id');
             $table->unsignedInteger('racer_id');
             $table->unsignedInteger('race_id');
@@ -27,10 +25,8 @@ class CreateLapsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('laps');
     }

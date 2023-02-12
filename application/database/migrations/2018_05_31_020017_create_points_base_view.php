@@ -2,14 +2,12 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePointsBaseView extends Migration
+final class CreatePointsBaseView extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         DB::statement('CREATE VIEW base_points AS 
             SELECT unnest(ARRAY[1,     2,   3,   4,   5,   6,   7,   8,   9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19]) AS position,
@@ -19,10 +17,8 @@ class CreatePointsBaseView extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         DB::statement('DROP VIEW base_points');
     }

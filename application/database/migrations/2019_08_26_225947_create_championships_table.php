@@ -4,16 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChampionshipsTable extends Migration
+final class CreateChampionshipsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('championships', function (Blueprint $table) {
+        Schema::create('championships', function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name', 256);
             $table->timestamps();
@@ -23,10 +21,8 @@ class CreateChampionshipsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('championships');
     }
