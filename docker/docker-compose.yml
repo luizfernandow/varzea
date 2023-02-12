@@ -21,7 +21,7 @@ services:
             args:
                 USER_ID: ${USER_ID:-0}
                 GROUP_ID: ${GROUP_ID:-0}
-        image: docker_varzea/php
+        image: varzea:latest
         container_name: php-varzea
         networks:
             - varzea

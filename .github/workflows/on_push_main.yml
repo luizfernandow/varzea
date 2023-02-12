@@ -68,13 +68,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - uses: docker/build-push-action@v3
+      - uses: docker/build-push-action@v4
         with:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           push: true
           context: .
           file: docker/php/Dockerfile
+          target: production
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/varzea:latest 
 
   deploy:
