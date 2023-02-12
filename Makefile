@@ -25,13 +25,16 @@ help:
 build:
 	DOCKER_BUILDKIT=1 docker build \
 		--file docker/php/Dockerfile \
-		--target dependencies \
+		--target development \
 		--tag varzea:latest \
+		--build-arg USER_ID=$(shell id -u) \
+  		--build-arg GROUP_ID=$(shell id -g) \
 		.
 
 build-production:
 	DOCKER_BUILDKIT=1 docker build \
 		--file docker/php/Dockerfile \
+		--target production \
 		--tag varzea:latest \
 		.
 

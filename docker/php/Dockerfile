@@ -23,8 +23,18 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash \
     && apt-get install -y nodejs \
     && apt-get clean
 
+FROM dependencies as development
+
+ARG USER_ID
+ARG GROUP_ID
+
+RUN addgroup --gid $GROUP_ID user
+RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID user
+
+USER user
+
 #PRODUCTION IMAGE
-FROM dependencies
+FROM dependencies as production
 WORKDIR /var/www/html
 COPY ../application /var/www/html
 RUN composer install --optimize-autoloader --no-dev
