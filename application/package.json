@@ -11,8 +11,7 @@
     "generate": "node_modules/nuxt/bin/nuxt.js generate -c resources/nuxt/nuxt.config.js",
     "lint:js": "eslint --ext .js,.vue --ignore-path resources/nuxt/.gitignore --fix  resources/nuxt",
     "lint:style": "stylelint resources/nuxt/**/*.{vue,css} --ignore-path resources/nuxt/.gitignore",
-    "lint": "npm run lint:js && npm run lint:style",
-    "preinstall": "npx npm-force-resolutions"
+    "lint": "npm run lint:js && npm run lint:style"
   },
   "dependencies": {
     "@nuxtjs/auth": "^4.9.1",
@@ -23,9 +22,9 @@
     "vee-validate": "^3.3.7",
     "vue-i18n": "^8.20.0"
   },
-  "resolutions": {
+  "overrides": {
     "glob-parent": "5.1.2",
-    "nth-check": " 2.0.1"
+    "nth-check": "2.0.1"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.1.0",
