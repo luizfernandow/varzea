@@ -15,6 +15,7 @@ RUN docker-php-ext-install gmp pdo_pgsql zip pcntl \
     && pecl install -o -f crypto \
     && rm -rf /tmp/pear \
     && docker-php-ext-enable redis crypto \
+    && docker-php-ext-configure intl && docker-php-ext-install intl \
     && cd /usr/src \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
