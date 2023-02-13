@@ -68,7 +68,7 @@ final class RaceController extends Controller
     {
         $racers = Racer::select('id', 'name')->orderBy('name')->get();
         $groups = RacersGroup::where('race_id', '=', $race->id)->get();
-        $groups = $groups->mapWithKeys(fn($item): array => ["key_{$item['racer_id']}" => $item])->toArray();
+        $groups = $groups->mapWithKeys(fn ($item): array => ["key_{$item['racer_id']}" => $item])->toArray();
 
         return response()->json(['race' => $race, 'racersById' => $racers->pluck('name', 'id')->toArray(), 'racers' => $racers->toArray(), 'groups' => $groups], 200);
     }

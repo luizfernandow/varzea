@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "luizfernandow/varzea",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Application for timing and viewing XCO race results in Varzealand.",
     "keywords": [
         "framework",
         "laravel"
@@ -43,7 +43,9 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
         },
         "classmap": [
             "database/seeds",
@@ -55,7 +57,7 @@
             "Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true,
     "scripts": {
         "test": [

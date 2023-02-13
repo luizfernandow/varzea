@@ -52,6 +52,9 @@ final class RacerController extends Controller
     public function edit($id)
     {
         $racer = Racer::find($id);
+        if (!$racer) {
+            return response()->json('', 404);
+        }
 
         return response()->json($racer, 200);
     }

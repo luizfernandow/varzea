@@ -20,8 +20,8 @@ final class Race extends JsonResource
             'date_start' => $this->date_start,
             'time_start' => $this->time_start,
             'laps' => $this->laps,
-            'best_lap' => $this->whenLoaded('lap', fn(): \App\Http\Resources\Lap => new Lap($this->lap->sortBy('time')->first())),
-            'time_laps' => $this->whenLoaded('lap', fn() => $this->lap->mapToGroups(fn($item, $key): array => [$item['racer_id'] => $item['time']])),
+            'best_lap' => $this->whenLoaded('lap', fn (): \App\Http\Resources\Lap => new Lap($this->lap->sortBy('time')->first())),
+            'time_laps' => $this->whenLoaded('lap', fn () => $this->lap->mapToGroups(fn ($item, $key): array => [$item['racer_id'] => $item['time']])),
             $this->mergeWhen(!$this->isTypeHours(), [
                 'rank' => $this->whenLoaded('lap', $this->generateRank()),
             ]),
