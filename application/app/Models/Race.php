@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
 final class Race extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     public const TYPE_LAPS = 'laps';
     public const TYPE_HOURS = 'hours';
@@ -24,6 +25,11 @@ final class Race extends Model
     protected $dates = ['deleted_at'];
 
     private static $positionPoint = [];
+
+    public function championship()
+    {
+        return $this->belongsTo(\App\Models\Championship::class);
+    }
 
     public function lap()
     {

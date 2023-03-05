@@ -1,10 +1,8 @@
 <?php
 
 use App\Models\Racer;
-use App\Models\User;
 
 beforeEach(function (): void {
-    User::factory()->create();
     Racer::factory()->create(['name' => 'Brian']);
 });
 
