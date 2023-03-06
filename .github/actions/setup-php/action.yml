@@ -3,6 +3,10 @@ description: composer install
 runs:
   using: "composite"
   steps:
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: "8.2"
+  
     - uses: actions/cache@v3
       with:
         path: /tmp/composer-cache
