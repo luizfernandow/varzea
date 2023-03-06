@@ -15,7 +15,9 @@ runs:
           ${{ github.workspace }}/.npm
           ${{ github.workspace }}/application/node_modules
 
-    - run: cd application && npm install
+    - run: npm install
+      shell: bash
+      working-directory: application
       if: steps.cache.outputs.cache-hit != 'true'
 
   
