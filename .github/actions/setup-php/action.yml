@@ -6,14 +6,16 @@ runs:
     - uses: shivammathur/setup-php@v2
       with:
         php-version: "8.2"
-  
+
+    - id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
     - uses: actions/cache@v3
       with:
-        path: /tmp/composer-cache
-        key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
       
-    - uses: php-actions/composer@v6
-      with:
-        php_version: "8.2"
-        command: install -d application
+    - run: composer install -d application --no-progress --prefer-dist --optimize-autoloader
+
   

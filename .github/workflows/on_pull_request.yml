@@ -10,7 +10,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: ./.github/actions/setup-php
+      - name: Setup PHP
+        uses: ./.github/actions/setup-php
 
-      - run: composer test
+      - name: Prepare the application
         working-directory: application
+        run: |
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+          php artisan key:generate
+      
+      - name: Clear Config
+        working-directory: application
+        run: php artisan config:clear
+
+      - name: Pest
+        working-directory: application
+        run: composer test
