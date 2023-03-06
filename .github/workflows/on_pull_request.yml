@@ -7,11 +7,13 @@ jobs:
   phpstan:
     name: PHPStan Static Analysis
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: application
     steps:
       - uses: actions/checkout@v3
 
       - uses: ./.github/actions/setup-php
-        working-directory: application
 
       - uses: php-actions/phpstan@v3
         with:
@@ -20,13 +22,15 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: application
     needs: [phpstan]
 
     steps:
       - uses: actions/checkout@v3
 
       - uses: ./.github/actions/setup-php
-        working-directory: application
 
       - run: composer test
         working-directory: application
