@@ -27,4 +27,4 @@ jobs:
       - uses: ./.github/actions/setup-php
 
       - run: composer test
-        workdir: application
+        working-directory: application
