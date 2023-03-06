@@ -15,29 +15,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: 'application/.nvmrc'
-
-      - name: Enable cache for packages
-        id: cache
-        uses: actions/cache@v3 
-        with:
-          key: ${{ runner.os }}-node-npx-${{ hashFiles('**/package-lock.json') }}
-          path: |
-            ${{ github.workspace }}/.npm
-            ${{ github.workspace }}/application/node_modules
-
-      - name: Install packages
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: cd application && npm install
+      - name: Setup node
+        uses: ./.github/actions/setup-node
 
       - name: nuxt-build
-        run: cd application && npm run build
+        run: npm run build
+        working-directory: application
 
       - name: nuxt-generate
-        run: cd application && npm run generate
+        run: npm run generate
+        working-directory: application
 
       - name: Upload nuxt build
         uses: actions/upload-artifact@v3

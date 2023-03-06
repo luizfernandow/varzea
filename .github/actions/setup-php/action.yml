@@ -1,0 +1,25 @@
+name: Setup PHP
+description: composer install 
+runs:
+  using: "composite"
+  steps:
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: "8.2"
+
+    - id: composer-cache
+      shell: bash
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - id: cache
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+      
+    - run: composer install -d application --no-progress --prefer-dist --optimize-autoloader
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+
+  
