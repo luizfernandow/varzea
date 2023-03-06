@@ -8,6 +8,7 @@ runs:
         php-version: "8.2"
 
     - id: composer-cache
+      shell: bash
       run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     - uses: actions/cache@v3
@@ -17,5 +18,6 @@ runs:
         restore-keys: ${{ runner.os }}-composer-
       
     - run: composer install -d application --no-progress --prefer-dist --optimize-autoloader
+      shell: bash
 
   
