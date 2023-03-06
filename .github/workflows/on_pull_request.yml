@@ -7,8 +7,6 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    needs: [phpstan]
-
     steps:
       - uses: actions/checkout@v3
 
