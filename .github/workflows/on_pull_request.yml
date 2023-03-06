@@ -1,0 +1,30 @@
+name: Pull Request
+
+on:
+  pull_request:
+
+jobs:
+  phpstan:
+    name: PHPStan Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/setup-php
+
+      - uses: php-actions/phpstan@v3
+        with:
+          path: application/
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: [phpstan]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/setup-php
+
+      - run: composer test
+        workdir: application
