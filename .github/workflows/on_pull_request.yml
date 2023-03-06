@@ -8,11 +8,13 @@ jobs:
     name: PHPStan Static Analysis
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/actions/checkout-application
+      - uses: actions/checkout@v3
 
       - uses: ./.github/actions/setup-php
 
       - uses: php-actions/phpstan@v3
+        with:
+          path: application/
 
   test:
     name: Test
@@ -20,7 +22,7 @@ jobs:
     needs: [phpstan]
 
     steps:
-      - uses: ./.github/actions/checkout-application
+      - uses: actions/checkout@v3
 
       - uses: ./.github/actions/setup-php
 
