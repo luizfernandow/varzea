@@ -11,6 +11,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: ./.github/actions/setup-php
+        working-directory: application
 
       - uses: php-actions/phpstan@v3
         with:
@@ -25,6 +26,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: ./.github/actions/setup-php
+        working-directory: application
 
       - run: composer test
         working-directory: application
