@@ -47,3 +47,37 @@ it('create a race', function (): void {
         'data' => ['id' => 2, 'name'  => 'Tokio Drift'],
     ]);
 });
+
+it('update a race', function (): void {
+    $response = $this->putJson('/api/races/update/1', [
+        'name'  => 'Crazy Frog',
+        'laps' => 5,
+        'date_start' => '2023-03-02',
+        'time_start' => '16:00',
+        'championship_id' => $this->championship->id
+    ]);
+
+    $response->assertStatus(200);
+
+    $response = $this->get('/api/races/1');
+
+    $response->assertStatus(200)->assertJson([
+        'data' => ['id' => 1, 'name'  => 'Crazy Frog', 'laps' => 5],
+    ]);
+});
+
+
+it('not create a race', function (): void {
+    $response = $this->postJson('/api/races/create', ['name'  => fake()->text(4000)]);
+
+    $response->assertStatus(422)->assertExactJson([
+        'message'  => 'The name may not be greater than 255 characters. (and 4 more errors)',
+        'errors' => [
+            'championship_id' => ['The championship id field is required.'],
+            'date_start' => ['The date start field is required.'],
+            'laps' => ['The laps field is required when type is not present.'],
+            'name' => ['The name may not be greater than 255 characters.'],
+            'time_start' => ['The time start field is required.'],
+        ]
+    ]);
+});
