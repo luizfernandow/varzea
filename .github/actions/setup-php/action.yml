@@ -10,5 +10,6 @@ runs:
       
     - uses: php-actions/composer@v6
       with:
+        php_version: "8.2"
         command: install -d application
   
