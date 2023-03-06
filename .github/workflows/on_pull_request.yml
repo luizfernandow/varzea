@@ -4,11 +4,44 @@ on:
   pull_request:
 
 jobs:
+  nuxt:
+    name: Nuxt build
+    runs-on: ubuntu-latest
+    env:
+      NUXT_API_URL: http://varzea.local
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: ./.github/actions/setup-node
+
+      - name: nuxt-build
+        run: npm run build
+        working-directory: application
+
+      - name: nuxt-generate
+        run: npm run generate
+        working-directory: application
+
+      - name: Upload nuxt build
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: |
+            ${{ github.workspace }}/application/public
   test:
     name: Test
     runs-on: ubuntu-latest
+    needs: [nuxt]
     steps:
       - uses: actions/checkout@v3
+
+      - name: Download nuxt build
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: |
+            ${{ github.workspace }}/application/public
 
       - name: Setup PHP
         uses: ./.github/actions/setup-php

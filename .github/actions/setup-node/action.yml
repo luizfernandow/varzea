@@ -1,0 +1,21 @@
+name: Setup NODE
+description: npm install 
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version-file: 'application/.nvmrc'
+
+    - id: cache
+      uses: actions/cache@v3 
+      with:
+        key: ${{ runner.os }}-node-npx-${{ hashFiles('**/package-lock.json') }}
+        path: |
+          ${{ github.workspace }}/.npm
+          ${{ github.workspace }}/application/node_modules
+
+    - run: cd application && npm install
+      if: steps.cache.outputs.cache-hit != 'true'
+
+  
