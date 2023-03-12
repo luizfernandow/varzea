@@ -95,11 +95,6 @@ export default {
                     title: this.$t('menu.racers'),
                     to: '/racers',
                 },
-                {
-                    icon: 'mdi-calendar',
-                    title: this.$t('menu.calendar'),
-                    to: '/calendar',
-                },
             ],
             title: 'Várzealand',
         }
