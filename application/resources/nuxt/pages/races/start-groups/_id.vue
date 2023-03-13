@@ -9,24 +9,14 @@
             @saveDialog="saveDialog = true"
             @resetDialog="resetDialog = true"
         />
-        <v-card-text class="mt-10"
-            ><v-row>
-                <v-col cols="12">
-                    <v-text-field
-                        v-model="lapNumber"
-                        :error="!!lapNumberErrorMessage"
-                        :error-messages="lapNumberErrorMessage"
-                        append-outer-icon="mdi-send"
-                        filled
-                        :disabled="!raceStarted || lapSaving"
-                        :label="$t('race.doLapField')"
-                        type="number"
-                        persistent-hint
-                        @click:append-outer="doLap"
-                    ></v-text-field>
-                </v-col>
-            </v-row>
-        </v-card-text>
+        <RaceLapInput
+            :race-started="raceStarted"
+            :lap-number="lapNumber"
+            :lap-number-error-message="lapNumberErrorMessage"
+            :lap-saving="lapSaving"
+            @doLap="doLap"
+            @lapNumberUpdate="lapNumber = $event"
+        />
         <v-list>
             <div v-for="(items, index) in racersPositions" :key="index">
                 <v-divider></v-divider>
