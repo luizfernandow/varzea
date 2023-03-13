@@ -127,13 +127,13 @@ final class RaceController extends Controller
             'championship_id' => 'required',
             'date_start' => 'required|date_format:Y-m-d',
             'time_start' => 'required|date_format:H:i',
-            'laps' => 'required_without:type|integer|nullable',
-            'hours' => 'required_with:type|integer|nullable',
-            'group' => 'required_with:type|integer|nullable',
+            'laps' => 'required_if:type,false|integer|nullable',
+            'hours' => 'required_if:type,true|integer|nullable',
+            'group' => 'required_if:type,true|integer|nullable',
         ]);
 
         $data = $request->all();
-        $data['type'] = isset($data['type']) ? Race::TYPE_HOURS : Race::TYPE_LAPS;
+        $data['type'] = isset($data['type']) && $data['type'] ? Race::TYPE_HOURS : Race::TYPE_LAPS;
 
         return $data;
     }
