@@ -9,6 +9,14 @@
             @saveDialog="saveDialog = true"
             @resetDialog="resetDialog = true"
         />
+        <RaceLapInput
+            :race-started="raceStarted"
+            :lap-number="lapNumber"
+            :lap-number-error-message="lapNumberErrorMessage"
+            :lap-saving="lapSaving"
+            @doLap="doLap"
+            @lapNumberUpdate="lapNumber = $event"
+        />
         <RaceReset :dialog="resetDialog" @resetRace="handleReset" />
         <RaceSave :dialog="saveDialog" @saveRace="handleSave" />
         <RaceUndoLap :dialog="undoDialog" @undoLap="handleUndoLap" />
