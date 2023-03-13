@@ -11,15 +11,13 @@ runs:
       shell: bash
       run: echo "dir=$(composer -d application config cache-files-dir)" >> $GITHUB_OUTPUT
 
-    - id: cache
-      uses: actions/cache@v3
+    - uses: actions/cache@v3
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
         restore-keys: ${{ runner.os }}-composer-
       
     - run: composer install -d application --no-progress --prefer-dist --optimize-autoloader
-      if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
 
   

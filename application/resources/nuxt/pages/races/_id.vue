@@ -2,48 +2,50 @@
     <v-card class="mx-auto">
         <v-card-title>
             <p class="ma-0 mr-auto">{{ race.name }}</p>
-            <v-btn
-                v-if="authenticated && !race.locked"
-                class="mx-2"
-                fab
-                small
-                dark
-                color="indigo"
-                :to="{
-                    name: 'races-edit-id',
-                    params: { id: race.id },
-                }"
-            >
-                <v-icon dark> mdi-pencil </v-icon>
-            </v-btn>
-            <v-btn
-                v-if="authenticated && !race.locked"
-                class="mx-2"
-                fab
-                small
-                dark
-                color="secondary"
-                :to="{
-                    name: `races-select-${race.type == 'hours' && 'groups-'}id`,
-                    params: { id: race.id },
-                }"
-            >
-                <v-icon dark> mdi-account-group </v-icon>
-            </v-btn>
-            <v-btn
-                v-if="authenticated && !race.locked"
-                class="mx-2"
-                fab
-                small
-                dark
-                color="teal"
-                :to="{
-                    name: `races-start-${race.type == 'hours' && 'groups-'}id`,
-                    params: { id: race.id },
-                }"
-            >
-                <v-icon dark> mdi-flag-checkered </v-icon>
-            </v-btn>
+            <template v-if="authenticated && !race.locked">
+                <v-btn
+                    class="mx-2"
+                    fab
+                    small
+                    dark
+                    color="indigo"
+                    :to="{
+                        name: 'races-edit-id',
+                        params: { id: race.id },
+                    }"
+                >
+                    <v-icon dark> mdi-pencil </v-icon>
+                </v-btn>
+                <v-btn
+                    v-if="race.type === 'hours'"
+                    class="mx-2"
+                    fab
+                    small
+                    dark
+                    color="secondary"
+                    :to="{
+                        name: `races-select-groups-id`,
+                        params: { id: race.id },
+                    }"
+                >
+                    <v-icon dark> mdi-account-group </v-icon>
+                </v-btn>
+                <v-btn
+                    class="mx-2"
+                    fab
+                    small
+                    dark
+                    color="teal"
+                    :to="{
+                        name: `races-start-${
+                            race.type === 'hours' ? 'groups-' : ''
+                        }id`,
+                        params: { id: race.id },
+                    }"
+                >
+                    <v-icon dark> mdi-flag-checkered </v-icon>
+                </v-btn>
+            </template>
         </v-card-title>
         <v-card-text>
             {{ race.date_start }} - {{ race.time_start }}
