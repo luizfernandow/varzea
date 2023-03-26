@@ -42,10 +42,13 @@ Route::prefix('races')->group(function (): void {
     Route::get('/{race}/edit', (new RaceController())->edit(...));
     Route::put('/update/{id}', (new RaceController())->update(...));
 
-    Route::get('/select-groups/{race}', (new RaceController())->selectGroups(...));
-    Route::get('/start-groups/{race}', (new RaceController())->startRaceGroups(...));
-    Route::post('/save-groups/{id}', (new RaceController())->saveGroups(...));
-    Route::post('/save-laps-groups/{id}', (new RaceController())->saveLapsGroups(...));
+    Route::get('/select-groups/{race}', [RaceController::class, 'selectGroups']);
+    Route::get('/start/{race}', [RaceController::class, 'startRace']);
+    Route::get('/start-groups/{race}', [RaceController::class, 'startRaceGroups']);
+    Route::post('/save-groups/{id}', [RaceController::class, 'saveGroups']);
+    Route::post('/save-racers/{id}', [RaceController::class, 'saveRacers']);
+    Route::post('/save-laps-groups/{id}', [RaceController::class, 'saveLapsGroups']);
+    Route::post('/save-laps/{id}', [RaceController::class, 'saveLaps']);
 });
 
 Route::prefix('championships')->group(function (): void {

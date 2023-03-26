@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 final class Racer extends Model
 {
-    use SoftDeletes, HasFactory;
+    use SoftDeletes;
+    use HasFactory;
 
     protected $fillable = ['name', 'birthdate', 'weight'];
 

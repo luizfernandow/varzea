@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Championship;
 use App\Models\Race;
-
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Race>
@@ -22,7 +21,7 @@ final class RaceFactory extends Factory
         return [
             'name' => fake()->name(),
             'type' => Race::TYPE_LAPS,
-            'laps' => fake()->numberBetween(1,5),
+            'laps' => fake()->numberBetween(1, 5),
             'date_start' => fake()->date('Y-m-d'),
             'time_start' => fake()->date('H:i'),
             'championship_id' => Championship::factory(),

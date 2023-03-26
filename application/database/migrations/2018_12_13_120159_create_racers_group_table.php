@@ -18,7 +18,7 @@ final class CreateRacersGroupTable extends Migration
             $table->smallInteger('group');
             $table->smallInteger('number');
             $table->timestamps();
-            
+
             $table->foreign('racer_id')->references('id')->on('racers');
             $table->foreign('race_id')->references('id')->on('races');
         });

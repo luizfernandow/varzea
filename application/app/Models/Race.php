@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 final class Race extends Model
 {
-    use SoftDeletes, HasFactory;
+    use SoftDeletes;
+    use HasFactory;
 
     public const TYPE_LAPS = 'laps';
     public const TYPE_HOURS = 'hours';

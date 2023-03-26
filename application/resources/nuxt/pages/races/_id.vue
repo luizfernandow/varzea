@@ -17,14 +17,15 @@
                     <v-icon dark> mdi-pencil </v-icon>
                 </v-btn>
                 <v-btn
-                    v-if="race.type === 'hours'"
                     class="mx-2"
                     fab
                     small
                     dark
                     color="secondary"
                     :to="{
-                        name: `races-select-groups-id`,
+                        name: `races-select-${
+                            race.type === 'hours' ? 'groups-' : ''
+                        }id`,
                         params: { id: race.id },
                     }"
                 >

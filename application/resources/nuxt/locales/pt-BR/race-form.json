@@ -20,5 +20,6 @@
 		"add": "Adicionar",
 		"save": "Salvar",
 		"delete": "Remover"
-	}
+	},
+	"raceNumberFieldError": "Numero ja utilizado!"
 }
