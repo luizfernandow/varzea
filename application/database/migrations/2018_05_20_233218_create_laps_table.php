@@ -17,7 +17,7 @@ final class CreateLapsTable extends Migration
             $table->unsignedInteger('race_id');
             $table->time('time');
             $table->timestamps();
-            
+
             $table->foreign('racer_id')->references('id')->on('racers');
             $table->foreign('race_id')->references('id')->on('races');
         });

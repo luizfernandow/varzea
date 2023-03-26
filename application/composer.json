@@ -17,7 +17,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "friendsofphp/php-cs-fixer": "^3.9",
+        "friendsofphp/php-cs-fixer": "^3.15",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "pestphp/pest": "^1.22",

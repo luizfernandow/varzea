@@ -9,7 +9,7 @@ final class NuxtController extends Controller
     /**
      * Handle the SPA request.
      */
-    public function __invoke(Request $request) : string
+    public function __invoke(Request $request): string
     {
         // If the request expects JSON, it means that
         // someone sent a request to an invalid route.
@@ -23,7 +23,7 @@ final class NuxtController extends Controller
     /**
      * Render the Nuxt page.
      */
-    private function renderNuxtPage() : string
+    private function renderNuxtPage(): string
     {
         return file_get_contents(public_path('index.html'));
     }

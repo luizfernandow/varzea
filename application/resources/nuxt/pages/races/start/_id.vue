@@ -34,9 +34,11 @@ export default {
         return !isNaN(+params.id)
     },
     asyncData({ $axios, params }) {
-        return $axios.get(`/api/races/${params.id}`).then((res) => {
-            return res.data
-        })
+        return $axios
+            .get(`/api/races/start-groups/${params.id}`)
+            .then((res) => {
+                return res.data
+            })
     },
     mounted() {
         this.init()
@@ -61,7 +63,7 @@ export default {
             this.racersPositions = []
             for (const group of Object.values(this.racers)) {
                 for (const racer of group) {
-                    this.racersByNumber[`${racer.group}${racer.number}`] = racer
+                    this.racersByNumber[`${racer.number}`] = racer
                 }
                 const groupNumber = this.getGroupIdKey(group[0].group)
                 this.racersTime[groupNumber] = {
