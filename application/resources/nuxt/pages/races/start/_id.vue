@@ -17,6 +17,46 @@
             @doLap="doLap"
             @lapNumberUpdate="lapNumber = $event"
         />
+        <v-list>
+            <div v-for="(item, index) in racersPositions" :key="index">
+                <v-divider></v-divider>
+                <v-list-item :three-line="true">
+                    <v-list-item-content>
+                        {{ index + 1 }}
+
+                        <div>
+                            {{ item.racer.name }} ({{ item.number.toString() }})
+                        </div>
+                        <h3>{{ groupCurrentTime[item.racer.id] }}</h3>
+                    </v-list-item-content>
+                    <v-list-item-content>
+                        <v-alert
+                            v-for="lap in lapText[item.racer.id]"
+                            :key="lap"
+                            dense
+                            text
+                            type="success"
+                            border="left"
+                            :icon="false"
+                        >
+                            {{ lap }}
+                        </v-alert>
+                    </v-list-item-content>
+                </v-list-item>
+                <div class="d-flex">
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        class="ml-auto mr-4 mb-2"
+                        fab
+                        dark
+                        small
+                        color="blue-grey"
+                        @click="verifyUndo(item.racer.id)"
+                        ><v-icon>mdi-undo</v-icon></v-btn
+                    >
+                </div>
+            </div>
+        </v-list>
         <RaceReset :dialog="resetDialog" @resetRace="handleReset" />
         <RaceSave :dialog="saveDialog" @saveRace="handleSave" />
         <RaceUndoLap :dialog="undoDialog" @undoLap="handleUndoLap" />
@@ -34,11 +74,9 @@ export default {
         return !isNaN(+params.id)
     },
     asyncData({ $axios, params }) {
-        return $axios
-            .get(`/api/races/start-groups/${params.id}`)
-            .then((res) => {
-                return res.data
-            })
+        return $axios.get(`/api/races/start/${params.id}`).then((res) => {
+            return res.data
+        })
     },
     mounted() {
         this.init()
@@ -50,8 +88,8 @@ export default {
             const sortable = this.racersPositions
             const self = this
             sortable.sort((a, b) => {
-                const timerA = self.racersTime[a.groupNumber]
-                const timerB = self.racersTime[b.groupNumber]
+                const timerA = self.racersTime[a.racer.id]
+                const timerB = self.racersTime[b.racer.id]
                 if (timerA.lap === timerB.lap) {
                     return timerA.totalSeconds - timerB.totalSeconds
                 }
@@ -61,21 +99,15 @@ export default {
         },
         init() {
             this.racersPositions = []
-            for (const group of Object.values(this.racers)) {
-                for (const racer of group) {
-                    this.racersByNumber[`${racer.number}`] = racer
-                }
-                const groupNumber = this.getGroupIdKey(group[0].group)
-                this.racersTime[groupNumber] = {
+            for (const racer of Object.values(this.racers)) {
+                this.racersByNumber[`${racer.number}`] = racer
+                this.racersTime[racer.racer.id] = {
                     lap: 0,
                     laps: [],
                     totalSeconds: 0,
                 }
-                this.lapText[groupNumber] = []
-                this.racersPositions.push({
-                    groupNumber,
-                    group,
-                })
+                this.lapText[racer.racer.id] = []
+                this.racersPositions.push(racer)
             }
         },
         doLap() {
@@ -85,7 +117,11 @@ export default {
             if (!racer) {
                 this.lapNumberErrorMessage = this.$t('race.doLapFieldError')
             }
-            if (this.timer.isRunning() && racer) {
+            if (
+                this.timer.isRunning() &&
+                racer &&
+                this.racersTime[racer.racer.id].lap !== this.race.laps
+            ) {
                 const racerId = racer.racer.id
                 const racerTimer = this.racersTime[racerId]
 
@@ -141,15 +177,15 @@ export default {
             this.saveDialog = false
             this.loadingMessage = this.$t('race.saving')
             this.loading = true
-            // this.$axios
-            //     .post(
-            //         `/api/races/save-laps-groups/${this.$route.params.id}`,
-            //         this.racersTime
-            //     )
-            //     .then((res) => {
-            //         this.loading = false
-            //         this.$router.push(`/races/${this.$route.params.id}`)
-            //     })
+            this.$axios
+                .post(
+                    `/api/races/save-laps/${this.$route.params.id}`,
+                    this.racersTime
+                )
+                .then((res) => {
+                    this.loading = false
+                    this.$router.push(`/races/${this.$route.params.id}`)
+                })
         },
     },
 }

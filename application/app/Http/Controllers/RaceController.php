@@ -121,11 +121,11 @@ final class RaceController extends Controller
     public function startRace(Race $race)
     {
         $groups = RacersGroup::where('race_id', '=', $race->id)->get();
-        $racers = $groups->mapToGroups(function ($item): array {
+        $racers = $groups->map(function ($item): array {
             $item = $item->toArray();
             $item['racer'] = Racer::where('id', '=', $item['racer_id'])->get()->first()->toArray();
             $item['racer']['name'] = explode(' ', (string) $item['racer']['name'])[0];
-            return [$item['group'] => $item];
+            return $item;
         })->toArray();
 
         return response()->json(['race' => $race, 'racers' => $racers], 200);
@@ -140,6 +140,24 @@ final class RaceController extends Controller
                         'race_id' => $id,
                         'racer_id' => $groupLaps['lapsNumber'][$i],
                         'time' => gmdate("H:i:s", $groupLaps['laps'][$i])
+                    ]);
+            }
+        }
+        $race->locked = true;
+        $race->save();
+
+        return response()->json('', 200);
+    }
+
+    public function saveLaps(Request $request, $id)
+    {
+        $race = Race::find($id);
+        foreach ($request->except('_token') as $idRacer => $racer) {
+            for ($i = 0; $i < $racer['lap']; $i++) {
+                DB::table('laps')->insert([
+                        'race_id' => $id,
+                        'racer_id' => $idRacer,
+                        'time' => gmdate("H:i:s", $racer['laps'][$i])
                     ]);
             }
         }
