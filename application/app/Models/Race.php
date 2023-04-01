@@ -18,12 +18,9 @@ final class Race extends Model
 
     protected $fillable = ['name', 'type', 'laps', 'hours', 'group', 'date_start', 'time_start', 'locked', 'championship_id'];
 
-    /**
-    * The attributes that should be mutated to dates.
-    *
-    * @var array
-    */
-    protected $dates = ['deleted_at'];
+    protected $casts = [
+        'deleted_at' => 'datetime',
+    ];
 
     private static $positionPoint = [];
 

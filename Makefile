@@ -38,9 +38,6 @@ build-production:
 		--tag varzea:latest \
 		.
 
-rebuild:
-	@cd $(DIR) && docker-compose build --no-cache
-
 start:
 	@cd $(DIR) && docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 

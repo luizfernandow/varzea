@@ -15,14 +15,10 @@ final class Racer extends Model
     protected $fillable = ['name', 'birthdate', 'weight'];
 
 
-    /**
-    * The attributes that should be mutated to dates.
-    *
-    * @var array
-    */
-    protected $dates = ['deleted_at'];
-
-
+    protected $casts = [
+        'deleted_at' => 'datetime',
+    ];
+    
     public static function getRankChampionship($championshipId)
     {
         $obj = new self();
