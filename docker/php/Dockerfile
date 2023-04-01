@@ -29,8 +29,8 @@ FROM dependencies as development
 ARG USER_ID
 ARG GROUP_ID
 
-RUN addgroup --gid $GROUP_ID user
-RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID user
+RUN groupadd -o -g $GROUP_ID -r user \
+    && adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID user
 
 USER user
 
