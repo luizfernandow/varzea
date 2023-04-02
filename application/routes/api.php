@@ -36,11 +36,11 @@ Route::prefix('ranking')->group(function (): void {
 });
 
 Route::prefix('races')->group(function (): void {
-    Route::get('/', (new RaceController())->index(...));
-    Route::get('/{race}', (new RaceController())->show(...));
-    Route::post('/create', (new RaceController())->store(...));
-    Route::get('/{race}/edit', (new RaceController())->edit(...));
-    Route::put('/update/{id}', (new RaceController())->update(...));
+    Route::get('/', [RaceController::class, 'index']);
+    Route::get('/{race}', [RaceController::class, 'show']);
+    Route::post('/create', [RaceController::class, 'store']);
+    Route::get('/{race}/edit', [RaceController::class, 'edit']);
+    Route::put('/update/{id}', [RaceController::class, 'update']);
 
     Route::get('/select-groups/{race}', [RaceController::class, 'selectGroups']);
     Route::get('/start/{race}', [RaceController::class, 'startRace']);
