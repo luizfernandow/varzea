@@ -39,6 +39,11 @@ final class Race extends Model
         return $this->hasMany(\App\Models\RacersGroup::class);
     }
 
+    public function raceStandings()
+    {
+        return $this->hasMany(\App\Models\RaceStandings::class);
+    }
+
     public function getDateStartAttribute($value)
     {
         return Carbon::parse($value)->format('d/m/Y');

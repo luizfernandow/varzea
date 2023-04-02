@@ -18,7 +18,7 @@ final class Racer extends Model
     protected $casts = [
         'deleted_at' => 'datetime',
     ];
-    
+
     public static function getRankChampionship($championshipId)
     {
         $obj = new self();

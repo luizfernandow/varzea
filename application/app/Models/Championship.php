@@ -12,4 +12,9 @@ final class Championship extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    public function race()
+    {
+        return $this->hasMany(\App\Models\Race::class);
+    }
 }
