@@ -5,6 +5,8 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -24,24 +26,24 @@ final class Race extends Model
 
     private static $positionPoint = [];
 
-    public function championship()
+    public function championship(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Championship::class);
+        return $this->belongsTo(Championship::class);
     }
 
-    public function lap()
+    public function lap(): HasMany
     {
-        return $this->hasMany(\App\Models\Lap::class);
+        return $this->hasMany(Lap::class);
     }
 
-    public function racersGroup()
+    public function racersGroup(): HasMany
     {
-        return $this->hasMany(\App\Models\RacersGroup::class);
+        return $this->hasMany(RacersGroup::class);
     }
 
-    public function raceStandings()
+    public function raceStandings(): HasMany
     {
-        return $this->hasMany(\App\Models\RaceStandings::class);
+        return $this->hasMany(RaceStandings::class);
     }
 
     public function getDateStartAttribute($value)
@@ -83,14 +85,5 @@ final class Race extends Model
                 ->orderBy('laps', 'desc')
                 ->orderBy('time', 'asc')
                 ->get();
-    }
-
-    public static function getBasePoint($positionIndex)
-    {
-        if (empty(self::$positionPoint)) {
-            self::$positionPoint = DB::table('base_points')->get();
-        }
-
-        return isset(self::$positionPoint[$positionIndex]) ? self::$positionPoint[$positionIndex]->point : 1;
     }
 }

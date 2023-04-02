@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Championship;
 use App\Services\ChampionshipRanking;
+use Illuminate\Console\Command;
 
 class GenerateRanking extends Command
 {
@@ -29,7 +29,7 @@ class GenerateRanking extends Command
     {
         foreach (Championship::lazy() as $championship) {
             $championshipRanking->generate($championship);
-            $this->comment('Epaaa');
+            $this->info("Championship {$championship->name} processed");
         }
     }
 }

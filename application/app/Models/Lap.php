@@ -3,18 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class Lap extends Model
 {
     protected $fillable = ['race_id', 'racer_id', 'time'];
 
-    public function racer()
+    public function racer(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Racer::class);
+        return $this->belongsTo(Racer::class);
     }
 
-    public function race()
+    public function race(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Race::class);
+        return $this->belongsTo(Race::class);
     }
 }
