@@ -2,8 +2,11 @@
 
 use App\Models\Championship;
 use App\Models\Race;
+use App\Models\User;
+use function Pest\Laravel\{actingAs};
 
 beforeEach(function (): void {
+    $this->user = User::factory()->create();
     $this->championship = Championship::factory()->create();
     Race::factory()->for($this->championship)->create(['name' => 'Fast and Furious']);
 });
@@ -31,7 +34,7 @@ it('get race by id', function (): void {
 });
 
 it('create a race', function (): void {
-    $response = $this->postJson('/api/races/create', [
+    $response = actingAs($this->user)->postJson('/api/races/create', [
         'name'  => 'Tokio Drift',
         'laps' => 5,
         'date_start' => '2023-03-01',
@@ -49,7 +52,7 @@ it('create a race', function (): void {
 });
 
 it('update a race', function (): void {
-    $response = $this->putJson('/api/races/update/1', [
+    $response = actingAs($this->user)->putJson('/api/races/update/1', [
         'name'  => 'Crazy Frog',
         'laps' => 5,
         'date_start' => '2023-03-02',
@@ -68,7 +71,7 @@ it('update a race', function (): void {
 
 
 it('not create a race', function (): void {
-    $response = $this->postJson('/api/races/create', ['name'  => fake()->text(4000), 'type' => false]);
+    $response = actingAs($this->user)->postJson('/api/races/create', ['name'  => fake()->text(4000), 'type' => false]);
 
     $response->assertStatus(422)->assertExactJson([
         'message'  => 'The name may not be greater than 255 characters. (and 4 more errors)',

@@ -23,9 +23,7 @@ final class RankingController extends Controller
 
     public function byChampionship(Championship $championship)
     {
-        $racers = Racer::getRankChampionship($championship->id);
-
-        return Ranking::collection($racers)
+        return Ranking::collection($championship->ranking()->with('racer')->get())
             ->additional(['championship' => $championship])
             ->response();
     }

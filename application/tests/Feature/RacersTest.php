@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\User;
+use function Pest\Laravel\{actingAs};
 use App\Models\Racer;
 
 beforeEach(function (): void {
+    $this->user = User::factory()->create();
     Racer::factory()->create(['name' => 'Brian']);
 });
 
@@ -22,13 +25,13 @@ it('has racers api', function (): void {
 });
 
 it('get racer by id', function (): void {
-    $response = $this->get('/api/racers/1');
+    $response = actingAs($this->user)->get('/api/racers/1');
 
     $response->assertStatus(200)->assertJson(['name'  => 'Brian']);
 });
 
 it('create a racer', function (): void {
-    $response = $this->postJson('/api/racers/create', ['name'  => 'Joana']);
+    $response = actingAs($this->user)->postJson('/api/racers/create', ['name'  => 'Joana']);
 
     $response->assertStatus(201);
 
@@ -38,7 +41,7 @@ it('create a racer', function (): void {
 });
 
 it('update a racer', function (): void {
-    $response = $this->putJson('/api/racers/update/1', ['name'  => 'Diesel']);
+    $response =  actingAs($this->user)->putJson('/api/racers/update/1', ['name'  => 'Diesel']);
 
     $response->assertStatus(200);
 
@@ -48,7 +51,7 @@ it('update a racer', function (): void {
 });
 
 it('delete a racer', function (): void {
-    $response = $this->delete('/api/racers/delete/1');
+    $response =  actingAs($this->user)->delete('/api/racers/delete/1');
 
     $response->assertStatus(200);
 
@@ -59,7 +62,7 @@ it('delete a racer', function (): void {
 
 
 it('not create a racer', function (): void {
-    $response = $this->postJson('/api/racers/create', ['name'  => fake()->text(4000)]);
+    $response =  actingAs($this->user)->postJson('/api/racers/create', ['name'  => fake()->text(4000)]);
 
     $response->assertStatus(422)->assertJson([
         'message'  => 'The name may not be greater than 255 characters.',

@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-final class Lap extends Model
+class ChampionshipRanking extends Model
 {
-    protected $fillable = ['race_id', 'racer_id', 'time'];
+    use HasFactory;
+
+    protected $fillable = ['racer_id', 'points'];
+
+    public $timestamps = false;
 
     public function racer(): BelongsTo
     {
         return $this->belongsTo(Racer::class);
-    }
-
-    public function race(): BelongsTo
-    {
-        return $this->belongsTo(Race::class);
     }
 }

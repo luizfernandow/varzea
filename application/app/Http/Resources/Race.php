@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Services\ChampionshipRanking;
 
 final class Race extends JsonResource
 {
@@ -38,7 +39,7 @@ final class Race extends JsonResource
     private function generateRank()
     {
         $rank = $this->getRank()->load('racer')->map(function ($item, $key) {
-            $item->points = $this->laps == $item->laps ? $this->getBasePoint($key) : 0;
+            $item->points = $this->laps == $item->laps ? ChampionshipRanking::getPoints($key + 1) : 0;
             return $item;
         });
         return Lap::collection($rank);

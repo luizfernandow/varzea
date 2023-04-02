@@ -8,10 +8,11 @@ use App\Models\Racer;
 use App\Models\RacersGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\ChampionshipRanking;
 
 final class RaceController extends Controller
 {
-    public function __construct()
+    public function __construct(protected ChampionshipRanking $championshipRanking)
     {
         $this->middleware('auth:sanctum')->except(['index', 'show']);
     }
@@ -146,6 +147,8 @@ final class RaceController extends Controller
         $race->locked = true;
         $race->save();
 
+        $this->championshipRanking->generate($race->championship);
+
         return response()->json('', 200);
     }
 
@@ -163,6 +166,8 @@ final class RaceController extends Controller
         }
         $race->locked = true;
         $race->save();
+
+        $this->championshipRanking->generate($race->championship);
 
         return response()->json('', 200);
     }
