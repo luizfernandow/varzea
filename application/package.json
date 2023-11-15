@@ -18,7 +18,7 @@
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/pwa": "^3.3.5",
     "easytimer.js": "^4.5.4",
-    "nuxt": "^2.15.8",
+    "nuxt": "^2.17.2",
     "vee-validate": "^3.3.7",
     "vue-i18n": "^8.20.0"
   },
@@ -38,7 +38,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "npm-force-resolutions": "^0.0.10",
     "prettier": "^2.0.5",
-    "stylelint": "^13.6.1",
+    "stylelint": "^15.11.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^20.0.0"
   }
