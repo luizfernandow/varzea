@@ -15,12 +15,6 @@ return static function (RectorConfig $rectorConfig): void {
         __DIR__ . '/tests',
     ]);
 
-    $rectorConfig->skip([
-        __DIR__ . '/app/Http/Controllers/Controller.php',
-    ]);
-
-   
-
     $rectorConfig->sets([
         LaravelSetList::LARAVEL_100
     ]);
