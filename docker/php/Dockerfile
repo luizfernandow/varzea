@@ -21,6 +21,8 @@ RUN docker-php-ext-install gmp pdo_pgsql zip pcntl opcache \
 
 COPY ./docker/etc/php/php.ini "$PHP_INI_DIR/conf.d/php.ini"
 
+FROM dependencies as development
+
 # NODE
 RUN mkdir -p /etc/apt/keyrings; \
     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
@@ -31,8 +33,6 @@ RUN mkdir -p /etc/apt/keyrings; \
     apt-get -qy update; \
     apt-get -qy install nodejs \
     && apt-get clean
-
-FROM dependencies as development
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 COPY ./docker/etc/php/opcache_dev.ini "$PHP_INI_DIR/conf.d/opcache.ini"
