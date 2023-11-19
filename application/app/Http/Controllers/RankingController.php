@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Championship as ChampionshipResource;
 use App\Http\Resources\Ranking;
 use App\Models\Championship;
-use App\Models\Racer;
 
 final class RankingController extends Controller
 {
