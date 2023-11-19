@@ -28,7 +28,7 @@ final class ChampionshipRanking
         19 => 10
     ];
 
-    public static function getPoints($position): int 
+    public static function getPoints($position): int
     {
         return self::BASE_POINTS[$position] ?? 1;
     }

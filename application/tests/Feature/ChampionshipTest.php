@@ -1,8 +1,9 @@
 <?php
 
-use App\Models\User;
-use function Pest\Laravel\{actingAs};
 use App\Models\Championship;
+use App\Models\User;
+
+use function Pest\Laravel\{actingAs};
 
 beforeEach(function (): void {
     $this->user = User::factory()->create();

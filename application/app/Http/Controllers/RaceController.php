@@ -6,9 +6,9 @@ use App\Http\Resources\Race as RaceResource;
 use App\Models\Race;
 use App\Models\Racer;
 use App\Models\RacersGroup;
+use App\Services\ChampionshipRanking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Services\ChampionshipRanking;
 
 final class RaceController extends Controller
 {

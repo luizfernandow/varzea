@@ -3,6 +3,7 @@
 use App\Models\Championship;
 use App\Models\Race;
 use App\Models\User;
+
 use function Pest\Laravel\{actingAs};
 
 beforeEach(function (): void {
