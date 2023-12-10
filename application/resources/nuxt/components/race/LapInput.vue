@@ -3,6 +3,7 @@
         ><v-row>
             <v-col cols="12">
                 <v-text-field
+                    ref="input"
                     v-model="lapNumberModel"
                     :error="!!lapNumberErrorMessage"
                     :error-messages="lapNumberErrorMessage"
@@ -31,6 +32,11 @@ export default {
             set(newValue) {
                 this.$emit('lapNumberUpdate', newValue)
             },
+        },
+    },
+    methods: {
+        focus() {
+            this.$refs.input.focus()
         },
     },
 }

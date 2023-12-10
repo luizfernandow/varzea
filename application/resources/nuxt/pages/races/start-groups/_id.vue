@@ -10,6 +10,7 @@
             @resetDialog="resetDialog = true"
         />
         <RaceLapInput
+            ref="lapInput"
             :race-started="raceStarted"
             :lap-number="lapNumber"
             :lap-number-error-message="lapNumberErrorMessage"
@@ -156,19 +157,27 @@ export default {
                     })
                     time = this.$toHHMMSS(lapTime.toString())
                 }
-                racerTimer.laps.push(lapTime)
-                racerTimer.lapsNumber.push(racer.racer.id)
-                racerTimer.lap++
-                racerTimer.totalSeconds = totalSeconds
-                this.lapText[groupNumber].push(
-                    `${racerTimer.lap} - ${time} (${this.lapNumber})`
-                )
-                this.groupCurrentTime[groupNumber] = currentTime
-                this.localStorageSet()
+                if (lapTime > 60 * 5) {
+                    racerTimer.laps.push(lapTime)
+                    racerTimer.lapsNumber.push(racer.racer.id)
+                    racerTimer.lap++
+                    racerTimer.totalSeconds = totalSeconds
+                    this.lapText[groupNumber].push(
+                        `${racerTimer.lap} - ${time} (${this.lapNumber})`
+                    )
+                    this.groupCurrentTime[groupNumber] = currentTime
+                    this.localStorageSet()
+                    this.sortPositions()
+                } else {
+                    this.lapNumberErrorMessage = this.$t(
+                        'race.doLapFieldTimeError'
+                    )
+                }
+
                 this.lapNumber = null
-                this.sortPositions()
             }
             this.lapSaving = false
+            this.$refs.lapInput.focus()
         },
         verifyUndo(group) {
             this.undoGroup = group
