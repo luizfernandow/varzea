@@ -8,6 +8,7 @@
 	"reset": "Resetar",
 	"doLapField": "Número do corredor",
 	"doLapFieldError": "Número do corredor incorreto!!",
+	"doLapFieldTimeError": "Volta muito rapida!!",
 	"saving": "Salvando corrida..",
 	"undoLapDialog": {
 		"title": "Tem certeza que quer desfazer a volta?",

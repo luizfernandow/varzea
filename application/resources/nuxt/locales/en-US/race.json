@@ -8,6 +8,7 @@
 	"reset": "Reset",
 	"doLapField": "Racer number",
 	"doLapFieldError": "Racer number incorrect!!",
+	"doLapFieldTimeError": "Lap too fast!!",
 	"saving": "Saving race..",
 	"undoLapDialog": {
 		"title": "Are you sure you want to undo the lap?",
