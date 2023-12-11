@@ -36,6 +36,7 @@ export default {
             lapSaving: false,
             racersTime: {},
             racersByNumber: {},
+            racersByRfid: {},
             lapText: {},
             groupCurrentTime: {},
             loading: false,

@@ -110,6 +110,7 @@ export default {
             for (const group of Object.values(this.racers)) {
                 for (const racer of group) {
                     this.racersByNumber[`${racer.group}${racer.number}`] = racer
+                    this.racersByRfid[`${racer.rfid_code}`] = racer
                 }
                 const groupNumber = this.getGroupIdKey(group[0].group)
                 this.racersTime[groupNumber] = {
@@ -133,7 +134,10 @@ export default {
         },
         doLap() {
             this.lapSaving = true
-            const racer = this.racersByNumber[this.lapNumber]
+
+            const racer =
+                this.racersByNumber[this.lapNumber] ||
+                this.racersByRfid[this.lapNumber]
             this.lapNumberErrorMessage = null
             if (!racer) {
                 this.lapNumberErrorMessage = this.$t('race.doLapFieldError')

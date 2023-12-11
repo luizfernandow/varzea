@@ -24,6 +24,13 @@
                             type="number"
                         ></v-text-field>
                     </v-col>
+                    <v-col cols="6">
+                        <v-text-field
+                            v-model="racerRfid"
+                            :label="$t('race-form.select-groups.rfid')"
+                            type="number"
+                        ></v-text-field>
+                    </v-col>
                 </v-row>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -80,12 +87,14 @@ export default {
         return {
             racerSelected: null,
             racerNumber: null,
+            racerRfid: null,
             race: null,
             racers: [],
             racersById: {},
             form: {
                 racers: {},
                 number: {},
+                rfid: {},
             },
             numbers: new Set(),
             racerNumberErrorMessage: null,
@@ -96,6 +105,7 @@ export default {
             const key = this.getRacerKey(group.racer_id)
             this.form.racers[key] = parseInt(group.racer_id)
             this.form.number[key] = group.number
+            this.form.rfid[key] = group.rfid_code
             this.numbers.add(group.number)
         }
     },
@@ -120,11 +130,14 @@ export default {
                 this.groups[key] = {
                     racer_id: this.racerSelected,
                     number: this.racerNumber,
+                    rfid: this.racerRfid,
                 }
                 this.form.racers[key] = parseInt(this.racerSelected)
                 this.form.number[key] = this.racerNumber
+                this.form.rfid[key] = this.racerRfid
                 this.racerSelected = null
                 this.racerNumber = null
+                this.racerRfid = null
             }
         },
         remove(racerId) {
@@ -133,6 +146,7 @@ export default {
             this.$delete(this.groups, key)
             this.$delete(this.form.number, key)
             this.$delete(this.form.racers, key)
+            this.$delete(this.form.rfid, key)
         },
         save() {
             this.$axios

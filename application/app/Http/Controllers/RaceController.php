@@ -79,12 +79,13 @@ final class RaceController extends Controller
         $racers = $request->racers;
         $group = $request->group;
         $number = $request->number;
+        $rfid = $request->rfid;
         RacersGroup::where('race_id', '=', $id)->delete();
         foreach ($racers as $racerId) {
             $key = "key_$racerId";
             RacersGroup::updateOrCreate(
                 ['race_id' => $id, 'racer_id' => $racerId],
-                ['group' => $group[$key], 'number' => $number[$key]]
+                ['group' => $group[$key], 'number' => $number[$key], 'rfid_code' => $rfid[$key]]
             );
         }
         return response()->json('', 200);
@@ -94,13 +95,14 @@ final class RaceController extends Controller
     {
         $racers = $request->racers;
         $number = $request->number;
+        $rfid = $request->rfid;
         RacersGroup::where('race_id', '=', $id)->delete();
         $index = 0;
         foreach ($racers as $racerId) {
             $key = "key_$racerId";
             RacersGroup::updateOrCreate(
                 ['race_id' => $id, 'racer_id' => $racerId],
-                ['group' => ++$index, 'number' => $number[$key]]
+                ['group' => ++$index, 'number' => $number[$key], 'rfid_code' => $rfid[$key]]
             );
         }
         return response()->json('', 200);
