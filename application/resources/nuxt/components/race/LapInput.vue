@@ -14,6 +14,7 @@
                     type="number"
                     persistent-hint
                     @click:append-outer="$emit('doLap')"
+                    @keydown.enter="$emit('doLap')"
                 ></v-text-field>
             </v-col>
         </v-row>

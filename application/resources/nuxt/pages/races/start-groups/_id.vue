@@ -70,6 +70,21 @@
         <RaceSave :dialog="saveDialog" @saveRace="handleSave" />
         <RaceUndoLap :dialog="undoDialog" @undoLap="handleUndoLap" />
         <CoreLoadingDialog :dialog="loading" :message="loadingMessage" />
+        <v-snackbar
+            v-model="snackbar"
+            :timeout="timeout"
+            :multi-line="multiLine"
+            absolute
+            centered
+            top
+            color="success"
+            outlined
+            elevation="24"
+        >
+            <div v-for="(text, index) in snackbarText.split('\n')" :key="index">
+                {{ text }}
+            </div>
+        </v-snackbar>
     </v-card>
 </template>
 
@@ -86,6 +101,12 @@ export default {
                 return res.data
             })
     },
+    data: () => ({
+        snackbar: false,
+        snackbarText: '',
+        timeout: 8000,
+        multiLine: true,
+    }),
     mounted() {
         this.init()
         this.load()
@@ -161,25 +182,32 @@ export default {
                     })
                     time = this.$toHHMMSS(lapTime.toString())
                 }
-                if (lapTime > 60 * 5) {
+                if (lapTime > 1) {
                     racerTimer.laps.push(lapTime)
                     racerTimer.lapsNumber.push(racer.racer.id)
                     racerTimer.lap++
                     racerTimer.totalSeconds = totalSeconds
+                    const numberText = racer.group
+                        .toString()
+                        .concat(racer.number.toString())
                     this.lapText[groupNumber].push(
-                        `${racerTimer.lap} - ${time} (${this.lapNumber})`
+                        `${racerTimer.lap} - ${time} (${numberText})`
                     )
                     this.groupCurrentTime[groupNumber] = currentTime
                     this.localStorageSet()
                     this.sortPositions()
+                    const snackbarText = `${racer.racer.name} (${numberText}) - ${time}`
+                    this.snackbarText = this.snackbar
+                        ? `${this.snackbarText} \n ${snackbarText}`
+                        : snackbarText
+                    this.snackbar = true
                 } else {
                     this.lapNumberErrorMessage = this.$t(
                         'race.doLapFieldTimeError'
                     )
                 }
-
-                this.lapNumber = null
             }
+            this.lapNumber = null
             this.lapSaving = false
             this.$refs.lapInput.focus()
         },
