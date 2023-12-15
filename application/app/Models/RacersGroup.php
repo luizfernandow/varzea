@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 final class RacersGroup extends Model
 {
-    protected $fillable = ['race_id', 'racer_id', 'group', 'number'];
+    protected $fillable = ['race_id', 'racer_id', 'group', 'number', 'rfid_code'];
 
     public function racer()
     {

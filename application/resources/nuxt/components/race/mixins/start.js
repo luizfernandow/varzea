@@ -36,10 +36,13 @@ export default {
             lapSaving: false,
             racersTime: {},
             racersByNumber: {},
+            racersByRfid: {},
             lapText: {},
             groupCurrentTime: {},
             loading: false,
             loadingMessage: '',
+            snackbar: false,
+            snackbarText: '',
         }
     },
     methods: {

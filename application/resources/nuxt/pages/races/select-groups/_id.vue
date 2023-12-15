@@ -15,17 +15,24 @@
 
             <div v-if="racerSelected">
                 <v-row>
-                    <v-col cols="6">
+                    <v-col cols="4">
                         <v-text-field
                             v-model="racerGroup"
                             :label="$t('race-form.select-groups.group')"
                             type="number"
                         ></v-text-field>
                     </v-col>
-                    <v-col cols="6">
+                    <v-col cols="4">
                         <v-text-field
                             v-model="racerNumber"
                             :label="$t('race-form.select-groups.member')"
+                            type="number"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col cols="4">
+                        <v-text-field
+                            v-model="racerRfid"
+                            :label="$t('race-form.select-groups.rfid')"
                             type="number"
                         ></v-text-field>
                     </v-col>
@@ -86,6 +93,7 @@ export default {
             racerSelected: null,
             racerGroup: null,
             racerNumber: null,
+            racerRfid: null,
             race: null,
             racers: [],
             racersById: {},
@@ -94,6 +102,7 @@ export default {
                 racers: {},
                 group: {},
                 number: {},
+                rfid: {},
             },
         }
     },
@@ -103,6 +112,7 @@ export default {
             this.form.racers[key] = parseInt(group.racer_id)
             this.form.group[key] = group.group
             this.form.number[key] = group.number
+            this.form.rfid[key] = group.rfid_code
         }
     },
     methods: {
@@ -115,13 +125,16 @@ export default {
                 racer_id: this.racerSelected,
                 group: this.racerGroup,
                 number: this.racerNumber,
+                rfid: this.racerRfid,
             }
             this.form.racers[key] = parseInt(this.racerSelected)
             this.form.group[key] = this.racerGroup
             this.form.number[key] = this.racerNumber
+            this.form.rfid[key] = this.racerRfid
             this.racerSelected = null
             this.racerGroup = null
             this.racerNumber = null
+            this.racerRfid = null
         },
         remove(racerId) {
             const key = this.getRacerKey(racerId)
@@ -129,6 +142,7 @@ export default {
             this.$delete(this.form.group, key)
             this.$delete(this.form.number, key)
             this.$delete(this.form.racers, key)
+            this.$delete(this.form.rfid, key)
         },
         save() {
             this.$axios

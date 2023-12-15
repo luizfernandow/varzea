@@ -19,7 +19,8 @@
 		"member": "Membro",
 		"add": "Adicionar",
 		"save": "Salvar",
-		"delete": "Remover"
+		"delete": "Remover",
+		"rfid": "RFID"
 	},
 	"raceNumberFieldError": "Numero ja utilizado!"
 }

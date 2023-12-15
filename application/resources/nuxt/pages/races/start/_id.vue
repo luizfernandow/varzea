@@ -62,6 +62,11 @@
         <RaceSave :dialog="saveDialog" @saveRace="handleSave" />
         <RaceUndoLap :dialog="undoDialog" @undoLap="handleUndoLap" />
         <CoreLoadingDialog :dialog="loading" :message="loadingMessage" />
+        <RaceSnackbar
+            :snackbar="snackbar"
+            :snackbar-text="snackbarText"
+            @snackbarUpate="snackbar = $event"
+        />
     </v-card>
 </template>
 
@@ -102,6 +107,7 @@ export default {
             this.racersPositions = []
             for (const racer of Object.values(this.racers)) {
                 this.racersByNumber[`${racer.number}`] = racer
+                this.racersByRfid[`${racer.rfid_code}`] = racer
                 this.racersTime[racer.racer.id] = {
                     lap: 0,
                     laps: [],
@@ -113,7 +119,9 @@ export default {
         },
         doLap() {
             this.lapSaving = true
-            const racer = this.racersByNumber[this.lapNumber]
+            const racer =
+                this.racersByNumber[this.lapNumber] ||
+                this.racersByRfid[this.lapNumber]
             this.lapNumberErrorMessage = null
             if (!racer) {
                 this.lapNumberErrorMessage = this.$t('race.doLapFieldError')
@@ -141,7 +149,7 @@ export default {
                     })
                     time = this.$toHHMMSS(lapTime.toString())
                 }
-                if (lapTime > 60 * 5) {
+                if (lapTime > 60 * 8) {
                     racerTimer.laps.push(lapTime)
                     racerTimer.lap++
                     racerTimer.totalSeconds = totalSeconds
@@ -149,6 +157,11 @@ export default {
                     this.groupCurrentTime[racerId] = currentTime
                     this.localStorageSet()
                     this.sortPositions()
+                    const snackbarText = `${racer.racer.name} - ${time}`
+                    this.snackbarText = this.snackbar
+                        ? `${this.snackbarText} \n ${snackbarText}`
+                        : snackbarText
+                    this.snackbar = true
                 } else {
                     this.lapNumberErrorMessage = this.$t(
                         'race.doLapFieldTimeError'
