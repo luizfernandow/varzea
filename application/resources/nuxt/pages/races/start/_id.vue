@@ -107,6 +107,7 @@ export default {
             this.racersPositions = []
             for (const racer of Object.values(this.racers)) {
                 this.racersByNumber[`${racer.number}`] = racer
+                this.racersByRfid[`${racer.rfid_code}`] = racer
                 this.racersTime[racer.racer.id] = {
                     lap: 0,
                     laps: [],
@@ -118,7 +119,9 @@ export default {
         },
         doLap() {
             this.lapSaving = true
-            const racer = this.racersByNumber[this.lapNumber]
+            const racer =
+                this.racersByNumber[this.lapNumber] ||
+                this.racersByRfid[this.lapNumber]
             this.lapNumberErrorMessage = null
             if (!racer) {
                 this.lapNumberErrorMessage = this.$t('race.doLapFieldError')
