@@ -11,10 +11,10 @@
                     filled
                     :disabled="!raceStarted || lapSaving"
                     :label="$t('race.doLapField')"
-                    type="text"
+                    type="number"
                     persistent-hint
                     @click:append-outer="$emit('doLap')"
-                    @keydown.enter="$emit('doLap')"
+                    @keydown.enter="keyDown()"
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -38,6 +38,11 @@ export default {
     methods: {
         focus() {
             this.$refs.input.focus()
+        },
+        keyDown() {
+            setTimeout(() => {
+                this.$emit('doLap')
+            }, 500)
         },
     },
 }
