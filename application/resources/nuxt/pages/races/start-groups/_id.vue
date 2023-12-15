@@ -1,71 +1,85 @@
 <template>
     <v-card class="mx-auto">
-        <RaceHeader
-            :race="race"
-            :timer-text="timerText"
-            :race-started="raceStarted"
-            @startTimer="startTimer"
-            @stop="stop"
-            @saveDialog="saveDialog = true"
-            @resetDialog="resetDialog = true"
-        />
-        <RaceLapInput
-            ref="lapInput"
-            :race-started="raceStarted"
-            :lap-number="lapNumber"
-            :lap-number-error-message="lapNumberErrorMessage"
-            :lap-saving="lapSaving"
-            @doLap="doLap"
-            @lapNumberUpdate="lapNumber = $event"
-        />
-        <v-list>
-            <div v-for="(items, index) in racersPositions" :key="index">
-                <v-divider></v-divider>
-                <v-list-item :three-line="true">
-                    <v-list-item-content>
-                        {{ index + 1 }}
-                        <div
-                            v-for="item in items.group"
-                            :key="item.group + item.number"
-                        >
-                            <div>
-                                {{ item.racer.name }} ({{
-                                    item.group
-                                        .toString()
-                                        .concat(item.number.toString())
-                                }})
-                            </div>
+        <v-row align="start" no-gutters>
+            <v-col xs="12" sm="6">
+                <RaceHeader
+                    :race="race"
+                    :timer-text="timerText"
+                    :race-started="raceStarted"
+                    @startTimer="startTimer"
+                    @stop="stop"
+                    @saveDialog="saveDialog = true"
+                    @resetDialog="resetDialog = true"
+                />
+                <RaceLapInput
+                    ref="lapInput"
+                    :race-started="raceStarted"
+                    :lap-number="lapNumber"
+                    :lap-number-error-message="lapNumberErrorMessage"
+                    :lap-saving="lapSaving"
+                    @doLap="doLap"
+                    @lapNumberUpdate="lapNumber = $event"
+                />
+            </v-col>
+            <v-col xs="12" sm="6">
+                <v-list>
+                    <div v-for="(items, index) in racersPositions" :key="index">
+                        <v-divider></v-divider>
+                        <v-list-item :three-line="true">
+                            <v-list-item-content>
+                                {{ index + 1 }}
+                                <div
+                                    v-for="item in items.group"
+                                    :key="item.group + item.number"
+                                >
+                                    <div>
+                                        {{ item.racer.name }} ({{
+                                            item.group
+                                                .toString()
+                                                .concat(item.number.toString())
+                                        }})
+                                    </div>
+                                </div>
+                                <h3>
+                                    {{
+                                        groupCurrentTime[
+                                            getGroupId(items.group)
+                                        ]
+                                    }}
+                                </h3>
+                            </v-list-item-content>
+                            <v-list-item-content>
+                                <v-alert
+                                    v-for="lap in lapText[
+                                        getGroupId(items.group)
+                                    ]"
+                                    :key="lap"
+                                    dense
+                                    text
+                                    type="success"
+                                    border="left"
+                                    :icon="false"
+                                >
+                                    {{ lap }}
+                                </v-alert>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <div class="d-flex">
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                class="ml-auto mr-4 mb-2"
+                                fab
+                                dark
+                                small
+                                color="blue-grey"
+                                @click="verifyUndo(getGroupId(items.group))"
+                                ><v-icon>mdi-undo</v-icon></v-btn
+                            >
                         </div>
-                        <h3>{{ groupCurrentTime[getGroupId(items.group)] }}</h3>
-                    </v-list-item-content>
-                    <v-list-item-content>
-                        <v-alert
-                            v-for="lap in lapText[getGroupId(items.group)]"
-                            :key="lap"
-                            dense
-                            text
-                            type="success"
-                            border="left"
-                            :icon="false"
-                        >
-                            {{ lap }}
-                        </v-alert>
-                    </v-list-item-content>
-                </v-list-item>
-                <div class="d-flex">
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        class="ml-auto mr-4 mb-2"
-                        fab
-                        dark
-                        small
-                        color="blue-grey"
-                        @click="verifyUndo(getGroupId(items.group))"
-                        ><v-icon>mdi-undo</v-icon></v-btn
-                    >
-                </div>
-            </div>
-        </v-list>
+                    </div>
+                </v-list>
+            </v-col>
+        </v-row>
         <RaceReset :dialog="resetDialog" @resetRace="handleReset" />
         <RaceSave :dialog="saveDialog" @saveRace="handleSave" />
         <RaceUndoLap :dialog="undoDialog" @undoLap="handleUndoLap" />
