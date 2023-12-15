@@ -14,7 +14,7 @@
                     type="number"
                     persistent-hint
                     @click:append-outer="$emit('doLap')"
-                    @keydown.enter="keyDown()"
+                    @keydown.enter="$emit('doLap')"
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -38,11 +38,6 @@ export default {
     methods: {
         focus() {
             this.$refs.input.focus()
-        },
-        keyDown() {
-            setTimeout(() => {
-                this.$emit('doLap')
-            }, 500)
         },
     },
 }

@@ -29,6 +29,7 @@
                             v-model="racerRfid"
                             :label="$t('race-form.select-groups.rfid')"
                             type="number"
+                            :rules="rfidRules"
                         ></v-text-field>
                     </v-col>
                 </v-row>
@@ -98,6 +99,11 @@ export default {
             },
             numbers: new Set(),
             racerNumberErrorMessage: null,
+            rfidRules: [
+                (v) =>
+                    (v && v.length === 10) ||
+                    this.$t('race-form.select-groups.rfid_validation'),
+            ],
         }
     },
     created() {

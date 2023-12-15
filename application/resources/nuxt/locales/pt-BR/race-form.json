@@ -20,7 +20,8 @@
 		"add": "Adicionar",
 		"save": "Salvar",
 		"delete": "Remover",
-		"rfid": "RFID"
+		"rfid": "RFID",
+		"rfid_validation": "Esse campo deve ter 10 caracteres"
 	},
 	"raceNumberFieldError": "Numero ja utilizado!"
 }
