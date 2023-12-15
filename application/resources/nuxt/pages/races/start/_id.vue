@@ -119,9 +119,11 @@ export default {
         },
         doLap() {
             this.lapSaving = true
+
+            const lapNumber = `${this.lapNumber}`.trim()
+
             const racer =
-                this.racersByNumber[this.lapNumber] ||
-                this.racersByRfid[this.lapNumber]
+                this.racersByNumber[lapNumber] || this.racersByRfid[lapNumber]
             this.lapNumberErrorMessage = null
             if (!racer) {
                 this.lapNumberErrorMessage = this.$t('race.doLapFieldError')

@@ -11,7 +11,7 @@
                     filled
                     :disabled="!raceStarted || lapSaving"
                     :label="$t('race.doLapField')"
-                    type="number"
+                    type="text"
                     persistent-hint
                     @click:append-outer="$emit('doLap')"
                     @keydown.enter="$emit('doLap')"
