@@ -62,6 +62,11 @@
         <RaceSave :dialog="saveDialog" @saveRace="handleSave" />
         <RaceUndoLap :dialog="undoDialog" @undoLap="handleUndoLap" />
         <CoreLoadingDialog :dialog="loading" :message="loadingMessage" />
+        <RaceSnackbar
+            :snackbar="snackbar"
+            :snackbar-text="snackbarText"
+            @snackbarUpate="snackbar = $event"
+        />
     </v-card>
 </template>
 
@@ -141,7 +146,7 @@ export default {
                     })
                     time = this.$toHHMMSS(lapTime.toString())
                 }
-                if (lapTime > 60 * 5) {
+                if (lapTime > 60 * 8) {
                     racerTimer.laps.push(lapTime)
                     racerTimer.lap++
                     racerTimer.totalSeconds = totalSeconds
@@ -149,6 +154,11 @@ export default {
                     this.groupCurrentTime[racerId] = currentTime
                     this.localStorageSet()
                     this.sortPositions()
+                    const snackbarText = `${racer.racer.name} - ${time}`
+                    this.snackbarText = this.snackbar
+                        ? `${this.snackbarText} \n ${snackbarText}`
+                        : snackbarText
+                    this.snackbar = true
                 } else {
                     this.lapNumberErrorMessage = this.$t(
                         'race.doLapFieldTimeError'

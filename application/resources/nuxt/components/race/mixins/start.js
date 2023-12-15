@@ -41,6 +41,8 @@ export default {
             groupCurrentTime: {},
             loading: false,
             loadingMessage: '',
+            snackbar: false,
+            snackbarText: '',
         }
     },
     methods: {

@@ -70,21 +70,11 @@
         <RaceSave :dialog="saveDialog" @saveRace="handleSave" />
         <RaceUndoLap :dialog="undoDialog" @undoLap="handleUndoLap" />
         <CoreLoadingDialog :dialog="loading" :message="loadingMessage" />
-        <v-snackbar
-            v-model="snackbar"
-            :timeout="timeout"
-            :multi-line="multiLine"
-            absolute
-            centered
-            top
-            color="success"
-            outlined
-            elevation="24"
-        >
-            <div v-for="(text, index) in snackbarText.split('\n')" :key="index">
-                {{ text }}
-            </div>
-        </v-snackbar>
+        <RaceSnackbar
+            :snackbar="snackbar"
+            :snackbar-text="snackbarText"
+            @snackbarUpate="snackbar = $event"
+        />
     </v-card>
 </template>
 
@@ -101,12 +91,6 @@ export default {
                 return res.data
             })
     },
-    data: () => ({
-        snackbar: false,
-        snackbarText: '',
-        timeout: 8000,
-        multiLine: true,
-    }),
     mounted() {
         this.init()
         this.load()
@@ -182,7 +166,7 @@ export default {
                     })
                     time = this.$toHHMMSS(lapTime.toString())
                 }
-                if (lapTime > 1) {
+                if (lapTime > 60 * 8) {
                     racerTimer.laps.push(lapTime)
                     racerTimer.lapsNumber.push(racer.racer.id)
                     racerTimer.lap++
