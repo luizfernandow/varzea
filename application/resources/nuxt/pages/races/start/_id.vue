@@ -1,63 +1,71 @@
 <template>
     <v-card class="mx-auto">
-        <RaceHeader
-            :race="race"
-            :timer-text="timerText"
-            :race-started="raceStarted"
-            @startTimer="startTimer"
-            @stop="stop"
-            @saveDialog="saveDialog = true"
-            @resetDialog="resetDialog = true"
-        />
-        <RaceLapInput
-            ref="lapInput"
-            :race-started="raceStarted"
-            :lap-number="lapNumber"
-            :lap-number-error-message="lapNumberErrorMessage"
-            :lap-saving="lapSaving"
-            @doLap="doLap"
-            @lapNumberUpdate="lapNumber = $event"
-        />
-        <v-list>
-            <div v-for="(item, index) in racersPositions" :key="index">
-                <v-divider></v-divider>
-                <v-list-item :three-line="true">
-                    <v-list-item-content>
-                        {{ index + 1 }}
+        <v-row align="start" no-gutters>
+            <v-col xs="12" sm="6">
+                <RaceHeader
+                    :race="race"
+                    :timer-text="timerText"
+                    :race-started="raceStarted"
+                    @startTimer="startTimer"
+                    @stop="stop"
+                    @saveDialog="saveDialog = true"
+                    @resetDialog="resetDialog = true"
+                />
+                <RaceLapInput
+                    ref="lapInput"
+                    :race-started="raceStarted"
+                    :lap-number="lapNumber"
+                    :lap-number-error-message="lapNumberErrorMessage"
+                    :lap-saving="lapSaving"
+                    @doLap="doLap"
+                    @lapNumberUpdate="lapNumber = $event"
+                />
+            </v-col>
+            <v-col xs="12" sm="6">
+                <v-list>
+                    <div v-for="(item, index) in racersPositions" :key="index">
+                        <v-divider></v-divider>
+                        <v-list-item :three-line="true">
+                            <v-list-item-content>
+                                {{ index + 1 }}
 
-                        <div>
-                            {{ item.racer.name }} ({{ item.number.toString() }})
+                                <div>
+                                    {{ item.racer.name }} ({{
+                                        item.number.toString()
+                                    }})
+                                </div>
+                                <h3>{{ groupCurrentTime[item.racer.id] }}</h3>
+                            </v-list-item-content>
+                            <v-list-item-content>
+                                <v-alert
+                                    v-for="lap in lapText[item.racer.id]"
+                                    :key="lap"
+                                    dense
+                                    text
+                                    type="success"
+                                    border="left"
+                                    :icon="false"
+                                >
+                                    {{ lap }}
+                                </v-alert>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <div class="d-flex">
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                class="ml-auto mr-4 mb-2"
+                                fab
+                                dark
+                                small
+                                color="blue-grey"
+                                @click="verifyUndo(item.racer.id)"
+                                ><v-icon>mdi-undo</v-icon></v-btn
+                            >
                         </div>
-                        <h3>{{ groupCurrentTime[item.racer.id] }}</h3>
-                    </v-list-item-content>
-                    <v-list-item-content>
-                        <v-alert
-                            v-for="lap in lapText[item.racer.id]"
-                            :key="lap"
-                            dense
-                            text
-                            type="success"
-                            border="left"
-                            :icon="false"
-                        >
-                            {{ lap }}
-                        </v-alert>
-                    </v-list-item-content>
-                </v-list-item>
-                <div class="d-flex">
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        class="ml-auto mr-4 mb-2"
-                        fab
-                        dark
-                        small
-                        color="blue-grey"
-                        @click="verifyUndo(item.racer.id)"
-                        ><v-icon>mdi-undo</v-icon></v-btn
-                    >
-                </div>
-            </div>
-        </v-list>
+                    </div>
+                </v-list>
+            </v-col>
+        </v-row>
         <RaceReset :dialog="resetDialog" @resetRace="handleReset" />
         <RaceSave :dialog="saveDialog" @saveRace="handleSave" />
         <RaceUndoLap :dialog="undoDialog" @undoLap="handleUndoLap" />
