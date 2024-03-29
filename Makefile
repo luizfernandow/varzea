@@ -39,16 +39,16 @@ build-production:
 		.
 
 start:
-	@cd $(DIR) && docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+	@cd $(DIR) && docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
 stop:
-	@cd $(DIR) && docker-compose down -v
+	@cd $(DIR) && docker compose down -v
 
 nuxt-start:
-	@cd $(DIR) && docker-compose -p nuxt-varzea -f docker-compose.front.dev.yml up -d
+	@cd $(DIR) && docker compose -p nuxt-varzea -f docker-compose.front.dev.yml up -d
 
 nuxt-stop:
-	@cd $(DIR) && docker-compose -p nuxt-varzea -f docker-compose.front.dev.yml down -v
+	@cd $(DIR) && docker compose -p nuxt-varzea -f docker-compose.front.dev.yml down -v
 
 nuxt-logs:
 	docker logs -f nuxt-varzea
@@ -60,7 +60,7 @@ nuxt-generate:
 	docker run --rm -v $(shell pwd)/application:/app -w="/app" -it node:16 bash -c "npm run generate"
 		
 logs:
-	@cd $(DIR) && docker-compose logs -f
+	@cd $(DIR) && docker compose logs -f
 
 php:
 	@cd $(DIR) && docker exec -it $(shell cd $(DIR) && docker-compose ps -q php) bash
@@ -72,10 +72,10 @@ php-artisan:
 	@cd $(DIR) && docker exec -u $(shell id -u):$(shell id -g) -it $(shell cd $(DIR) && docker-compose ps -q php) bash
 
 production:
-	@cd $(DIR) && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+	@cd $(DIR) && docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 certbot:
-	@cd $(DIR) && docker-compose -f docker-compose.yml -f docker-compose.certbot.yml up -d
+	@cd $(DIR) && docker compose -f docker-compose.yml -f docker-compose.certbot.yml up -d
 	@docker run -it --rm -v $(DIR)_certs:/etc/letsencrypt -v $(DIR)_certs-data:/data/letsencrypt certbot/certbot certonly --webroot --email admin@asfl.com.br --agree-tos --no-eff-email --webroot-path=/data/letsencrypt -d $(NGINX_HOST) -d www.$(NGINX_HOST) 
 
 certbot-renew:
