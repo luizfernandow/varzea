@@ -73,7 +73,7 @@ jobs:
     needs: [docker]
     steps:
       - name: executing deploy
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USERNAME }}
