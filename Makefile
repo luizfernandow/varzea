@@ -63,13 +63,13 @@ logs:
 	@cd $(DIR) && docker compose logs -f
 
 php:
-	@cd $(DIR) && docker exec -it $(shell cd $(DIR) && docker-compose ps -q php) bash
+	@cd $(DIR) && docker exec -it $(shell cd $(DIR) && docker compose ps -q php) bash
 
 deploy:
-	@cd $(DIR) && docker exec $(shell cd $(DIR) && docker-compose ps -q php) bash deploy.sh
+	@cd $(DIR) && docker exec $(shell cd $(DIR) && docker compose ps -q php) bash deploy.sh
 
 php-artisan:
-	@cd $(DIR) && docker exec -u $(shell id -u):$(shell id -g) -it $(shell cd $(DIR) && docker-compose ps -q php) bash
+	@cd $(DIR) && docker exec -u $(shell id -u):$(shell id -g) -it $(shell cd $(DIR) && docker compose ps -q php) bash
 
 production:
 	@cd $(DIR) && docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
@@ -80,7 +80,7 @@ certbot:
 
 certbot-renew:
 	@docker run  --rm -v $(DIR)_certs:/etc/letsencrypt -v $(DIR)_certs-data:/data/letsencrypt certbot/certbot renew -q --webroot --email admin@asfl.com.br --agree-tos --no-eff-email --webroot-path=/data/letsencrypt
-	@cd $(DIR) && docker restart $(shell cd $(DIR) && docker-compose ps -q web)
+	@cd $(DIR) && docker restart $(shell cd $(DIR) && docker compose ps -q web)
 
 #cat dump.sql | docker exec -i db-varzea psql -h localhost -U varzea_user varzea
 #docker exec -t db-varzea pg_dump -c -U varzea_user -d varzea > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
