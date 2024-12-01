@@ -4,7 +4,7 @@
             <p class="ma-0 mr-auto">{{ race.name }}</p>
         </v-card-title>
         <p class="d-flex justify-center mb-6 title">{{ timerText }}</p>
-        <v-card-actions>
+        <v-card-actions v-if="controls">
             <v-spacer></v-spacer>
             <v-btn
                 color="primary"
@@ -37,6 +37,6 @@
 <script>
 export default {
     // eslint-disable-next-line vue/require-prop-types
-    props: ['race', 'timerText', 'raceStarted'],
+    props: ['race', 'timerText', 'raceStarted', 'controls'],
 }
 </script>

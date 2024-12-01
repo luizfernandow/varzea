@@ -22,6 +22,7 @@ final class Race extends Model
 
     protected $casts = [
         'deleted_at' => 'datetime',
+        'live_data' => 'json'
     ];
 
     private static $positionPoint = [];

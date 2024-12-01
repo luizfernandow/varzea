@@ -47,6 +47,22 @@
                     <v-icon dark> mdi-flag-checkered </v-icon>
                 </v-btn>
             </template>
+            <template v-if="!authenticated && !race.locked">
+                <v-btn
+                    class="mx-2"
+                    dark
+                    color="teal"
+                    :to="{
+                        name: `races-live-${
+                            race.type === 'hours' ? 'groups-' : ''
+                        }id`,
+                        params: { id: race.id },
+                    }"
+                >
+                    <v-icon dark> mdi-flag-checkered </v-icon>
+                    {{ $t('race.liveWatch') }}
+                </v-btn>
+            </template>
         </v-card-title>
         <v-card-text>
             {{ race.date_start }} - {{ race.time_start }}

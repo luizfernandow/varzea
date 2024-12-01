@@ -14,7 +14,7 @@ final class RaceController extends Controller
 {
     public function __construct(protected ChampionshipRanking $championshipRanking)
     {
-        $this->middleware('auth:sanctum')->except(['index', 'show']);
+        $this->middleware('auth:sanctum')->except(['index', 'show', 'getLive', 'startRaceGroups']);
     }
 
     /**
@@ -172,6 +172,22 @@ final class RaceController extends Controller
         $this->championshipRanking->generate($race->championship);
 
         return response()->json('', 200);
+    }
+
+    public function saveLive(Request $request, $id)
+    {
+        $race = Race::find($id);
+        $race->live_data = $request->except('_token');
+        $race->save();
+
+        return response()->json('', 200);
+    }
+
+    public function getLive(Request $request, $id)
+    {
+        $race = Race::find($id);
+
+        return response()->json($race->live_data, 200);
     }
 
     private function getData(Request $request)
