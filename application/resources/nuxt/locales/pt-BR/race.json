@@ -10,6 +10,10 @@
 	"doLapFieldError": "Número do corredor incorreto!!",
 	"doLapFieldTimeError": "Volta muito rapida!!",
 	"saving": "Salvando corrida..",
+	"liveLoading": "Atualizando corrida..",
+	"liveNotStarted": "Corrida ainda não iniciada..",
+	"liveUpdate": "Corrida será atualizada a cada 30 segundos",
+	"liveWatch": "AO VIVO",
 	"undoLapDialog": {
 		"title": "Tem certeza que quer desfazer a volta?",
 		"content": "",

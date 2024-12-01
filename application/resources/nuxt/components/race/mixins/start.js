@@ -107,6 +107,10 @@ export default {
         },
         localStorageSet() {
             localStorage.setItem(
+                this.storageTimeKey,
+                JSON.stringify(this.timeStartedRace)
+            )
+            localStorage.setItem(
                 this.storageRacersTimeKey,
                 JSON.stringify(this.racersTime)
             )
@@ -118,6 +122,14 @@ export default {
                 this.storageGroupCurrentTimeKey,
                 JSON.stringify(this.groupCurrentTime)
             )
+        },
+        uploadLive() {
+            this.$axios.post(`/api/races/save-live/${this.$route.params.id}`, {
+                timeStartedRace: this.timeStartedRace,
+                racersTime: this.racersTime,
+                lapText: this.lapText,
+                groupCurrentTime: this.groupCurrentTime,
+            })
         },
         handleReset(reset) {
             this.resetDialog = false

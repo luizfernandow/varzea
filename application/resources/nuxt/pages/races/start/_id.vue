@@ -1,7 +1,7 @@
 <template>
     <v-card class="mx-auto">
         <v-row align="start" no-gutters>
-            <v-col xs="12" sm="6">
+            <v-col cols="12" sm="6">
                 <RaceHeader
                     :race="race"
                     :timer-text="timerText"
@@ -21,7 +21,7 @@
                     @lapNumberUpdate="lapNumber = $event"
                 />
             </v-col>
-            <v-col xs="12" sm="6">
+            <v-col cols="12" sm="6">
                 <v-list>
                     <div v-for="(item, index) in racersPositions" :key="index">
                         <v-divider></v-divider>

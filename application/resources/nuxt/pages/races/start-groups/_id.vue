@@ -1,11 +1,12 @@
 <template>
     <v-card class="mx-auto">
         <v-row align="start" no-gutters>
-            <v-col xs="12" sm="6">
+            <v-col cols="12" sm="6">
                 <RaceHeader
                     :race="race"
                     :timer-text="timerText"
                     :race-started="raceStarted"
+                    :controls="true"
                     @startTimer="startTimer"
                     @stop="stop"
                     @saveDialog="saveDialog = true"
@@ -21,7 +22,7 @@
                     @lapNumberUpdate="lapNumber = $event"
                 />
             </v-col>
-            <v-col xs="12" sm="6">
+            <v-col cols="12" sm="6">
                 <v-list>
                     <div v-for="(items, index) in racersPositions" :key="index">
                         <v-divider></v-divider>
@@ -94,9 +95,10 @@
 
 <script>
 import start from '../../../components/race/mixins/start'
+import startGroup from '../../../components/race/mixins/start-group'
 
 export default {
-    mixins: [start],
+    mixins: [start, startGroup],
     middleware: 'auth',
     asyncData({ $axios, params }) {
         return $axios
@@ -111,46 +113,6 @@ export default {
         this.sortPositions()
     },
     methods: {
-        sortPositions() {
-            const sortable = this.racersPositions
-            const self = this
-            sortable.sort((a, b) => {
-                const timerA = self.racersTime[a.groupNumber]
-                const timerB = self.racersTime[b.groupNumber]
-                if (timerA.lap === timerB.lap) {
-                    return timerA.totalSeconds - timerB.totalSeconds
-                }
-                return timerB.lap - timerA.lap
-            })
-            this.racersPositions = sortable
-        },
-        init() {
-            this.racersPositions = []
-            for (const group of Object.values(this.racers)) {
-                for (const racer of group) {
-                    this.racersByNumber[`${racer.group}${racer.number}`] = racer
-                    this.racersByRfid[`${racer.rfid_code}`] = racer
-                }
-                const groupNumber = this.getGroupIdKey(group[0].group)
-                this.racersTime[groupNumber] = {
-                    lap: 0,
-                    laps: [],
-                    lapsNumber: [],
-                    totalSeconds: 0,
-                }
-                this.lapText[groupNumber] = []
-                this.racersPositions.push({
-                    groupNumber,
-                    group,
-                })
-            }
-        },
-        getGroupId(items) {
-            return this.getGroupIdKey(items[0].group)
-        },
-        getGroupIdKey(groupId) {
-            return `group_${groupId}`
-        },
         doLap() {
             this.lapSaving = true
 
@@ -181,7 +143,7 @@ export default {
                     })
                     time = this.$toHHMMSS(lapTime.toString())
                 }
-                if (lapTime > 60 * 8) {
+                if (lapTime > 0 * 8) {
                     racerTimer.laps.push(lapTime)
                     racerTimer.lapsNumber.push(racer.racer.id)
                     racerTimer.lap++
@@ -195,6 +157,7 @@ export default {
                     this.groupCurrentTime[groupNumber] = currentTime
                     this.localStorageSet()
                     this.sortPositions()
+                    this.uploadLive()
                     const snackbarText = `${racer.racer.name} (${numberText}) - ${time}`
                     this.snackbarText = this.snackbar
                         ? `${this.snackbarText} \n ${snackbarText}`
@@ -229,6 +192,7 @@ export default {
                     )
                     this.localStorageSet()
                     this.sortPositions()
+                    this.uploadLive()
                 }
             }
             this.undoGroup = null
