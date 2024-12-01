@@ -143,7 +143,7 @@ export default {
                     })
                     time = this.$toHHMMSS(lapTime.toString())
                 }
-                if (lapTime > 0 * 8) {
+                if (lapTime > 60 * 8) {
                     racerTimer.laps.push(lapTime)
                     racerTimer.lapsNumber.push(racer.racer.id)
                     racerTimer.lap++
