@@ -39,7 +39,7 @@ build-production:
 		.
 
 start:
-	@cd $(DIR) && docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+	@cd $(DIR) && docker compose -f docker-compose.yml -f docker-compose.dev.yml up --wait -d
 
 stop:
 	@cd $(DIR) && docker compose down -v
@@ -72,7 +72,7 @@ php-artisan:
 	@cd $(DIR) && docker exec -u $(shell id -u):$(shell id -g) -it $(shell cd $(DIR) && docker compose ps -q php) bash
 
 production:
-	@cd $(DIR) && docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+	@cd $(DIR) && docker compose -f docker-compose.yml -f docker-compose.prod.yml up --wait -d
 
 certbot:
 	@cd $(DIR) && docker compose -f docker-compose.yml -f docker-compose.certbot.yml up -d
