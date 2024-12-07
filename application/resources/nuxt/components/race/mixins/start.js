@@ -47,6 +47,7 @@ export default {
     },
     methods: {
         load() {
+            this.timer = new Timer()
             const timeStartedRaceStorage = localStorage.getItem(
                 this.storageTimeKey
             )
@@ -100,6 +101,7 @@ export default {
                     JSON.stringify(this.timeStartedRace)
                 )
             }
+            this.uploadLive()
         },
         stop() {
             this.raceStarted = false
@@ -144,6 +146,7 @@ export default {
                 this.groupCurrentTime = {}
                 this.init()
                 this.timer.stop()
+                this.timeStartedRace = null
             }
         },
     },

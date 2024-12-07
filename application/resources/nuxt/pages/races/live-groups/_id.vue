@@ -83,10 +83,18 @@ export default {
                 return res.data
             })
     },
+    data() {
+        return {
+            polling: null,
+        }
+    },
     async mounted() {
         this.init()
         await this.handleLive()
-        setInterval(this.handleLive, 30000)
+        this.pooling = setInterval(this.handleLive, 30000)
+    },
+    beforeDestroy() {
+        clearInterval(this.pooling)
     },
     methods: {
         async handleLive() {
