@@ -1,45 +1,37 @@
 {
   "name": "varzea",
-  "version": "1.0.0",
-  "description": "My extraordinary Nuxt.js project",
+  "version": "2.0.0",
   "author": "Luiz Fernando",
   "private": true,
   "scripts": {
-    "dev": "nuxt -c resources/nuxt/nuxt.config.js",
-    "build": "node_modules/nuxt/bin/nuxt.js build -c resources/nuxt/nuxt.config.js",
-    "start": "nuxt start -c resources/nuxt/nuxt.config.js",
-    "generate": "node_modules/nuxt/bin/nuxt.js generate -c resources/nuxt/nuxt.config.js",
-    "lint:js": "eslint --ext .js,.vue --ignore-path resources/nuxt/.gitignore --fix  resources/nuxt",
-    "lint:style": "stylelint resources/nuxt/**/*.{vue,css} --ignore-path resources/nuxt/.gitignore",
-    "lint": "npm run lint:js && npm run lint:style"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "typecheck": "nuxt typecheck"
   },
   "dependencies": {
-    "@nuxtjs/auth": "^4.9.1",
-    "@nuxtjs/axios": "^5.13.6",
-    "@nuxtjs/pwa": "^3.3.5",
-    "easytimer.js": "^4.5.4",
-    "nuxt": "^2.15.8",
-    "vee-validate": "^3.3.7",
-    "vue-i18n": "^8.20.0"
-  },
-  "overrides": {
-    "glob-parent": "5.1.2",
-    "nth-check": "2.0.1"
+    "@nuxt/eslint": "^1.10.0",
+    "@nuxt/hints": "^1.0.0-alpha.1",
+    "@nuxt/image": "^2.0.0",
+    "@nuxt/scripts": "^0.13.0",
+    "@nuxt/ui": "^4.1.0",
+    "@unhead/vue": "^2.0.19",
+    "nuxt": "^4.2.1",
+    "vue": "^3.5.24",
+    "vue-router": "^4.6.3"
   },
   "devDependencies": {
-    "@nuxtjs/eslint-config": "^3.1.0",
-    "@nuxtjs/eslint-module": "^2.0.0",
-    "@nuxtjs/stylelint-module": "^4.0.0",
-    "@nuxtjs/vuetify": "^1.12.3",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.5.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-nuxt": "^1.0.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "npm-force-resolutions": "^0.0.10",
-    "prettier": "^2.0.5",
-    "stylelint": "^13.6.1",
-    "stylelint-config-prettier": "^8.0.2",
-    "stylelint-config-standard": "^20.0.0"
+    "@iconify-json/lucide": "^1.2.73",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3"
   }
 }
