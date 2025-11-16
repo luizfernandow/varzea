@@ -4,15 +4,18 @@ const route = useRoute()
 const items = computed(() => [
   {
     label: 'Ranking',
+    icon: 'i-lucide-trophy',
     to: '/ranking',
     active: route.path.startsWith('/ranking')
   },
   {
     label: 'Races',
+    icon: 'i-lucide-flag',
     to: '/races'
   },
   {
     label: 'Racers',
+    icon: 'i-lucide-bike',
     to: '/racers'
   }
 ])
