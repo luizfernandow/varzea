@@ -25,7 +25,7 @@ const columns: TableColumn<Racer>[] = [
   }
 ]
 
-const globalFilter = ref('')
+const globalFilter = ref()
 
 const pagination = ref({
   pageIndex: 0,
@@ -37,7 +37,7 @@ const pagination = ref({
   <UContainer>
     <UPageHeader title="Racers" />
     <UPageBody>
-      <UInput v-model="globalFilter" class="max-w-sm" placeholder="Filter..." />
+      <UInput v-model="globalFilter" class="max-w-sm" placeholder="Pesquisar..." />
       <UTable
         ref="table"
         v-model:global-filter="globalFilter"
