@@ -17,7 +17,7 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
-    "@nuxt/hints": "^1.0.0-alpha.1",
+    "@nuxt/hints": "^1.1.5",
     "@nuxt/image": "^2.0.0",
     "@nuxt/scripts": "^0.13.0",
     "@nuxt/ui": "^4.1.0",
@@ -32,7 +32,7 @@
     "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.7",
-    "prettier": "^3.6.2",
+    "prettier": "^3.9.10",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.3.14"
   },
