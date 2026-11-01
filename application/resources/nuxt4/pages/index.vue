@@ -10,7 +10,7 @@ useHead({
       title="Várzealand"
       description="Competições de ciclismo, resultados e classificação."
     >
-      <NuxtImg
+      <img
         src="/mapa.jpeg"
         alt="Mapa do circuito Várzealand"
         class="rounded-lg shadow-2xl ring ring-default m-auto"

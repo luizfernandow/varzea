@@ -7,7 +7,7 @@ const language = useAppLocale()
   <UContainer class="max-w-lg py-8"
     ><UPageHeader :title="language.t('auth', 'profile')" /><UCard class="mt-5"
       ><div class="flex items-center gap-4">
-        <NuxtImg src="/biker.png" alt="Ciclista" class="size-14 rounded-full" />
+        <img src="/biker.png" alt="Ciclista" class="size-14 rounded-full" />
         <div>
           <p class="text-lg font-semibold">{{ auth.user.value?.name }}</p>
           <p class="text-muted">{{ auth.user.value?.email }}</p>

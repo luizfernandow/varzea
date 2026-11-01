@@ -4,9 +4,9 @@
   "author": "Luiz Fernando",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
+    "build": "npm run generate",
     "dev": "nuxt dev",
-    "generate": "nuxt generate",
+    "generate": "nuxt generate && node scripts/publish-nuxt-spa.mjs",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",

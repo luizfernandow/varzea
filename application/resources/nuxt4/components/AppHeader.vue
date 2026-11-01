@@ -32,7 +32,7 @@ async function signOut() {
   <UHeader>
     <template #left>
       <NuxtLink to="/">
-        <NuxtImg src="/icon.png" alt="icon" class="w-auto h-12 shrink-0" />
+        <img src="/icon.png" alt="Várzealand" class="w-auto h-12 shrink-0" />
       </NuxtLink>
     </template>
 

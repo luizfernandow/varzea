@@ -19,6 +19,12 @@ export default defineNuxtConfig({
         ).process?.env?.NUXT_API_URL || 'http://localhost'
     }
   },
+  nitro: {
+    prerender: {
+      crawlLinks: false,
+      routes: ['/']
+    }
+  },
 
   modules: ['@nuxt/eslint', '@nuxt/image', '@nuxt/scripts', '@nuxt/ui', '@nuxt/hints']
 })
