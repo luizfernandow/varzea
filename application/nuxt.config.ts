@@ -16,7 +16,7 @@ export default defineNuxtConfig({
           globalThis as typeof globalThis & {
             process?: { env?: Record<string, string | undefined> }
           }
-        ).process?.env?.NUXT_API_URL || 'http://localhost'
+        ).process?.env?.NUXT_API_URL || ''
     }
   },
   nitro: {

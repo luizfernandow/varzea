@@ -93,8 +93,18 @@ async function save() {
     })
     await navigateTo(`/races/${id}`)
   } catch (cause: unknown) {
+    const response = cause as {
+      status?: number
+      statusCode?: number
+      data?: { message?: string; errors?: Record<string, string[]> }
+    }
+    const validationMessages =
+      response.status === 422 || response.statusCode === 422
+        ? Object.values(response.data?.errors ?? {}).flat()
+        : []
     message.value =
-      (cause as { data?: { message?: string } }).data?.message ||
+      validationMessages.join(' ') ||
+      response.data?.message ||
       'Não foi possível salvar as inscrições.'
   } finally {
     saving.value = false

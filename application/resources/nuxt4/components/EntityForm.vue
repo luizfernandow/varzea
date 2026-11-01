@@ -20,16 +20,34 @@ const form = reactive<Record<string, FormValue>>({
   ...((props.initial ?? {}) as Record<string, FormValue>)
 })
 const error = ref('')
+const fieldErrors = ref<Record<string, string[]>>({})
 const saving = ref(false)
 const router = useRouter()
 
+function fieldError(name: string) {
+  const messages = Object.entries(fieldErrors.value)
+    .filter(([key]) => key === name || key.startsWith(`${name}.`))
+    .flatMap(([, messages]) => messages)
+
+  return messages.length ? messages.join(' ') : undefined
+}
+
 async function submit() {
   error.value = ''
+  fieldErrors.value = {}
   saving.value = true
   try {
     await props.onSubmit?.({ ...form })
   } catch (cause: unknown) {
-    const message = (cause as { data?: { message?: string } }).data?.message
+    const response = cause as {
+      status?: number
+      statusCode?: number
+      data?: { message?: string; errors?: Record<string, string[]> }
+    }
+    if ((response.status === 422 || response.statusCode === 422) && response.data?.errors) {
+      fieldErrors.value = response.data.errors
+    }
+    const message = response.data?.message
     error.value = message || 'Não foi possível salvar. Confira os dados e tente novamente.'
   } finally {
     saving.value = false
@@ -47,6 +65,7 @@ async function submit() {
             v-if="!field.showWhen || form[field.showWhen.name] === field.showWhen.value"
             :label="field.label"
             :name="field.name"
+            :error="fieldError(field.name)"
             :required="field.required !== false"
           >
             <USelect

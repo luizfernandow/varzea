@@ -22,6 +22,8 @@ type LiveRaceData = {
   running?: boolean
   timeStartedRace?: string | null
   racersTime?: Record<string, TimerLap>
+  lapText?: Record<string, string[]>
+  groupCurrentTime?: Record<string, string>
 }
 
 const props = defineProps<{ grouped: boolean; live?: boolean }>()
@@ -49,6 +51,9 @@ const running = ref(false)
 const input = ref('')
 const message = ref('')
 const laps = ref<Record<string, TimerLap>>({})
+const lapText = ref<Record<string, string[]>>({})
+const groupCurrentTime = ref<Record<string, string>>({})
+const liveStarted = ref(false)
 const startedAt = ref<number | null>(null)
 let interval: ReturnType<typeof setInterval> | undefined
 const participantMap = computed(() => {
@@ -72,16 +77,28 @@ const names = computed(() =>
     (props.live ? roster.value : (data.value as RaceTimerData | null))?.racers ?? {}
   ).flatMap((row) => (Array.isArray(row) ? row : [row]))
 )
+const groups = computed(() => {
+  const result: Record<string, RaceTimerRacer[]> = {}
+  for (const row of Object.values(roster.value?.racers ?? {})) {
+    if (!Array.isArray(row)) continue
+    const key = `group_${row[0]?.group}`
+    if (row.length) result[key] = row
+  }
+  return result
+})
 const display = computed(() =>
   Object.entries(laps.value)
     .map(([key, value]) => ({
       key,
       value,
-      name:
-        names.value.find((r) => String(r.racer?.id ?? r.id) === key || `group_${r.group}` === key)
-          ?.racer?.name ??
-        names.value.find((r) => `group_${r.group}` === key)?.racer?.name ??
-        key
+      name: props.grouped
+        ? (groups.value[key] ?? [])
+            .map(
+              (racer) => `${racer.racer?.name ?? racer.name ?? ''} (${racer.group}${racer.number})`
+            )
+            .filter((name) => name !== ' ()')
+            .join(', ') || key
+        : (names.value.find((r) => String(r.racer?.id ?? r.id) === key)?.racer?.name ?? key)
     }))
     .sort((a, b) => b.value.lap - a.value.lap || a.value.totalSeconds - b.value.totalSeconds)
 )
@@ -93,7 +110,9 @@ function persist() {
         time: time.value,
         startedAt: startedAt.value,
         running: running.value,
-        laps: laps.value
+        laps: laps.value,
+        lapText: lapText.value,
+        groupCurrentTime: groupCurrentTime.value
       })
     )
 }
@@ -125,8 +144,8 @@ async function upload() {
         elapsed: time.value,
         running: running.value,
         racersTime: laps.value,
-        lapText: {},
-        groupCurrentTime: {}
+        lapText: lapText.value,
+        groupCurrentTime: groupCurrentTime.value
       }
     })
   } catch {
@@ -167,6 +186,13 @@ function recordLap() {
   current.lap++
   current.laps.push(lapDuration)
   current.totalSeconds = time.value
+  const lapTime = format(lapDuration)
+  const numberText = props.grouped ? `${participant.group}${participant.number}` : ''
+  const text = props.grouped
+    ? `${current.lap} - ${lapTime} (${numberText})`
+    : `${current.lap} - ${lapTime}`
+  lapText.value = { ...lapText.value, [key]: [...(lapText.value[key] ?? []), text] }
+  groupCurrentTime.value = { ...groupCurrentTime.value, [key]: format(time.value) }
   if (props.grouped) current.lapsNumber?.push(racerId)
   laps.value = { ...laps.value, [key]: current }
   input.value = ''
@@ -192,6 +218,14 @@ function undo(key: string) {
   current.lap--
   current.totalSeconds = Math.max(0, current.totalSeconds - lastLap)
   if (props.grouped) current.lapsNumber?.pop()
+  lapText.value = {
+    ...lapText.value,
+    [key]: (lapText.value[key] ?? []).slice(0, -1)
+  }
+  groupCurrentTime.value = {
+    ...groupCurrentTime.value,
+    [key]: current.totalSeconds ? format(current.totalSeconds) : ''
+  }
   laps.value = { ...laps.value, [key]: current }
   persist()
   void upload()
@@ -207,6 +241,8 @@ function reset() {
   time.value = 0
   startedAt.value = null
   laps.value = {}
+  lapText.value = {}
+  groupCurrentTime.value = {}
   persist()
   void upload()
 }
@@ -220,10 +256,14 @@ onMounted(() => {
         startedAt?: number | null
         running?: boolean
         laps?: Record<string, TimerLap>
+        lapText?: Record<string, string[]>
+        groupCurrentTime?: Record<string, string>
       }
       time.value = state.time ?? 0
       startedAt.value = state.startedAt ?? null
       laps.value = state.laps ?? {}
+      lapText.value = state.lapText ?? {}
+      groupCurrentTime.value = state.groupCurrentTime ?? {}
       if (state.running && startedAt.value) {
         tick()
         running.value = true
@@ -246,6 +286,8 @@ onMounted(() => {
           interval = setInterval(tick, 500)
         }
         laps.value = oldLaps ? JSON.parse(oldLaps) : {}
+        lapText.value = JSON.parse(localStorage.getItem(`lapText${id}`) || '{}')
+        groupCurrentTime.value = JSON.parse(localStorage.getItem(`groupCurrentTime${id}`) || '{}')
         persist()
       } catch {
         /* ignore invalid state from the previous Nuxt app */
@@ -268,17 +310,23 @@ onBeforeUnmount(() => {
 })
 if (props.live)
   onMounted(() => {
+    const applyLiveData = (live: LiveRaceData | null | undefined) => {
+      if (!live) return
+      const elapsed = Number(live.elapsed ?? 0)
+      liveStarted.value = !!live.timeStartedRace
+      time.value =
+        (live.running ?? !!live.timeStartedRace) && live.timeStartedRace
+          ? elapsed + Math.floor((Date.now() - new Date(live.timeStartedRace).getTime()) / 1000)
+          : elapsed
+      laps.value = live.racersTime ?? {}
+      lapText.value = live.lapText ?? {}
+      groupCurrentTime.value = live.groupCurrentTime ?? {}
+    }
+    applyLiveData(data.value as LiveRaceData | null)
     interval = setInterval(async () => {
       try {
         const live = await useApi<LiveRaceData | null>(`/api/races/live/${id}`)
-        if (live) {
-          const elapsed = Number(live.elapsed ?? 0)
-          time.value =
-            live.running && live.timeStartedRace
-              ? elapsed + Math.floor((Date.now() - new Date(live.timeStartedRace).getTime()) / 1000)
-              : elapsed
-          laps.value = live.racersTime ?? {}
-        }
+        applyLiveData(live)
       } catch {
         /* retry next cycle */
       }
@@ -295,8 +343,8 @@ if (props.live)
     /><UAlert
       v-if="live"
       class="mt-4"
-      color="info"
-      :title="language.t('race', 'liveUpdate')"
+      :color="liveStarted ? 'info' : 'warning'"
+      :title="language.t('race', liveStarted ? 'liveUpdate' : 'liveNotStarted')"
     /><UCard class="my-5"
       ><div class="text-center text-4xl font-mono">{{ format(time) }}</div>
       <div v-if="!live" class="my-4 flex flex-wrap justify-center gap-2">
@@ -324,7 +372,10 @@ if (props.live)
           ><span>{{ row.value.lap }} voltas · {{ format(row.value.totalSeconds) }}</span>
         </div>
         <div class="mt-2 text-sm text-muted">
-          {{ row.value.laps.map(format).join(' · ') }}
+          {{ lapText[row.key]?.join(' · ') || row.value.laps.map(format).join(' · ') }}
+          <span v-if="groupCurrentTime[row.key]" class="ml-2">
+            · {{ groupCurrentTime[row.key] }}
+          </span>
         </div>
         <UButton
           v-if="!live && row.value.lap"
