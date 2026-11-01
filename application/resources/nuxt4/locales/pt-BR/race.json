@@ -14,6 +14,9 @@
   "liveNotStarted": "Corrida ainda não iniciada..",
   "liveUpdate": "Corrida atualizada a cada 3 segundos",
   "recordLap": "Registrar volta",
+  "lapRecorded": "Volta registrada",
+  "saveSuccess": "Corrida salva com sucesso",
+  "saveError": "Não foi possível salvar a corrida.",
   "undoLap": "Desfazer última volta",
   "liveWatch": "AO VIVO",
   "undoLapDialog": {

@@ -15,6 +15,9 @@
   "liveNotStarted": "Race not started yet...",
   "liveUpdate": "Race updates every 3 seconds",
   "recordLap": "Record lap",
+  "lapRecorded": "Lap recorded",
+  "saveSuccess": "Race saved successfully",
+  "saveError": "Could not save the race.",
   "undoLap": "Undo last lap",
   "undoLapDialog": {
     "title": "Are you sure you want to undo the lap?",

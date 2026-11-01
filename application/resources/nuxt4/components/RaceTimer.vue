@@ -28,6 +28,7 @@ type LiveRaceData = {
 
 const props = defineProps<{ grouped: boolean; live?: boolean }>()
 const language = useAppLocale()
+const toast = useToast()
 const id = useRoute().params.id
 const { data } = await useAsyncData(
   `race-start-${id}-${props.grouped}`,
@@ -50,6 +51,8 @@ const time = ref(0)
 const running = ref(false)
 const input = ref('')
 const message = ref('')
+const saveError = ref('')
+const saving = ref(false)
 const laps = ref<Record<string, TimerLap>>({})
 const lapText = ref<Record<string, string[]>>({})
 const groupCurrentTime = ref<Record<string, string>>({})
@@ -197,6 +200,7 @@ function recordLap() {
   current.totalSeconds = time.value
   const lapTime = format(lapDuration)
   const numberText = props.grouped ? `${participant.group}${participant.number}` : ''
+  const racerName = participant.racer?.name ?? participant.name ?? input.value.trim()
   const text = props.grouped
     ? `${current.lap} - ${lapTime} (${numberText})`
     : `${current.lap} - ${lapTime}`
@@ -206,6 +210,13 @@ function recordLap() {
     current.lapsNumber?.push(racerId)
   }
   laps.value = { ...laps.value, [key]: current }
+  toast.add({
+    title: language.t('race', 'lapRecorded'),
+    description: `${racerName}${props.grouped ? ` (${numberText})` : ''} - ${lapTime}`,
+    color: 'success',
+    icon: 'i-lucide-check',
+    duration: 5000
+  })
   input.value = ''
   persist()
   void upload()
@@ -218,12 +229,27 @@ async function finish() {
   ) {
     return
   }
+  saving.value = true
+  saveError.value = ''
   const endpoint = props.grouped ? 'save-laps-groups' : 'save-laps'
-  await useApi(`/api/races/${endpoint}/${id}`, { method: 'POST', body: laps.value })
-  if (import.meta.client) {
-    localStorage.removeItem(`race-timer-${id}-${props.grouped}`)
+  try {
+    await useApi(`/api/races/${endpoint}/${id}`, { method: 'POST', body: laps.value })
+    toast.add({
+      title: language.t('race', 'saveSuccess'),
+      color: 'success',
+      icon: 'i-lucide-check',
+      duration: 5000
+    })
+    if (import.meta.client) {
+      localStorage.removeItem(`race-timer-${id}-${props.grouped}`)
+    }
+    await navigateTo(`/races/${id}`)
+  } catch (cause: unknown) {
+    const response = cause as { data?: { message?: string } }
+    saveError.value = response.data?.message || language.t('race', 'saveError')
+  } finally {
+    saving.value = false
   }
-  await navigateTo(`/races/${id}`)
 }
 function undo(key: string) {
   const current = laps.value[key]
@@ -392,6 +418,8 @@ if (props.live) {
       </form>
       <p v-if="message" class="mt-2 text-center text-error">{{ message }}</p></UCard
     >
+    <UAlert v-if="saving" class="mt-4" color="info" :title="language.t('race', 'saving')" />
+    <UAlert v-if="saveError" class="mt-4" color="error" :title="saveError" />
     <div class="space-y-3">
       <UCard v-for="(row, index) in display" :key="row.key"
         ><div class="flex justify-between">
@@ -416,7 +444,9 @@ if (props.live) {
       >
     </div>
     <div v-if="!live" class="mt-5 flex justify-end">
-      <UButton color="primary" @click="finish">{{ language.t('race', 'save') }}</UButton>
+      <UButton color="primary" :loading="saving" :disabled="saving" @click="finish">{{
+        language.t('race', 'save')
+      }}</UButton>
     </div></UContainer
   >
 </template>
