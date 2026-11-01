@@ -22,7 +22,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://varzea.local:3000'],
+    'allowed_origins' => ['http://varzea.local:3000', 'http://localhost:3000'],
 
     'allowed_origins_patterns' => [],
 

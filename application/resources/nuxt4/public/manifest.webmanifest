@@ -1,0 +1,12 @@
+{
+  "name": "Várzealand App",
+  "short_name": "Várzealand",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    { "src": "/icon.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
