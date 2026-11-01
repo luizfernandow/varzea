@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "author": "Luiz Fernando",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "npm run generate",
     "dev": "nuxt dev",
@@ -22,15 +23,15 @@
     "@nuxt/ui": "^4.1.0",
     "@unhead/vue": "^2.0.19",
     "nuxt": "^4.2.1",
-    "vue": "^3.5.24",
+    "vue": "^3.5.44",
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.73",
+    "@iconify-json/lucide": "^1.2.150",
     "@nuxt/eslint": "^1.10.0",
     "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-prettier": "^5.5.7",
     "prettier": "^3.6.2",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.3.14"
