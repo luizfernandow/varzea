@@ -2,7 +2,9 @@ export default defineNuxtPlugin(() => {
   const updateAvailable = useState('pwa-update-available', () => false)
   const registration = useState<ServiceWorkerRegistration | null>('pwa-registration', () => null)
 
-  if (!('serviceWorker' in navigator)) return
+  if (!('serviceWorker' in navigator)) {
+    return
+  }
 
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     window.location.reload()
@@ -10,7 +12,9 @@ export default defineNuxtPlugin(() => {
 
   void navigator.serviceWorker.register('/sw.js').then((registered) => {
     registration.value = registered
-    if (registered.waiting && navigator.serviceWorker.controller) updateAvailable.value = true
+    if (registered.waiting && navigator.serviceWorker.controller) {
+      updateAvailable.value = true
+    }
 
     registered.addEventListener('updatefound', () => {
       const worker = registered.installing

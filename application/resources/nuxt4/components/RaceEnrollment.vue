@@ -28,10 +28,11 @@ const members = ref<Record<string, EnrollmentMember>>({})
 const message = ref('')
 const saving = ref(false)
 watchEffect(() => {
-  if (data.value?.groups)
+  if (data.value?.groups) {
     members.value = Object.fromEntries(
       Object.values(data.value.groups).map((item) => [`key_${item.racer_id}`, { ...item }])
     )
+  }
 })
 const racers = computed(() => data.value?.racers ?? [])
 function removeMember(key: string | number) {
@@ -41,7 +42,9 @@ function removeMember(key: string | number) {
 }
 function add() {
   message.value = ''
-  if (!selected.value || !number.value) return
+  if (!selected.value || !number.value) {
+    return
+  }
   if (rfid.value && rfid.value.length !== 10) {
     message.value = language.t('race-form', 'select-groups.rfid_validation')
     return
@@ -78,13 +81,17 @@ async function save() {
     rfid: Record<string, unknown>
     group?: Record<string, unknown>
   } = { racers: {}, number: {}, rfid: {} }
-  if (props.grouped) payload.group = {}
+  if (props.grouped) {
+    payload.group = {}
+  }
   for (const row of rows) {
     const key = `key_${row.racer_id}`
     payload.racers[key] = row.racer_id
     payload.number[key] = row.number
     payload.rfid[key] = row.rfid_code || row.rfid || ''
-    if (props.grouped) payload.group![key] = row.group
+    if (props.grouped) {
+      payload.group![key] = row.group
+    }
   }
   try {
     await useApi(`/api/races/${props.grouped ? 'save-groups' : 'save-racers'}/${id}`, {

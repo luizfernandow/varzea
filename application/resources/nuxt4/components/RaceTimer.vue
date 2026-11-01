@@ -60,14 +60,16 @@ const participantMap = computed(() => {
   const map: Record<string, RaceTimerRacer> = {}
   const racers = (props.live ? roster.value : (data.value as RaceTimerData | null))?.racers ?? {}
   for (const row of Object.values(racers)) {
-    if (Array.isArray(row))
+    if (Array.isArray(row)) {
       for (const racer of row) {
         map[`${racer.group}${racer.number}`] = racer
         map[`${racer.rfid_code}`] = racer
       }
-    else {
+    } else {
       map[String(row.number)] = row
-      if (row.rfid_code) map[String(row.rfid_code)] = row
+      if (row.rfid_code) {
+        map[String(row.rfid_code)] = row
+      }
     }
   }
   return map
@@ -80,9 +82,13 @@ const names = computed(() =>
 const groups = computed(() => {
   const result: Record<string, RaceTimerRacer[]> = {}
   for (const row of Object.values(roster.value?.racers ?? {})) {
-    if (!Array.isArray(row)) continue
+    if (!Array.isArray(row)) {
+      continue
+    }
     const key = `group_${row[0]?.group}`
-    if (row.length) result[key] = row
+    if (row.length) {
+      result[key] = row
+    }
   }
   return result
 })
@@ -103,7 +109,7 @@ const display = computed(() =>
     .sort((a, b) => b.value.lap - a.value.lap || a.value.totalSeconds - b.value.totalSeconds)
 )
 function persist() {
-  if (import.meta.client)
+  if (import.meta.client) {
     localStorage.setItem(
       `race-timer-${id}-${props.grouped}`,
       JSON.stringify({
@@ -115,6 +121,7 @@ function persist() {
         groupCurrentTime: groupCurrentTime.value
       })
     )
+  }
 }
 function tick() {
   time.value = startedAt.value ? Math.floor((Date.now() - startedAt.value) / 1000) : 0
@@ -130,7 +137,9 @@ function start() {
 }
 function stop() {
   running.value = false
-  if (interval) clearInterval(interval)
+  if (interval) {
+    clearInterval(interval)
+  }
   interval = undefined
   persist()
   void upload()
@@ -193,7 +202,9 @@ function recordLap() {
     : `${current.lap} - ${lapTime}`
   lapText.value = { ...lapText.value, [key]: [...(lapText.value[key] ?? []), text] }
   groupCurrentTime.value = { ...groupCurrentTime.value, [key]: format(time.value) }
-  if (props.grouped) current.lapsNumber?.push(racerId)
+  if (props.grouped) {
+    current.lapsNumber?.push(racerId)
+  }
   laps.value = { ...laps.value, [key]: current }
   input.value = ''
   persist()
@@ -204,20 +215,27 @@ async function finish() {
     !window.confirm(
       `${language.t('race', 'saveDialog.title')} ${language.t('race', 'saveDialog.content')}`
     )
-  )
+  ) {
     return
+  }
   const endpoint = props.grouped ? 'save-laps-groups' : 'save-laps'
   await useApi(`/api/races/${endpoint}/${id}`, { method: 'POST', body: laps.value })
-  if (import.meta.client) localStorage.removeItem(`race-timer-${id}-${props.grouped}`)
+  if (import.meta.client) {
+    localStorage.removeItem(`race-timer-${id}-${props.grouped}`)
+  }
   await navigateTo(`/races/${id}`)
 }
 function undo(key: string) {
   const current = laps.value[key]
-  if (!current?.lap || !window.confirm(language.t('race', 'undoLapDialog.title'))) return
+  if (!current?.lap || !window.confirm(language.t('race', 'undoLapDialog.title'))) {
+    return
+  }
   const lastLap = current.laps.pop() ?? 0
   current.lap--
   current.totalSeconds = Math.max(0, current.totalSeconds - lastLap)
-  if (props.grouped) current.lapsNumber?.pop()
+  if (props.grouped) {
+    current.lapsNumber?.pop()
+  }
   lapText.value = {
     ...lapText.value,
     [key]: (lapText.value[key] ?? []).slice(0, -1)
@@ -235,8 +253,9 @@ function reset() {
     !window.confirm(
       `${language.t('race', 'resetDialog.title')} ${language.t('race', 'resetDialog.content')}`
     )
-  )
+  ) {
     return
+  }
   stop()
   time.value = 0
   startedAt.value = null
@@ -247,7 +266,9 @@ function reset() {
   void upload()
 }
 onMounted(() => {
-  if (props.live) return
+  if (props.live) {
+    return
+  }
   const saved = localStorage.getItem(`race-timer-${id}-${props.grouped}`)
   if (saved) {
     try {
@@ -294,7 +315,7 @@ onMounted(() => {
       }
     }
   }
-  if (!Object.keys(laps.value).length)
+  if (!Object.keys(laps.value).length) {
     for (const row of Object.values((data.value as RaceTimerData | null)?.racers ?? {})) {
       if (Array.isArray(row)) {
         const key = `group_${row[0]?.group}`
@@ -304,14 +325,19 @@ onMounted(() => {
         laps.value[key] = { lap: 0, laps: [], totalSeconds: 0 }
       }
     }
+  }
 })
 onBeforeUnmount(() => {
-  if (interval) clearInterval(interval)
+  if (interval) {
+    clearInterval(interval)
+  }
 })
-if (props.live)
+if (props.live) {
   onMounted(() => {
     const applyLiveData = (live: LiveRaceData | null | undefined) => {
-      if (!live) return
+      if (!live) {
+        return
+      }
       const elapsed = Number(live.elapsed ?? 0)
       liveStarted.value = !!live.timeStartedRace
       time.value =
@@ -332,6 +358,7 @@ if (props.live)
       }
     }, 3000)
   })
+}
 </script>
 <template>
   <UContainer class="py-8"

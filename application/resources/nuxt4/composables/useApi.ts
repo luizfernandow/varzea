@@ -9,8 +9,9 @@ export function useApi<T>(path: string, options: Record<string, unknown> = {}) {
     const xsrfCookie = document.cookie
       .split('; ')
       .find((cookie) => cookie.startsWith('XSRF-TOKEN='))
-    if (xsrfCookie)
+    if (xsrfCookie) {
       headers['X-XSRF-TOKEN'] = decodeURIComponent(xsrfCookie.slice('XSRF-TOKEN='.length))
+    }
   }
 
   return $fetch<T>(path, {

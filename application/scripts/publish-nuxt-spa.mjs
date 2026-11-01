@@ -21,7 +21,9 @@ try {
 // Keep Laravel's entry point, rewrites, public storage symlink, and robots rules.
 const preservedLaravelFiles = new Set(['index.php', 'robots.txt', '.htaccess', 'storage'])
 for (const entry of await readdir(laravelPublicDir)) {
-  if (preservedLaravelFiles.has(entry)) continue
+  if (preservedLaravelFiles.has(entry)) {
+    continue
+  }
   await rm(join(laravelPublicDir, entry), { recursive: true, force: true })
 }
 
