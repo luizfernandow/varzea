@@ -1,5 +1,5 @@
 # sudo touch /usr/local/bin/pest
 # sudo chmod +x /usr/local/bin/pest
 container=$(docker ps -f name=php -q)
-command="docker exec ${container} vendor/bin/pest "$@""
+command="docker exec -t -e TERM=xterm-256color ${container} vendor/bin/pest "$@""
 $command

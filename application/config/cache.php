@@ -31,6 +31,8 @@ return [
     |
     */
 
+    'serializable_classes' => false,
+
     'stores' => [
 
         'apc' => [
