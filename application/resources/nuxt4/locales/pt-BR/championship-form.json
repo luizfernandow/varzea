@@ -1,0 +1,9 @@
+{
+  "form": {
+    "title": "Campeonato",
+    "name": "Nome",
+    "create": "Criar",
+    "update": "Atualizar",
+    "cancel": "Cancelar"
+  }
+}

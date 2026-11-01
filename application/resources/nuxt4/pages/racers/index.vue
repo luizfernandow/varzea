@@ -1,63 +1,41 @@
 <script setup lang="ts">
-import { getPaginationRowModel } from '@tanstack/vue-table'
-import type { TableColumn } from '@nuxt/ui'
-
-const table = useTemplateRef('table')
-
-type Racer = {
-  id: number
-  name: string
-}
-
-type RacerData = {
-  data: Racer[]
-}
-
-const { data, status } = await useFetch<RacerData>('http://localhost/api/racers', {
-  key: 'table-racers',
-  lazy: true
-})
-
-const columns: TableColumn<Racer>[] = [
-  {
-    accessorKey: 'name',
-    header: 'Name'
-  }
-]
-
-const globalFilter = ref()
-
-const pagination = ref({
-  pageIndex: 0,
-  pageSize: 5
-})
+type Racer = { id: number; name: string }
+const auth = useAuth()
+const language = useAppLocale()
+const search = ref('')
+const { data, status, error } = await useAsyncData('racers', () =>
+  useApi<{ data: Racer[] }>('/api/racers')
+)
+const racers = computed(() =>
+  (data.value?.data ?? []).filter((r) => r.name.toLowerCase().includes(search.value.toLowerCase()))
+)
 </script>
 
 <template>
-  <UContainer>
-    <UPageHeader title="Racers" />
-    <UPageBody>
-      <UInput v-model="globalFilter" class="max-w-sm" placeholder="Pesquisar..." />
-      <UTable
-        ref="table"
-        v-model:global-filter="globalFilter"
-        v-model:pagination="pagination"
-        :pagination-options="{
-          getPaginationRowModel: getPaginationRowModel()
-        }"
-        :data="data?.data"
-        :columns="columns"
-        :loading="status === 'pending'"
-        class="flex-1 h-80"
-      />
-      <div class="flex justify-center border-t border-default pt-1">
-        <UPagination
-          :default-page="(table?.tableApi?.getState().pagination.pageIndex || 0) + 1"
-          :items-per-page="table?.tableApi?.getState().pagination.pageSize"
-          :total="table?.tableApi?.getFilteredRowModel().rows.length"
-          @update:page="(p: number) => table?.tableApi?.setPageIndex(p - 1)"
+  <UContainer class="py-8">
+    <UPageHeader :title="language.t('racers', 'title')" description="Atletas cadastrados." />
+    <div class="my-5 flex gap-3">
+      <UInput v-model="search" icon="i-lucide-search" placeholder="Pesquisar ciclistas" /><UButton
+        v-if="auth.loggedIn.value"
+        to="/racers/create"
+        icon="i-lucide-plus"
+        >Novo ciclista</UButton
+      >
+    </div>
+    <UAlert v-if="error" color="error" title="Não foi possível carregar os ciclistas." />
+    <div v-else-if="status === 'pending'" class="py-8 text-center">Carregando…</div>
+    <div v-else class="divide-y divide-default rounded-lg border border-default">
+      <div v-for="racer in racers" :key="racer.id" class="flex items-center justify-between p-4">
+        <span>{{ racer.name }}</span
+        ><UButton
+          v-if="auth.loggedIn.value"
+          :to="`/racers/edit/${racer.id}`"
+          icon="i-lucide-pencil"
+          variant="ghost"
+          aria-label="Editar ciclista"
         />
       </div>
-    </UPageBody>
+      <p v-if="!racers.length" class="p-4 text-muted">Nenhum ciclista encontrado.</p>
+    </div>
   </UContainer>
 </template>

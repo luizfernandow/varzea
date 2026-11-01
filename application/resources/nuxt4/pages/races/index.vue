@@ -1,73 +1,44 @@
 <script setup lang="ts">
-import { getPaginationRowModel } from '@tanstack/vue-table'
-import type { TableColumn } from '@nuxt/ui'
-
-const table = useTemplateRef('table')
-
-type Race = {
-  id: number
-  name: string
-  date_start: Date
-  time_start: string
-}
-
-type RaceData = {
-  data: Race[]
-}
-
-const { data, status } = await useFetch<RaceData>('http://localhost/api/races', {
-  key: 'table-races',
-  lazy: true
-})
-
-const columns: TableColumn<Race>[] = [
-  {
-    accessorKey: 'name',
-    header: 'Name'
-  },
-  {
-    accessorKey: 'date_start',
-    header: 'Date start'
-  },
-  {
-    accessorKey: 'time_start',
-    header: 'Time start'
-  }
-]
-
-const globalFilter = ref()
-
-const pagination = ref({
-  pageIndex: 0,
-  pageSize: 5
-})
+type Race = { id: number; name: string; date_start: string; time_start: string; laps?: number }
+const auth = useAuth()
+const language = useAppLocale()
+const search = ref('')
+const { data, status, error } = await useAsyncData('races', () =>
+  useApi<{ data: Race[] }>('/api/races')
+)
+const races = computed(() =>
+  (data.value?.data ?? []).filter((r) => r.name.toLowerCase().includes(search.value.toLowerCase()))
+)
 </script>
 
 <template>
-  <UContainer>
-    <UPageHeader title="Races" />
-    <UPageBody>
-      <UInput v-model="globalFilter" class="max-w-sm" placeholder="Pesquisar..." />
-      <UTable
-        ref="table"
-        v-model:global-filter="globalFilter"
-        v-model:pagination="pagination"
-        :pagination-options="{
-          getPaginationRowModel: getPaginationRowModel()
-        }"
-        :data="data?.data"
-        :columns="columns"
-        :loading="status === 'pending'"
-        class="flex-1 h-80"
-      />
-      <div class="flex justify-center border-t border-default pt-1">
-        <UPagination
-          :default-page="(table?.tableApi?.getState().pagination.pageIndex || 0) + 1"
-          :items-per-page="table?.tableApi?.getState().pagination.pageSize"
-          :total="table?.tableApi?.getFilteredRowModel().rows.length"
-          @update:page="(p: number) => table?.tableApi?.setPageIndex(p - 1)"
-        />
-      </div>
-    </UPageBody>
+  <UContainer class="py-8">
+    <UPageHeader
+      :title="language.t('races', 'title')"
+      description="Calendário e resultados das corridas."
+    />
+    <div class="my-5 flex flex-wrap gap-3">
+      <UInput v-model="search" icon="i-lucide-search" placeholder="Pesquisar corridas" />
+      <UButton v-if="auth.loggedIn.value" to="/races/create" icon="i-lucide-plus"
+        >Nova corrida</UButton
+      >
+    </div>
+    <UAlert v-if="error" color="error" title="Não foi possível carregar as corridas." />
+    <div v-else-if="status === 'pending'" class="py-8 text-center">Carregando…</div>
+    <div v-else class="divide-y divide-default rounded-lg border border-default">
+      <NuxtLink
+        v-for="race in races"
+        :key="race.id"
+        :to="`/races/${race.id}`"
+        class="block p-4 hover:bg-elevated"
+      >
+        <div class="font-semibold">{{ race.name }}</div>
+        <div class="text-sm text-muted">
+          {{ race.date_start }} · {{ race.time_start
+          }}<span v-if="race.laps"> · {{ language.t('races', 'laps', { laps: race.laps }) }}</span>
+        </div>
+      </NuxtLink>
+      <p v-if="!races.length" class="p-4 text-muted">Nenhuma corrida encontrada.</p>
+    </div>
   </UContainer>
 </template>

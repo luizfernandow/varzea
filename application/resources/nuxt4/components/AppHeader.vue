@@ -1,24 +1,31 @@
 <script setup lang="ts">
 const route = useRoute()
+const auth = useAuth()
+const language = useAppLocale()
 
 const items = computed(() => [
   {
-    label: 'Ranking',
+    label: language.t('menu', 'ranking'),
     icon: 'i-lucide-trophy',
     to: '/ranking',
     active: route.path.startsWith('/ranking')
   },
   {
-    label: 'Races',
+    label: language.t('menu', 'races'),
     icon: 'i-lucide-flag',
     to: '/races'
   },
   {
-    label: 'Racers',
+    label: language.t('menu', 'racers'),
     icon: 'i-lucide-bike',
     to: '/racers'
   }
 ])
+
+async function signOut() {
+  await auth.logout()
+  await navigateTo('/')
+}
 </script>
 
 <template>
@@ -32,6 +39,26 @@ const items = computed(() => [
     <UNavigationMenu :items="items" variant="link" />
 
     <template #right>
+      <UButton
+        v-if="auth.loggedIn.value"
+        to="/profile"
+        variant="ghost"
+        :label="auth.user.value?.name"
+      />
+      <UButton
+        v-if="auth.loggedIn.value"
+        icon="i-lucide-log-out"
+        variant="ghost"
+        aria-label="Sair"
+        @click="signOut"
+      />
+      <UButton v-else to="/login" variant="ghost" :label="language.t('auth', 'form.login')" />
+      <UButton
+        variant="ghost"
+        :label="language.locale.value === 'pt-BR' ? 'EN' : 'PT'"
+        aria-label="Alterar idioma"
+        @click="language.toggle"
+      />
       <UColorModeButton />
     </template>
 
