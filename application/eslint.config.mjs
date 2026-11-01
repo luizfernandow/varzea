@@ -2,8 +2,4 @@
 import withNuxt from './.nuxt/eslint.config.mjs'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
-export default withNuxt([
-  { ignores: ['resources/nuxt/**'] },
-  eslintPluginPrettierRecommended,
-  { rules: { curly: ['error', 'all'] } }
-])
+export default withNuxt([eslintPluginPrettierRecommended, { rules: { curly: ['error', 'all'] } }])

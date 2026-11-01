@@ -22,10 +22,6 @@ jobs:
         run: npm run build
         working-directory: application
 
-      - name: nuxt-generate
-        run: npm run generate
-        working-directory: application
-
       - name: Upload nuxt build
         uses: actions/upload-artifact@v7
         with:
