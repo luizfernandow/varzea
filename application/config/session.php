@@ -48,6 +48,8 @@ return [
 
     'encrypt' => false,
 
+    'serialization' => 'json',
+
     /*
     |--------------------------------------------------------------------------
     | Session File Location
